@@ -22,6 +22,12 @@ export default function Contact() {
     setError('');
 
     try {
+      if (!supabase) {
+        setError('Service temporairement indisponible. Appelez-nous au +32 486 98 74 84');
+        setIsSubmitting(false);
+        return;
+      }
+
       const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert([
