@@ -1,4 +1,4 @@
-import { Building2, Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 
 export default function Footer() {
   const scrollToSection = (id: string) => {
@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center mb-4">
-              <Building2 className="w-8 h-8 text-emerald-500 mr-3" />
+              <img src="/logo-kcertipeb.png" alt="KcertiPEB Logo" className="w-8 h-8 object-contain mr-3" />
               <span className="text-2xl font-bold">KcertiPEB</span>
             </div>
             <p className="text-gray-400 mb-4 leading-relaxed">
@@ -93,7 +93,14 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-400">
             <div>
-              <p>&copy; 2024 KcertiPEB. Tous droits réservés.</p>
+              <div className="flex items-center gap-3">
+                <img
+                  src="/logo-kcertipeb.png"
+                  alt="KcertiPEB Logo"
+                  className="w-10 h-10 object-contain"
+                />
+                <p>&copy; 2024 KcertiPEB. Tous droits réservés.</p>
+              </div>
               <div className="mt-2 space-x-4">
                 <a href="#" className="hover:text-emerald-500 transition">Politique de Confidentialité</a>
                 <span>•</span>

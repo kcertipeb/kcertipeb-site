@@ -39,9 +39,14 @@ export default function Header() {
           <div className="flex items-center">
             <button
               onClick={() => scrollToSection('hero')}
-              className="text-2xl font-bold text-emerald-700 hover:text-emerald-600 transition"
+              className="flex items-center hover:opacity-80 transition gap-3"
             >
-              KcertiPEB
+              <img
+                src="/logo.png"
+                alt="KcertiPEB"
+                className="h-12 w-auto object-contain"
+              />
+              <span className="text-2xl font-bold text-emerald-700">KcertiPEB</span>
             </button>
           </div>
 
