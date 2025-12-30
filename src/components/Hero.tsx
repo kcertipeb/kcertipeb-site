@@ -9,7 +9,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero" className="pt-24 pb-12 bg-gradient-to-br from-emerald-50 to-white">
+    <section id="accueil" className="pt-24 pb-12 bg-gradient-to-br from-emerald-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>

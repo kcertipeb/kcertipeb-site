@@ -4,11 +4,13 @@ import { useState } from 'react';
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setMobileMenuOpen(false);
+      window.history.pushState(null, '', `#${id}`);
     }
   };
 
@@ -37,8 +39,9 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <button
-              onClick={() => scrollToSection('hero')}
+            <a
+              href="#accueil"
+              onClick={(e) => handleNavClick(e, 'accueil')}
               className="flex items-center hover:opacity-80 transition gap-3"
             >
               <img
@@ -47,28 +50,29 @@ export default function Header() {
                 className="h-12 w-auto object-contain"
               />
               <span className="text-2xl font-bold text-emerald-700">KcertiPEB</span>
-            </button>
+            </a>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-emerald-700 transition">
+            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-gray-700 hover:text-emerald-700 transition">
               Services
-            </button>
-            <button onClick={() => scrollToSection('benefits')} className="text-gray-700 hover:text-emerald-700 transition">
+            </a>
+            <a href="#avantages" onClick={(e) => handleNavClick(e, 'avantages')} className="text-gray-700 hover:text-emerald-700 transition">
               Avantages
-            </button>
-            <button onClick={() => scrollToSection('process')} className="text-gray-700 hover:text-emerald-700 transition">
+            </a>
+            <a href="#processus" onClick={(e) => handleNavClick(e, 'processus')} className="text-gray-700 hover:text-emerald-700 transition">
               Notre Processus
-            </button>
-            <button onClick={() => scrollToSection('pricing')} className="text-gray-700 hover:text-emerald-700 transition">
+            </a>
+            <a href="#tarifs" onClick={(e) => handleNavClick(e, 'tarifs')} className="text-gray-700 hover:text-emerald-700 transition">
               Tarifs
-            </button>
-            <button
-              onClick={() => scrollToSection('contact')}
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
               className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium"
             >
               Devis Gratuit
-            </button>
+            </a>
           </div>
 
           <button
@@ -82,24 +86,25 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-emerald-700 transition text-left">
+              <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-gray-700 hover:text-emerald-700 transition text-left">
                 Services
-              </button>
-              <button onClick={() => scrollToSection('benefits')} className="text-gray-700 hover:text-emerald-700 transition text-left">
+              </a>
+              <a href="#avantages" onClick={(e) => handleNavClick(e, 'avantages')} className="text-gray-700 hover:text-emerald-700 transition text-left">
                 Avantages
-              </button>
-              <button onClick={() => scrollToSection('process')} className="text-gray-700 hover:text-emerald-700 transition text-left">
+              </a>
+              <a href="#processus" onClick={(e) => handleNavClick(e, 'processus')} className="text-gray-700 hover:text-emerald-700 transition text-left">
                 Notre Processus
-              </button>
-              <button onClick={() => scrollToSection('pricing')} className="text-gray-700 hover:text-emerald-700 transition text-left">
+              </a>
+              <a href="#tarifs" onClick={(e) => handleNavClick(e, 'tarifs')} className="text-gray-700 hover:text-emerald-700 transition text-left">
                 Tarifs
-              </button>
-              <button
-                onClick={() => scrollToSection('contact')}
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, 'contact')}
                 className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium text-center"
               >
                 Devis Gratuit
-              </button>
+              </a>
             </div>
           </div>
         )}

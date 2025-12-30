@@ -31,17 +31,17 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('benefits')} className="text-gray-400 hover:text-emerald-500 transition">
+                <button onClick={() => scrollToSection('avantages')} className="text-gray-400 hover:text-emerald-500 transition">
                   Avantages
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('process')} className="text-gray-400 hover:text-emerald-500 transition">
+                <button onClick={() => scrollToSection('processus')} className="text-gray-400 hover:text-emerald-500 transition">
                   Notre Processus
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('pricing')} className="text-gray-400 hover:text-emerald-500 transition">
+                <button onClick={() => scrollToSection('tarifs')} className="text-gray-400 hover:text-emerald-500 transition">
                   Tarifs
                 </button>
               </li>
