@@ -65,6 +65,15 @@ export default function Contact() {
         })
       });
 
+      const transactionId = `peb_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
+      if (window.gtag) {
+        window.gtag('event', 'conversion', {
+          'send_to': 'AW-17839824839/DaSpCIzUyNkbEMe_2LpC',
+          'transaction_id': transactionId
+        });
+      }
+
       setSubmitted(true);
       setFormData({
         name: '',
