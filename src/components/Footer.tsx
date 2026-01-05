@@ -1,13 +1,7 @@
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -26,42 +20,61 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">Navigation</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => scrollToSection('services')} className="text-gray-400 hover:text-emerald-500 transition">
-                  Nos Services
-                </button>
+                <Link to="/" className="text-gray-400 hover:text-emerald-500 transition">
+                  Accueil
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection('avantages')} className="text-gray-400 hover:text-emerald-500 transition">
-                  Avantages
-                </button>
+                <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  PEB Appartement
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection('processus')} className="text-gray-400 hover:text-emerald-500 transition">
-                  Notre Processus
-                </button>
+                <Link to="/certificat-peb-maison-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  PEB Maison
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection('tarifs')} className="text-gray-400 hover:text-emerald-500 transition">
+                <Link to="/audit-energetique-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  Audit Énergétique
+                </Link>
+              </li>
+              <li>
+                <Link to="/tarifs" className="text-gray-400 hover:text-emerald-500 transition">
                   Tarifs
-                </button>
+                </Link>
               </li>
               <li>
-                <button onClick={() => scrollToSection('faq')} className="text-gray-400 hover:text-emerald-500 transition">
+                <Link to="/faq" className="text-gray-400 hover:text-emerald-500 transition">
                   FAQ
-                </button>
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-400 hover:text-emerald-500 transition">
+                  Contact
+                </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Services</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li>PEB Résidentiel</li>
-              <li>Audit Énergétique</li>
-              <li>Appartements</li>
-              <li>Maisons</li>
-              <li>Tarifs Professionnels</li>
-              <li>Intervention Rapide</li>
+            <h3 className="text-lg font-bold mb-4">Nos Services</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  Certificat PEB Appartement
+                </Link>
+              </li>
+              <li>
+                <Link to="/certificat-peb-maison-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  Certificat PEB Maison
+                </Link>
+              </li>
+              <li>
+                <Link to="/audit-energetique-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
+                  Audit Énergétique Complet
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -1,18 +1,10 @@
-import { Phone, Mail, Menu, X } from 'lucide-react';
+import { Phone, Mail, Menu, X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false);
-      window.history.pushState(null, '', `#${id}`);
-    }
-  };
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
   return (
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
@@ -39,9 +31,8 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <a
-              href="#accueil"
-              onClick={(e) => handleNavClick(e, 'accueil')}
+            <Link
+              to="/"
               className="flex items-center hover:opacity-80 transition gap-3"
             >
               <img
@@ -50,29 +41,56 @@ export default function Header() {
                 className="h-12 w-auto object-contain"
               />
               <span className="text-2xl font-bold text-emerald-700">KcertiPEB</span>
-            </a>
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-gray-700 hover:text-emerald-700 transition">
-              Services
-            </a>
-            <a href="#avantages" onClick={(e) => handleNavClick(e, 'avantages')} className="text-gray-700 hover:text-emerald-700 transition">
-              Avantages
-            </a>
-            <a href="#processus" onClick={(e) => handleNavClick(e, 'processus')} className="text-gray-700 hover:text-emerald-700 transition">
-              Notre Processus
-            </a>
-            <a href="#tarifs" onClick={(e) => handleNavClick(e, 'tarifs')} className="text-gray-700 hover:text-emerald-700 transition">
+            <div
+              className="relative"
+              onMouseEnter={() => setServicesDropdownOpen(true)}
+              onMouseLeave={() => setServicesDropdownOpen(false)}
+            >
+              <button className="text-gray-700 hover:text-emerald-700 transition flex items-center gap-1 py-2">
+                Services
+                <ChevronDown className="w-4 h-4" />
+              </button>
+              {servicesDropdownOpen && (
+                <div className="absolute top-full left-0 pt-2">
+                  <div className="w-64 bg-white shadow-lg rounded-lg py-2 border border-gray-100">
+                    <Link
+                      to="/certificat-peb-appartement-bruxelles"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                    >
+                      Certificat PEB Appartement
+                    </Link>
+                    <Link
+                      to="/certificat-peb-maison-bruxelles"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                    >
+                      Certificat PEB Maison
+                    </Link>
+                    <Link
+                      to="/audit-energetique-bruxelles"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                    >
+                      Audit Énergétique
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+            <Link to="/tarifs" className="text-gray-700 hover:text-emerald-700 transition">
               Tarifs
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, 'contact')}
+            </Link>
+            <Link to="/faq" className="text-gray-700 hover:text-emerald-700 transition">
+              FAQ
+            </Link>
+            <Link
+              to="/contact"
               className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium"
             >
               Devis Gratuit
-            </a>
+            </Link>
           </div>
 
           <button
@@ -86,25 +104,28 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-gray-700 hover:text-emerald-700 transition text-left">
-                Services
-              </a>
-              <a href="#avantages" onClick={(e) => handleNavClick(e, 'avantages')} className="text-gray-700 hover:text-emerald-700 transition text-left">
-                Avantages
-              </a>
-              <a href="#processus" onClick={(e) => handleNavClick(e, 'processus')} className="text-gray-700 hover:text-emerald-700 transition text-left">
-                Notre Processus
-              </a>
-              <a href="#tarifs" onClick={(e) => handleNavClick(e, 'tarifs')} className="text-gray-700 hover:text-emerald-700 transition text-left">
+              <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Certificat PEB Appartement
+              </Link>
+              <Link to="/certificat-peb-maison-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Certificat PEB Maison
+              </Link>
+              <Link to="/audit-energetique-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Audit Énergétique
+              </Link>
+              <Link to="/tarifs" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
                 Tarifs
-              </a>
-              <a
-                href="#contact"
-                onClick={(e) => handleNavClick(e, 'contact')}
+              </Link>
+              <Link to="/faq" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                FAQ
+              </Link>
+              <Link
+                to="/contact"
                 className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium text-center"
+                onClick={() => setMobileMenuOpen(false)}
               >
                 Devis Gratuit
-              </a>
+              </Link>
             </div>
           </div>
         )}
