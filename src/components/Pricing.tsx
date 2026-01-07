@@ -1,5 +1,4 @@
 import { Home, Building2, ClipboardCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export default function Pricing() {
   const pricingOptions = [
@@ -157,12 +156,12 @@ export default function Pricing() {
           <p className="text-emerald-50 text-lg mb-6 max-w-3xl mx-auto">
             Vous êtes agent immobilier, promoteur ou architecte ? Bénéficiez de tarifs préférentiels pour vos certifications en volume. Contactez-nous pour un partenariat sur mesure.
           </p>
-          <Link
-            to="/contact"
+          <button
+            onClick={scrollToContact}
             className="inline-block bg-white text-emerald-600 px-8 py-3 rounded-lg hover:bg-emerald-50 transition font-semibold"
           >
             Demander un devis
-          </Link>
+          </button>
         </div>
       </div>
     </section>

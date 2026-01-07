@@ -4,6 +4,7 @@ import Benefits from '../components/Benefits';
 import Process from '../components/Process';
 import Pricing from '../components/Pricing';
 import BrusselsCommunes from '../components/BrusselsCommunes';
+import Contact from '../components/Contact';
 import SEO from '../components/SEO';
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <Process />
       <Pricing />
       <BrusselsCommunes />
+      <Contact />
     </>
   );
 }
