@@ -51,7 +51,7 @@ Deno.serve(async (req: Request) => {
         from: "K Certipeb <onboarding@resend.dev>",
         to: "info@kcertipeb.be",
         
-        subject: "Nouvelle demande PEB",
+        subject: `Nouvelle demande PEB - ${property_type}`
         html: `
           <h2>Nouvelle Demande de Certificat PEB</h2>
           
