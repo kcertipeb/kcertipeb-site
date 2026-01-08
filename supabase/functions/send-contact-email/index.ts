@@ -49,7 +49,7 @@ Deno.serve(async (req: Request) => {
       },
       body: JSON.stringify({
         from: "K Certipeb <onboarding@resend.dev>",
-        to: "info@kcertipeb.be",
+        to: ["info@kcertipeb.be"],
         reply_to: email,
         subject: `Nouvelle demande PEB - ${property_type}`,
         html: `
