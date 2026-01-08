@@ -40,13 +40,31 @@ export default function Contact() {
             message: formData.message
           }
         ]);
-
+      
       if (dbError) {
         console.error('Database error:', dbError);
         setError('Erreur lors de l\'envoi. Veuillez réessayer.');
         setIsSubmitting(false);
         return;
       }
+      // ---- Envoi email via Supabase Function ----
+const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
+
+await fetch(apiUrl, {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    property_type: formData.propertyType,
+    address: formData.address,
+    message: formData.message
+  })
+});
 
       const transactionId = `peb_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
