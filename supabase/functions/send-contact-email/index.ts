@@ -48,7 +48,7 @@ Deno.serve(async (req: Request) => {
         "Authorization": `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "K Certipeb <kcertipe.be@kcertipeb.be>",
+        from: "K Certipeb <onboarding@kcertipeb.be>",
         to: ["info@kcertipeb.be"],
         reply_to: email,   // <- important : la personne qui remplit le formulaire
         subject: `Nouvelle demande PEB - ${property_type}`,
