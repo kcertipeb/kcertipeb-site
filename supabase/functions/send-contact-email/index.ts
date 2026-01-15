@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,7 +17,6 @@ interface ContactData {
 }
 
 Deno.serve(async (req: Request) => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, {
       status: 200,
@@ -27,10 +27,10 @@ Deno.serve(async (req: Request) => {
   try {
     const { name, email, phone, property_type, address, message }: ContactData = await req.json();
 
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    
-    if (!RESEND_API_KEY) {
-      console.error("RESEND_API_KEY is not set");
+    const SMTP_PASSWORD = Deno.env.get("SMTP_PASSWORD");
+
+    if (!SMTP_PASSWORD) {
+      console.error("SMTP_PASSWORD is not set");
       return new Response(
         JSON.stringify({ success: false, error: "Email service not configured" }),
         {
@@ -40,59 +40,55 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Send email using Resend
-    const emailResponse = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${RESEND_API_KEY}`,
+    const client = new SMTPClient({
+      connection: {
+        hostname: "smtp.office365.com",
+        port: 587,
+        tls: true,
+        auth: {
+          username: "info@kcertipeb.be",
+          password: SMTP_PASSWORD,
+        },
       },
-      body: JSON.stringify({
-        from: "K Certipeb <onboarding@resend.dev>",
-        to: "info@kcertipeb.be",
-        
-        subject: `Nouvelle demande PEB - ${property_type}`
-        html: `
-          <h2>Nouvelle Demande de Certificat PEB</h2>
-          
-          <h3>Informations Client</h3>
-          <ul>
-            <li><strong>Nom:</strong> ${name}</li>
-            <li><strong>Email:</strong> ${email}</li>
-            <li><strong>Téléphone:</strong> ${phone}</li>
-          </ul>
-          
-          <h3>Informations Bien</h3>
-          <ul>
-            <li><strong>Type:</strong> ${property_type}</li>
-            <li><strong>Adresse:</strong> ${address}</li>
-          </ul>
-          
-          ${message ? `<h3>Message</h3><p>${message}</p>` : ''}
-          
-          <hr>
-          <p><small>Reçu le ${new Date().toLocaleString('fr-BE', { timeZone: 'Europe/Brussels' })}</small></p>
-        `,
-      }),
     });
 
-    if (!emailResponse.ok) {
-      const errorData = await emailResponse.text();
-      console.error("Resend API error:", errorData);
-      return new Response(
-        JSON.stringify({ success: false, error: "Failed to send email" }),
-        {
-          status: 500,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
-    }
+    const htmlContent = `
+      <h2>Nouvelle Demande de Certificat PEB</h2>
 
-    const emailData = await emailResponse.json();
-    console.log("Email sent successfully:", emailData);
+      <h3>Informations Client</h3>
+      <ul>
+        <li><strong>Nom:</strong> ${name}</li>
+        <li><strong>Email:</strong> ${email}</li>
+        <li><strong>Téléphone:</strong> ${phone}</li>
+      </ul>
+
+      <h3>Informations Bien</h3>
+      <ul>
+        <li><strong>Type:</strong> ${property_type}</li>
+        <li><strong>Adresse:</strong> ${address}</li>
+      </ul>
+
+      ${message ? `<h3>Message</h3><p>${message}</p>` : ''}
+
+      <hr>
+      <p><small>Reçu le ${new Date().toLocaleString('fr-BE', { timeZone: 'Europe/Brussels' })}</small></p>
+    `;
+
+    await client.send({
+      from: "K Certipeb <info@kcertipeb.be>",
+      to: "info@kcertipeb.be",
+      replyTo: email,
+      subject: `Nouvelle demande PEB - ${property_type}`,
+      content: htmlContent,
+      html: htmlContent,
+    });
+
+    await client.close();
+
+    console.log("Email sent successfully via Microsoft 365 SMTP");
 
     return new Response(
-      JSON.stringify({ success: true, emailId: emailData.id }),
+      JSON.stringify({ success: true }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

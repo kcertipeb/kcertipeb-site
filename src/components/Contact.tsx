@@ -32,39 +32,46 @@ export default function Contact() {
         .from('contact_submissions')
         .insert([
           {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
             property_type: formData.propertyType,
-            address: formData.address,
-            message: formData.message
+            address: formData.address.trim(),
+            message: formData.message.trim()
           }
         ]);
-      
+
       if (dbError) {
         console.error('Database error:', dbError);
-        setError('Erreur lors de l\'envoi. Veuillez réessayer.');
+        setError(`Erreur lors de l'envoi: ${dbError.message}. Contactez-nous au +32 486 98 74 84`);
         setIsSubmitting(false);
         return;
       }
-      // ---- Envoi email via Supabase Function ----
-const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
 
-await fetch(apiUrl, {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    name: formData.name,
-    email: formData.email,
-    phone: formData.phone,
-    property_type: formData.propertyType,
-    address: formData.address,
-    message: formData.message
-  })
-});
+      try {
+        const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            property_type: formData.propertyType,
+            address: formData.address.trim(),
+            message: formData.message.trim()
+          })
+        });
+
+        if (!response.ok) {
+          console.error('Email sending failed:', await response.text());
+        }
+      } catch (emailError) {
+        console.error('Email error:', emailError);
+      }
 
       const transactionId = `peb_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
@@ -107,7 +114,7 @@ await fetch(apiUrl, {
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Demandez Votre Devis Gratuit</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Remplissez le formulaire ou contactez-nous directement. Réponse garantie sous 2 heures.
+            Remplissez le formulaire ou contactez-nous directement. Réponse garantie sous 12 heures.
           </p>
         </div>
 
@@ -210,7 +217,7 @@ await fetch(apiUrl, {
 
                 {submitted && (
                   <div className="bg-emerald-50 border-2 border-emerald-500 rounded-lg p-4 text-emerald-700 font-semibold">
-                    Merci ! Votre demande a été envoyée. Nous vous contactons sous 2 heures.
+                    Merci ! Votre demande a été envoyée. Nous vous contactons sous 12 heures.
                   </div>
                 )}
 
