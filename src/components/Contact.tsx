@@ -49,11 +49,9 @@ export default function Contact() {
       }
 
       try {
-        const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`;
-        const response = await fetch(apiUrl, {
+        const response = await fetch("/.netlify/functions/send-contact-email", {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
