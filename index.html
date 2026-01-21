@@ -15,10 +15,19 @@
       notice_banner_reject_button_hide: false,
       preferences_center_close_button_hide: false,
       page_refresh_confirmation_buttons: false
-    });
+    });      
   });
   </script>
-
+  <script>
+      window.addEventListener("cc:onConsent", function () {
+        if (window.gtag) {
+          gtag('consent', 'update', {
+            ad_storage: 'granted',
+            analytics_storage: 'granted'
+          });
+        }
+      });
+  </script>
     <!-- Google Ads (loaded only after consent) -->
     <script type="text/plain" data-cookie-consent="targeting" async src="https://www.googletagmanager.com/gtag/js?id=AW-17839824839"></script>
 
@@ -28,6 +37,7 @@
     gtag('js', new Date());
     gtag('config', 'AW-17839824839');
     </script>
+    
     <!-- End Google Ads -->
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
