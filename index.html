@@ -1,31 +1,36 @@
 <head>
 
-<!-- Google Consent Mode (default denied) -->
+<!-- Google Consent Mode (safe init) -->
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
+</script>
 
+<!-- Default consent = denied -->
+<script>
 gtag('consent', 'default', {
   ad_storage: 'denied',
   analytics_storage: 'denied'
 });
 </script>
 
-<!-- TermsFeed Cookie Consent banner -->
+<!-- TermsFeed banner -->
 <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  cookieconsent.run({
-    notice_banner_type: "simple",
-    consent_type: "express",
-    palette: "light",
-    language: "fr",
-    page_load_consent_levels: ["strictly-necessary"]
-  });
+  if (window.cookieconsent) {
+    cookieconsent.run({
+      notice_banner_type: "simple",
+      consent_type: "express",
+      palette: "light",
+      language: "fr",
+      page_load_consent_levels: ["strictly-necessary"]
+    });
+  }
 });
 </script>
 
-<!-- Update Google consent after user accepts -->
+<!-- Update consent after accept -->
 <script>
 window.addEventListener("cc:onConsent", function () {
   gtag('consent', 'update', {
@@ -35,7 +40,7 @@ window.addEventListener("cc:onConsent", function () {
 });
 </script>
 
-<!-- Google Ads normal tag -->
+<!-- Google Ads -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17839824839"></script>
 <script>
 gtag('js', new Date());
