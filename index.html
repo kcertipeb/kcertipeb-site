@@ -1,73 +1,77 @@
-<!doctype html>
-<html lang="fr">
-  <head>
-    <!-- Cookie Consent by TermsFeed -->
-    <script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+<head>
 
-    <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-      cookieconsent.run({
-      notice_banner_type: "simple",
-      consent_type: "express",
-      palette: "light",
-      language: "fr",
-      page_load_consent_levels: ["strictly-necessary", "targeting"],
-      notice_banner_reject_button_hide: false,
-      preferences_center_close_button_hide: false,
-      page_refresh_confirmation_buttons: false
-    });      
+<!-- Google Consent Mode (default denied) -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  analytics_storage: 'denied'
+});
+</script>
+
+<!-- TermsFeed Cookie Consent banner -->
+<script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  cookieconsent.run({
+    notice_banner_type: "simple",
+    consent_type: "express",
+    palette: "light",
+    language: "fr",
+    page_load_consent_levels: ["strictly-necessary"]
   });
-  </script>
-  <script>
-      window.addEventListener("cc:onConsent", function () {
-        if (window.gtag) {
-          gtag('consent', 'update', {
-            ad_storage: 'granted',
-            analytics_storage: 'granted'
-          });
-        }
-      });
-  </script>
-    <!-- Google Ads (loaded only after consent) -->
-    <script type="text/plain" data-cookie-consent="targeting" async src="https://www.googletagmanager.com/gtag/js?id=AW-17839824839"></script>
+});
+</script>
 
-    <script type="text/plain" data-cookie-consent="targeting">
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-17839824839');
-    </script>
-    
-    <!-- End Google Ads -->
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="language" content="fr-BE" />
-    <meta name="geo.region" content="BE-BRU" />
-    <meta name="geo.placename" content="Bruxelles" />
-    <meta name="geo.position" content="50.8503;4.3517" />
-    <meta name="ICBM" content="50.8503, 4.3517" />
-    <title>K Certipeb | Certificat PEB Bruxelles - Expert Agréé - Dès 120€</title>
-    <meta name="description" content="K Certipeb - Expert en certificat PEB à Bruxelles. Appartement dès 120€, Maison dès 210€. Intervention sous 48h dans toutes les communes. Agréé Bruxelles Environnement." />
-    <meta name="keywords" content="certificat peb bruxelles, peb bruxelles, expert peb bruxelles, certificateur peb agréé, peb appartement bruxelles, peb maison bruxelles, audit énergétique bruxelles, prix certificat peb, peb ixelles, peb uccle, peb schaerbeek, peb anderlecht, peb woluwe, certificat énergétique bruxelles, performance énergétique bruxelles" />
-    <meta name="author" content="K Certipeb" />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kcertipeb.be/" />
-    <meta property="og:site_name" content="K Certipeb" />
-    <meta property="og:locale" content="fr_BE" />
-    <meta property="og:title" content="K Certipeb | Certificat PEB Bruxelles - Expert Agréé" />
-    <meta property="og:description" content="Expert en certificat PEB à Bruxelles. Appartement dès 120€, Maison dès 210€. Intervention rapide dans toutes les communes." />
-    <meta property="og:image" content="https://kcertipeb.be/logo.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="K Certipeb | Certificat PEB Bruxelles - Expert Agréé" />
-    <meta name="twitter:description" content="Expert en certificat PEB à Bruxelles. Intervention rapide dans toutes les communes." />
-    <meta name="twitter:image" content="https://kcertipeb.be/logo.png" />
-    <link rel="canonical" href="https://kcertipeb.be/" />
-    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!-- Update Google consent after user accepts -->
+<script>
+window.addEventListener("cc:onConsent", function () {
+  gtag('consent', 'update', {
+    ad_storage: 'granted',
+    analytics_storage: 'granted'
+  });
+});
+</script>
+
+<!-- Google Ads normal tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17839824839"></script>
+<script>
+gtag('js', new Date());
+gtag('config', 'AW-17839824839');
+</script>
+
+<meta charset="UTF-8" />
+<link rel="icon" type="image/png" href="/favicon.png" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="language" content="fr-BE" />
+<meta name="geo.region" content="BE-BRU" />
+<meta name="geo.placename" content="Bruxelles" />
+<meta name="geo.position" content="50.8503;4.3517" />
+<meta name="ICBM" content="50.8503, 4.3517" />
+
+<title>K Certipeb | Certificat PEB Bruxelles - Expert Agréé - Dès 120€</title>
+
+<meta name="description" content="K Certipeb - Expert en certificat PEB à Bruxelles. Appartement dès 120€, Maison dès 210€. Intervention sous 48h dans toutes les communes. Agréé Bruxelles Environnement." />
+<meta name="keywords" content="certificat peb bruxelles, peb bruxelles, expert peb bruxelles, certificateur peb agréé, peb appartement bruxelles, peb maison bruxelles, audit énergétique bruxelles, prix certificat peb, peb ixelles, peb uccle, peb schaerbeek, peb anderlecht, peb woluwe, certificat énergétique bruxelles, performance énergétique bruxelles" />
+<meta name="author" content="K Certipeb" />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://kcertipeb.be/" />
+<meta property="og:site_name" content="K Certipeb" />
+<meta property="og:locale" content="fr_BE" />
+<meta property="og:title" content="K Certipeb | Certificat PEB Bruxelles - Expert Agréé" />
+<meta property="og:description" content="Expert en certificat PEB à Bruxelles. Appartement dès 120€, Maison dès 210€. Intervention rapide dans toutes les communes." />
+<meta property="og:image" content="https://kcertipeb.be/logo.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="K Certipeb | Certificat PEB Bruxelles - Expert Agréé" />
+<meta name="twitter:description" content="Expert en certificat PEB à Bruxelles. Intervention rapide dans toutes les communes." />
+<meta name="twitter:image" content="https://kcertipeb.be/logo.png" />
+
+<link rel="canonical" href="https://kcertipeb.be/" />
+<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+</head>
