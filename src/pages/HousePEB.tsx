@@ -6,9 +6,9 @@ export default function HousePEB() {
   return (
     <>
       <SEO
-        title="Certificat PEB Maison Bruxelles - Expert Agréé - Dès 210€"
-        description="Certificat PEB pour maison unifamiliale à Bruxelles. Certificateur agréé, tarif à partir de 210€ selon métrage, intervention sous 48h dans toutes les communes. Devis gratuit en ligne."
-        keywords="certificat peb maison bruxelles, peb maison unifamiliale, certificat énergétique maison, peb vente maison bruxelles, peb location maison bruxelles, expert peb maison, certificateur maison bruxelles, peb maison uccle, peb maison woluwe, peb maison ixelles, prix peb maison bruxelles, peb maison unifamiliale prix, certificat peb obligatoire maison"
+        title="Certificat PEB maison à Bruxelles | Dès 210€"
+        description="Certificat PEB pour maison à Bruxelles dès 210 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
+        keywords="certificat PEB maison bruxelles, PEB maison unifamiliale, certificat énergétique maison, PEB vente maison bruxelles, PEB location maison bruxelles, PEB maison uccle, PEB maison woluwe, prix PEB maison bruxelles, certificat PEB obligatoire maison"
         canonical="https://kcertipeb.be/certificat-peb-maison-bruxelles"
       />
 
@@ -20,7 +20,7 @@ export default function HousePEB() {
                 Certificat PEB Maison
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Certificat PEB pour Votre Maison à Bruxelles
+                Certificat PEB pour maison à Bruxelles
               </h1>
               <p className="text-xl text-gray-600 mb-8">
                 Spécialiste des maisons unifamiliales à Bruxelles. Expertise complète, rapport détaillé et recommandations personnalisées incluses.
@@ -93,7 +93,7 @@ export default function HousePEB() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Garantie Officielle</h3>
               <p className="text-gray-600">
-                Certificat agréé par la Région de Bruxelles-Capitale. Valable 10 ans pour vente et location.
+                Certificat officiel conforme à la réglementation de la Région de Bruxelles-Capitale.
               </p>
             </div>
           </div>
@@ -286,7 +286,7 @@ export default function HousePEB() {
             Besoin d'un Certificat PEB pour Votre Maison ?
           </h2>
           <p className="text-xl mb-8 text-blue-50">
-            Contactez nos experts dès maintenant pour un service rapide et professionnel.
+          Contactez-nous dès maintenant pour un service rapide et professionne
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
