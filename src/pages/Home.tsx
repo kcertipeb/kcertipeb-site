@@ -19,6 +19,13 @@ export default function Home() {
       <h1>Certificat PEB à Bruxelles</h1>
       
       <Hero />
+      <section className="max-w-5xl mx-auto px-4 py-8 text-gray-700">
+  <h2 className="text-2xl font-semibold mb-3">Certificat PEB à Bruxelles</h2>
+  <p>
+    Le certificat PEB est obligatoire pour la vente et la location de biens immobiliers à Bruxelles.
+    Notre service de certificat PEB couvre les appartements et maisons dans toutes les communes.
+  </p>
+</section>
       <Services />
       <Benefits />
       <Process />
