@@ -11,11 +11,13 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Certificat PEB Bruxelles - Expert Agréé & Intervention Rapide"
-        description="K Certipeb : certificat PEB pour appartement et maison à Bruxelles. Expert agréé, devis gratuit, intervention sous 48h dans toutes les communes. Prix transparent dès 120€."
-        keywords="certificat peb bruxelles, peb bruxelles, certificateur peb agréé bruxelles, audit énergétique bruxelles, peb appartement bruxelles, peb maison bruxelles, certificat energetique bruxelles, expert peb bruxelles, peb ixelles, peb uccle, peb schaerbeek, peb anderlecht, peb woluwe, peb etterbeek, peb saint-gilles, peb forest, prix certificat peb bruxelles"
+        title="Certificat PEB à Bruxelles | KcertiPEB"
+        description="Certificat PEB rapide à Bruxelles dès 120 €. Appartement ou maison, vente ou location. Rendez-vous rapide et rapport officiel conforme."
+        keywords="certificat PEB bruxelles, PEB bruxelles, certificat PEB appartement, certificat PEB maison, audit énergétique bruxelles, prix certificat PEB"
         canonical="https://kcertipeb.be"
       />
+      <h1>Certificat PEB à Bruxelles</h1>
+      
       <Hero />
       <Services />
       <Benefits />
