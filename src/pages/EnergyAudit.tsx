@@ -6,10 +6,10 @@ export default function EnergyAudit() {
   return (
     <>
       <SEO
-        title="Audit Énergétique Bruxelles - Réduisez Vos Factures - Devis Gratuit"
-        description="Audit énergétique complet à Bruxelles par expert agréé. Analyse détaillée, recommandations concrètes pour réduire vos factures d'énergie. Éligible aux primes régionales de Bruxelles Environnement."
-        keywords="audit énergétique bruxelles, audit énergétique maison, rénovation énergétique bruxelles, primes énergie bruxelles, économie d'énergie, audit thermique bruxelles, bilan énergétique maison, expert audit énergétique, amélioration performance énergétique, isolation thermique bruxelles, chauffage efficace, primes rénovation bruxelles"
-        canonical="https://kcertipeb.be/audit-energetique-bruxelles"
+        title="Audit énergétique à Bruxelles | Réduisez vos factures"
+  description="Audit énergétique complet à Bruxelles. Analyse détaillée et recommandations concrètes pour réduire vos factures d'énergie. Devis gratuit."
+  keywords="audit énergétique bruxelles, audit énergétique maison, rénovation énergétique bruxelles, primes énergie bruxelles, économie d'énergie, audit thermique bruxelles, bilan énergétique maison, amélioration performance énergétique"
+  canonical="https://kcertipeb.be/audit-energetique-bruxelles"
       />
 
       <section className="pt-32 pb-16 bg-gradient-to-b from-amber-50 to-white">
@@ -23,7 +23,7 @@ export default function EnergyAudit() {
                 Audit Énergétique Complet à Bruxelles
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Réduisez vos factures d'énergie jusqu'à 50% avec notre audit énergétique détaillé. Recommandations concrètes et éligibilité aux primes incluses.
+                Réduisez vos factures d'énergie jusqu'à 50 % grâce à notre audit énergétique à Bruxelles, avec recommandations concrètes et primes incluses.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
@@ -43,7 +43,7 @@ export default function EnergyAudit() {
             <div className="relative">
               <img
                 src="https://images.pexels.com/photos/8853502/pexels-photo-8853502.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Expert réalisant un audit énergétique avec caméra thermique"
+                alt="Audit énergétique d'une maison à Bruxelles avec caméra thermique"
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl">
