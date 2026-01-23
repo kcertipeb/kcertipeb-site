@@ -6,9 +6,9 @@ export default function ApartmentPEB() {
   return (
     <>
       <SEO
-        title="Certificat PEB Appartement Bruxelles - Dès 120€ - Intervention 48h"
-        description="Certificat PEB pour appartement à Bruxelles par expert agréé. Tarif à partir de 120€, intervention rapide sous 48h dans toutes les communes de Bruxelles. Service professionnel inclus. Devis gratuit."
-        keywords="certificat peb appartement bruxelles, peb appartement prix, certificat énergétique appartement, peb location appartement, peb vente appartement bruxelles, certificat peb obligatoire appartement, expert peb appartement, certificateur appartement bruxelles, peb studio bruxelles, peb appartement ixelles, peb appartement uccle, peb appartement schaerbeek, prix peb appartement bruxelles"
+        title="Certificat PEB appartement à Bruxelles | Dès 120€"
+        description="Certificat PEB pour appartement à Bruxelles dès 120 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
+        keywords="certificat PEB appartement bruxelles, PEB appartement prix, certificat énergétique appartement, PEB location appartement, PEB vente appartement bruxelles, certificat PEB obligatoire appartement, PEB studio bruxelles, prix PEB appartement bruxelles"
         canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles"
       />
 
@@ -20,10 +20,11 @@ export default function ApartmentPEB() {
                 Certificat PEB Appartement
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Certificat PEB pour Votre Appartement à Bruxelles
+                Certificat PEB pour appartement à Bruxelles
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Expert agréé pour tous les appartements à Bruxelles. Intervention rapide, tarif transparent et service professionnel garanti.
+                Service professionnel pour tous les appartements à Bruxelles. Intervention rapide et tarif transparent garanti.
+
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
