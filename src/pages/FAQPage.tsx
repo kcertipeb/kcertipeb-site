@@ -5,10 +5,10 @@ export default function FAQPage() {
   return (
     <>
       <SEO
-        title="Questions Fréquentes - Certificat PEB Bruxelles | K Certipeb"
-        description="Toutes vos questions sur le certificat PEB à Bruxelles. Tarifs, délais, validité, obligations légales. Réponses d'expert PEB agréé."
-        keywords="faq certificat peb, questions peb bruxelles, prix certificat peb, validité peb, certificat peb obligatoire"
-        canonical="https://kcertipeb.be/faq"
+          title="FAQ certificat PEB à Bruxelles | Questions fréquentes"
+          description="Questions fréquentes sur le certificat PEB à Bruxelles : prix, délais, validité, obligations pour vente et location."
+          keywords="faq certificat PEB, questions certificat PEB bruxelles, prix certificat PEB, validité certificat PEB, certificat PEB obligatoire"
+          canonical="https://kcertipeb.be/faq"
       />
       <div className="pt-20">
         <FAQ />
