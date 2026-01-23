@@ -16,15 +16,14 @@ export default function Home() {
         keywords="certificat PEB bruxelles, PEB bruxelles, certificat PEB appartement, certificat PEB maison, audit énergétique bruxelles, prix certificat PEB"
         canonical="https://kcertipeb.be"
       />
-      <h1>Certificat PEB à Bruxelles</h1>
       
       <Hero />
       <section className="max-w-5xl mx-auto px-4 py-8 text-gray-700">
-  <h2 className="text-2xl font-semibold mb-3">Certificat PEB à Bruxelles</h2>
+  <h2 className="text-2xl font-semibold mb-3">Certificat PEB Bruxelles</h2>
   <p>
-    Le certificat PEB est obligatoire pour la vente et la location de biens immobiliers à Bruxelles.
-    Notre service de certificat PEB couvre les appartements et maisons dans toutes les communes.
-  </p>
+  Le certificat PEB Bruxelles est obligatoire pour la vente et la location de biens immobiliers.
+  Notre service de certificat PEB couvre les appartements et maisons dans toutes les communes de Bruxelles.
+</p>
 </section>
       <Services />
       <Benefits />
