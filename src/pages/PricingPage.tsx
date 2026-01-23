@@ -65,18 +65,18 @@ export default function PricingPage() {
   return (
     <>
       <SEO
-        title="Tarifs Certificat PEB Bruxelles - Prix Transparents & Compétitifs"
-        description="Découvrez nos tarifs pour les certificats PEB à Bruxelles. Prix transparents dès 120€ pour appartements et 210€ pour maisons. Devis gratuit."
-        keywords="tarifs peb bruxelles, prix certificat peb, coût peb appartement, coût peb maison"
+        title="Tarifs certificat PEB à Bruxelles | Dès 120€"
+        description="Tarifs du certificat PEB à Bruxelles dès 120€ pour appartement et 210€ pour maison. Prix transparents, devis gratuit."
+        keywords="tarifs certificat PEB bruxelles, prix certificat PEB, coût certificat PEB appartement, coût certificat PEB maison"
         canonical="https://kcertipeb.be/tarifs"
       />
 
       <section className="pt-32 pb-16 bg-gradient-to-b from-emerald-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Nos tarifs</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Tarifs certificat PEB à Bruxelles</h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Prix compétitifs sans frais cachés. Devis gratuit et sans engagement.
+              Tarifs clairs pour votre certificat PEB à Bruxelles, sans frais cachés. Devis gratuit et sans engagement.
             </p>
           </div>
 
