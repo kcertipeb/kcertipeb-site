@@ -14,11 +14,11 @@ export default function Hero() {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-              Certificat PEB Bruxelles - Expert Agréé en{' '}
+              Certificat PEB à Bruxelles – Intervention rapide en{' '}
               <span className="text-emerald-600">48 heures</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Expert certifié PEB à Bruxelles. Certificat énergétique pour appartement et maison dans toutes les communes de Bruxelles. Service rapide, prix transparent dès 120€. Conforme Bruxelles Environnement.
+              Certificat PEB officiel pour appartement et maison à Bruxelles. Intervention rapide, prix dès 120€, valable pour vente et location.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <button
