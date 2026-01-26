@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
+import CallButton from './components/CallButton';
 import Home from './pages/Home';
 import ApartmentPEB from './pages/ApartmentPEB';
 import HousePEB from './pages/HousePEB';
@@ -36,6 +38,8 @@ function App() {
           <Route path="/faq" element={<FAQPage />} />
         </Routes>
         <Footer />
+        <CallButton />
+        <WhatsAppButton />
       </div>
     </Router>
   );
