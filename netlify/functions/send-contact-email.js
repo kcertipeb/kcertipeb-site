@@ -32,7 +32,7 @@ export async function handler(event) {
       from: `"K Certipeb" <${process.env.SMTP_USER}>`,
       to: process.env.SMTP_USER,
       replyTo: email,
-      subject: `Nouvelle demande PEB - ${property_type}`,
+      subject: `Nouvelle demande PEB - ${property_type} - ${address}`,
       html,
     });
 
