@@ -6,8 +6,8 @@ export default function ApartmentPEB() {
   return (
     <>
       <SEO
-        title="Certificat PEB appartement à Bruxelles | Dès 120€"
-        description="Certificat PEB pour appartement à Bruxelles dès 120 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
+        title="Certificat PEB appartement à Bruxelles | Dès 135€"
+        description="Certificat PEB pour appartement à Bruxelles dès 135 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
         keywords="certificat PEB appartement bruxelles, PEB appartement prix, certificat énergétique appartement, PEB location appartement, PEB vente appartement bruxelles, certificat PEB obligatoire appartement, PEB studio bruxelles, prix PEB appartement bruxelles"
         canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles"
       />
@@ -48,7 +48,7 @@ export default function ApartmentPEB() {
                 className="rounded-lg shadow-2xl"
               />
               <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl">
-                <p className="text-3xl font-bold text-emerald-600">120€</p>
+                <p className="text-3xl font-bold text-emerald-600">135€</p>
                 <p className="text-gray-600">À partir de</p>
               </div>
             </div>
@@ -94,7 +94,7 @@ export default function ApartmentPEB() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Prix Transparent</h3>
               <p className="text-gray-600">
-                Tarif à partir de 120€, prix adapté selon le métrage. Pas de frais cachés, tout est inclus.
+                Tarif à partir de 135€, prix adapté selon le métrage. Pas de frais cachés, tout est inclus.
               </p>
             </div>
           </div>
@@ -203,7 +203,7 @@ export default function ApartmentPEB() {
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Studio / petit appartement</h3>
               <p className="text-gray-600 mb-4">Moins de 50 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">120€</p>
+              <p className="text-4xl font-bold text-emerald-600 mb-6">135€</p>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
@@ -258,7 +258,7 @@ export default function ApartmentPEB() {
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Grand appartement</h3>
               <p className="text-gray-600 mb-4">76 - 100 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">175€</p>
+              <p className="text-4xl font-bold text-emerald-600 mb-6">185€</p>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
@@ -284,7 +284,7 @@ export default function ApartmentPEB() {
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Très grand appartement</h3>
               <p className="text-gray-600 mb-4">Plus de 100 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">200€</p>
+              <p className="text-4xl font-bold text-emerald-600 mb-6">205€</p>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
