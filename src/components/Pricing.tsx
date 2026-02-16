@@ -6,7 +6,7 @@ export default function Pricing() {
       icon: <Home className="w-8 h-8 text-emerald-600" />,
       type: 'Appartement',
       size: '< 50 m²',
-      price: '120€',
+      price: '135€',
       popular: false
     },
     {
@@ -20,34 +20,34 @@ export default function Pricing() {
       icon: <Home className="w-8 h-8 text-emerald-600" />,
       type: 'Appartement',
       size: '76 - 100 m²',
-      price: '175€',
+      price: '185€',
       popular: false
     },
     {
       icon: <Home className="w-8 h-8 text-emerald-600" />,
       type: 'Appartement',
       size: '> 100 m²',
-      price: '200€',
+      price: '205€',
       popular: false
     },
     {
       icon: <Building2 className="w-8 h-8 text-emerald-600" />,
       type: 'Maison',
-      size: '< 150 m²',
+      size: '< 100 m²',
       price: '210€',
       popular: true
     },
     {
       icon: <Building2 className="w-8 h-8 text-emerald-600" />,
       type: 'Maison',
-      size: '151 - 250 m²',
+      size: '101 - 200 m²',
       price: '240€',
       popular: false
     },
     {
       icon: <Building2 className="w-8 h-8 text-emerald-600" />,
       type: 'Maison',
-      size: '> 250 m²',
+      size: '> 201 m²',
       price: '275€',
       popular: false
     },
