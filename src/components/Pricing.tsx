@@ -6,7 +6,7 @@ export default function Pricing() {
       icon: <Home className="w-8 h-8 text-emerald-600" />,
       type: 'Appartement',
       size: '< 50 m²',
-      price: '135€',
+      price: '120€',
       popular: false
     },
     {
