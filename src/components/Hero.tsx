@@ -18,7 +18,7 @@ export default function Hero() {
               <span className="text-emerald-600">48 heures</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Certificat PEB officiel pour appartement et maison à Bruxelles. Intervention rapide, prix dès 120€, valable pour vente et location.
+              Certificat PEB officiel pour appartement et maison à Bruxelles. Intervention rapide, prix dès 135€, valable pour vente et location.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <button
