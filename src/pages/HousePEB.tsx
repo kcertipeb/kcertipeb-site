@@ -197,7 +197,7 @@ export default function HousePEB() {
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Petite maison</h3>
-              <p className="text-gray-600 mb-4">Moins de 150 m²</p>
+              <p className="text-gray-600 mb-4">Moins de 100 m²</p>
               <p className="text-4xl font-bold text-blue-600 mb-6">210€</p>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
@@ -226,7 +226,7 @@ export default function HousePEB() {
                 Populaire
               </div>
               <h3 className="text-xl font-bold mb-2">Maison standard</h3>
-              <p className="text-blue-100 mb-4">151 - 250 m²</p>
+              <p className="text-blue-100 mb-4">101 - 200 m²</p>
               <p className="text-4xl font-bold mb-6">240€</p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
@@ -252,7 +252,7 @@ export default function HousePEB() {
 
             <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Grande maison</h3>
-              <p className="text-gray-600 mb-4">Plus de 250 m²</p>
+              <p className="text-gray-600 mb-4">Plus de 201 m²</p>
               <p className="text-4xl font-bold text-blue-600 mb-6">275€</p>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
