@@ -34,6 +34,15 @@ export default function HousePEB() {
                 </Link>
                 <a
                   href="tel:+32486987484"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'conversion', {
+                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                        value: 1.0,
+                        currency: 'EUR'
+                      });
+                    }
+                  }}
                   className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-all"
                 >
                   Appeler maintenant
@@ -297,6 +306,15 @@ export default function HousePEB() {
             </Link>
             <a
               href="tel:+32486987484"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'conversion', {
+                    send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                    value: 1.0,
+                    currency: 'EUR'
+                  });
+                }
+              }}
               className="bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-800 transition-all border-2 border-white"
             >
               +32 486 98 74 84
