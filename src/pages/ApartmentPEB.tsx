@@ -35,6 +35,15 @@ export default function ApartmentPEB() {
                 </Link>
                 <a
                   href="tel:+32486987484"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'conversion', {
+                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                        value: 1.0,
+                        currency: 'EUR'
+                      });
+                    }
+                  }}
                   className="bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold border-2 border-emerald-600 hover:bg-emerald-50 transition-all"
                 >
                   Appeler maintenant
