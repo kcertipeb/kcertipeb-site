@@ -240,9 +240,21 @@ export default function Contact() {
                   <Phone className="w-6 h-6 text-emerald-600 mr-4 flex-shrink-0 mt-1" />
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">Téléphone</p>
-                    <a href="tel:+32486987484" className="text-emerald-600 hover:text-emerald-700 text-lg">
-                      +32 486 98 74 84
-                    </a>
+                      <a
+                        href="tel:+32486987484"
+                        onClick={() => {
+                          if (window.gtag) {
+                            window.gtag('event', 'conversion', {
+                              send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                              value: 1.0,
+                              currency: 'EUR'
+                            });
+                          }
+                        }}
+                        className="text-emerald-600 hover:text-emerald-700 text-lg"
+                      >
+                        +32 486 98 74 84
+                      </a>
                   </div>
                 </div>
                 <div className="flex items-start">
@@ -282,6 +294,15 @@ export default function Contact() {
               </p>
               <a
                 href="tel:+32486987484"
+                onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'conversion', {
+                      send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                      value: 1.0,
+                      currency: 'EUR'
+                    });
+                  }
+                }}
                 className="block w-full bg-white text-emerald-600 px-6 py-3 rounded-lg hover:bg-emerald-50 transition font-semibold text-center"
               >
                 Appeler Maintenant
