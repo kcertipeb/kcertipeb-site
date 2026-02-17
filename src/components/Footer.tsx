@@ -83,7 +83,19 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Phone className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" />
-                <a href="tel:+32486987484" className="text-gray-400 hover:text-emerald-500 transition">
+                <a
+                  href="tel:+32486987484"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'conversion', {
+                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                        value: 1.0,
+                        currency: 'EUR'
+                      });
+                    }
+                  }}
+                  className="text-gray-400 hover:text-emerald-500 transition"
+                >
                   +32 486 98 74 84
                 </a>
               </li>
