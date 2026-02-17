@@ -12,7 +12,19 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center space-x-6">
-              <a href="tel:+32486987484" className="flex items-center hover:text-emerald-200 transition">
+              <a
+                href="tel:+32486987484"
+                onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'conversion', {
+                      send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                      value: 1.0,
+                      currency: 'EUR'
+                    });
+                  }
+                }}
+                className="flex items-center hover:text-emerald-200 transition"
+              >
                 <Phone className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">+32 486 98 74 84</span>
               </a>
