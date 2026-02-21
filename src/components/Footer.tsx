@@ -127,11 +127,9 @@ export default function Footer() {
                 <p>&copy; 2024 KcertiPEB. Tous droits réservés.</p>
               </div>
               <div className="mt-2 space-x-4">
-                <a href="#" className="hover:text-emerald-500 transition">Politique de Confidentialité</a>
+                <Link to="/politique-confidentialite" className="hover:text-emerald-500 transition">Politique de Confidentialité</Link>
                 <span>•</span>
-                <a href="#" className="hover:text-emerald-500 transition">Mentions Légales</a>
-                <span>•</span>
-                <a href="#" className="hover:text-emerald-500 transition">Protection RGPD</a>
+                <Link to="/politique-confidentialite" className="hover:text-emerald-500 transition">Protection RGPD</Link>
               </div>
             </div>
             <div className="md:text-right">

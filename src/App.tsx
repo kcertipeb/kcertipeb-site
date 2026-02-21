@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import CallButton from './components/CallButton';
+import FacebookButton from './components/FacebookButton';
 import Home from './pages/Home';
 import ApartmentPEB from './pages/ApartmentPEB';
 import HousePEB from './pages/HousePEB';
@@ -11,6 +12,7 @@ import EnergyAudit from './pages/EnergyAudit';
 import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
 import PricingPage from './pages/PricingPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -36,9 +38,11 @@ function App() {
           <Route path="/tarifs" element={<PricingPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
         </Routes>
         <Footer />
         <CallButton />
+        <FacebookButton />
         <WhatsAppButton />
       </div>
     </Router>
