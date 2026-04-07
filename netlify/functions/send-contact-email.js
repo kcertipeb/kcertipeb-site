@@ -6,7 +6,7 @@ export async function handler(event) {
   }
 
   try {
-    const { name, email, phone, property_type, address, message } = JSON.parse(event.body);
+    const { name, email, phone, property_type, surface_range, address, message } = JSON.parse(event.body);
 
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
@@ -22,8 +22,9 @@ export async function handler(event) {
       <h2>Nouvelle Demande PEB</h2>
       <p><strong>Nom:</strong> ${name}</p>
       <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Téléphone:</strong> ${phone}</p>
+      <p><strong>Telephone:</strong> ${phone}</p>
       <p><strong>Type:</strong> ${property_type}</p>
+      <p><strong>Surface:</strong> ${surface_range || "-"}</p>
       <p><strong>Adresse:</strong> ${address}</p>
       <p><strong>Message:</strong><br/>${message || "-"}</p>
     `;

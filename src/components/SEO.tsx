@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useLanguage } from '../lib/language';
 
 interface SEOProps {
   title: string;
@@ -7,6 +8,8 @@ interface SEOProps {
   canonical?: string;
   ogImage?: string;
   ogType?: string;
+  includeFaqSchema?: boolean;
+  robots?: string;
 }
 
 export default function SEO({
@@ -15,8 +18,12 @@ export default function SEO({
   keywords,
   canonical,
   ogImage = 'https://kcertipeb.be/logo.png',
-  ogType = 'website'
+  ogType = 'website',
+  includeFaqSchema = false,
+  robots = 'index, follow',
 }: SEOProps) {
+  const { isDutch } = useLanguage();
+
   useEffect(() => {
     const fullTitle = `${title} | K Certipeb - Expert PEB Bruxelles`;
     const siteUrl = 'https://kcertipeb.be';
@@ -40,10 +47,10 @@ export default function SEO({
     };
 
     setMetaTag('description', description);
-    setMetaTag('robots', 'index, follow');
-    setMetaTag('language', 'fr-BE');
+    setMetaTag('robots', robots);
+    setMetaTag('language', isDutch ? 'nl-BE' : 'fr-BE');
     setMetaTag('geo.region', 'BE-BRU');
-    setMetaTag('geo.placename', 'Bruxelles');
+    setMetaTag('geo.placename', isDutch ? 'Brussel' : 'Bruxelles');
 
     if (keywords) {
       setMetaTag('keywords', keywords);
@@ -54,7 +61,7 @@ export default function SEO({
     setMetaTag('og:type', ogType, true);
     setMetaTag('og:url', fullCanonical, true);
     setMetaTag('og:image', ogImage, true);
-    setMetaTag('og:locale', 'fr_BE', true);
+    setMetaTag('og:locale', isDutch ? 'nl_BE' : 'fr_BE', true);
     setMetaTag('og:site_name', 'K Certipeb', true);
 
     setMetaTag('twitter:card', 'summary_large_image');
@@ -62,7 +69,7 @@ export default function SEO({
     setMetaTag('twitter:description', description);
     setMetaTag('twitter:image', ogImage);
 
-    let linkCanonical = document.querySelector('link[rel="canonical"]');
+    let linkCanonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (linkCanonical) {
       linkCanonical.setAttribute('href', fullCanonical);
     } else {
@@ -73,44 +80,152 @@ export default function SEO({
     }
 
     const structuredData = {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "K Certipeb",
-      "description": "Expert en certification PEB et audit énergétique à Bruxelles",
-      "url": siteUrl,
-      "telephone": "+32-XXX-XX-XX-XX",
-      "priceRange": "€€",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Bruxelles",
-        "addressRegion": "Bruxelles-Capitale",
-        "addressCountry": "BE"
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: 'K Certipeb',
+      description: isDutch
+        ? 'Expert in EPB-certificering en energie-audit in Brussel'
+        : 'Expert en certification PEB et audit énergétique à Bruxelles',
+      url: siteUrl,
+      telephone: '+32486987484',
+      openingHours: 'Mo-Fr 08:00-18:00, Sa 09:00-14:00',
+      priceRange: '€€',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: isDutch ? 'Brussel' : 'Bruxelles',
+        addressRegion: isDutch ? 'Brussels Hoofdstedelijk Gewest' : 'Bruxelles-Capitale',
+        addressCountry: 'BE',
       },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "50.8503",
-        "longitude": "4.3517"
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: '50.8503',
+        longitude: '4.3517',
       },
-      "areaServed": [
-        "Bruxelles-Ville", "Anderlecht", "Auderghem", "Berchem-Sainte-Agathe",
-        "Etterbeek", "Evere", "Forest", "Ganshoren", "Ixelles", "Jette",
-        "Koekelberg", "Molenbeek-Saint-Jean", "Saint-Gilles", "Saint-Josse-ten-Noode",
-        "Schaerbeek", "Uccle", "Watermael-Boitsfort", "Woluwe-Saint-Lambert", "Woluwe-Saint-Pierre"
+      areaServed: [
+        'Bruxelles-Ville',
+        'Anderlecht',
+        'Auderghem',
+        'Berchem-Sainte-Agathe',
+        'Etterbeek',
+        'Evere',
+        'Forest',
+        'Ganshoren',
+        'Ixelles',
+        'Jette',
+        'Koekelberg',
+        'Molenbeek-Saint-Jean',
+        'Saint-Gilles',
+        'Saint-Josse-ten-Noode',
+        'Schaerbeek',
+        'Uccle',
+        'Watermael-Boitsfort',
+        'Woluwe-Saint-Lambert',
+        'Woluwe-Saint-Pierre',
       ],
-      "serviceType": ["Certification PEB", "Audit énergétique"],
-      "image": ogImage
+      serviceType: isDutch ? ['EPB-certificering', 'Energie-audit'] : ['Certification PEB', 'Audit énergétique'],
+      image: ogImage,
     };
 
-    let scriptTag = document.querySelector('script[type="application/ld+json"]');
-    if (scriptTag) {
-      scriptTag.textContent = JSON.stringify(structuredData);
+    let localBusinessScriptTag = document.querySelector<HTMLScriptElement>('script[data-type="local-business-schema"]');
+    if (localBusinessScriptTag) {
+      localBusinessScriptTag.textContent = JSON.stringify(structuredData);
     } else {
-      scriptTag = document.createElement('script');
-      scriptTag.type = 'application/ld+json';
-      scriptTag.textContent = JSON.stringify(structuredData);
-      document.head.appendChild(scriptTag);
+      localBusinessScriptTag = document.createElement('script');
+      localBusinessScriptTag.type = 'application/ld+json';
+      localBusinessScriptTag.setAttribute('data-type', 'local-business-schema');
+      localBusinessScriptTag.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(localBusinessScriptTag);
     }
-  }, [title, description, keywords, canonical, ogImage, ogType]);
+
+    const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: isDutch
+        ? [
+            {
+              '@type': 'Question',
+              name: 'Hoeveel kost een EPB-certificaat in Brussel?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Een EPB-certificaat in Brussel start vanaf 120 € inclusief btw voor een appartement van minder dan 50 m². De tarieven variëren volgens de oppervlakte: 165 € voor 50-75 m², 185 € voor 76-100 m² en vanaf 210 € voor een woning.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Hoe lang duurt het om een EPB-certificaat te verkrijgen?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Wij komen langs binnen 48 uur en bezorgen het officiële EPB-certificaat binnen 3 tot 5 werkdagen na het bezoek.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Is een EPB-certificaat verplicht in Brussel?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Ja, het EPB-certificaat is sinds 2011 verplicht voor elke verkoop of verhuur van residentieel vastgoed in Brussel.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Hoe lang is een EPB-certificaat geldig?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Een EPB-certificaat is 10 jaar geldig voor residentiële gebouwen, behalve wanneer er tussentijds belangrijke energetische renovatiewerken worden uitgevoerd.',
+              },
+            },
+          ]
+        : [
+            {
+              '@type': 'Question',
+              name: 'Combien coûte un certificat PEB à Bruxelles ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Le certificat PEB à Bruxelles commence dès 120 € TVAC pour un appartement de moins de 50 m². Les tarifs varient selon la superficie : 165 € pour 50-75 m², 185 € pour 76-100 m², et à partir de 210 € pour une maison.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Combien de temps faut-il pour obtenir un certificat PEB ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: 'Nous intervenons sous 48 h et remettons le certificat PEB officiel en 3 à 5 jours ouvrables après la visite.',
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Le certificat PEB est-il obligatoire à Bruxelles ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: "Oui, le certificat PEB est obligatoire depuis 2011 pour toute vente ou location d'un bien immobilier à Bruxelles.",
+              },
+            },
+            {
+              '@type': 'Question',
+              name: 'Combien de temps est valable un certificat PEB ?',
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: "Le certificat PEB est valable 10 ans pour les bâtiments résidentiels, sauf si des travaux de rénovation énergétique majeurs sont réalisés.",
+              },
+            },
+          ],
+    };
+
+    let faqScriptTag = document.querySelector<HTMLScriptElement>('script[data-type="faq-schema"]');
+    if (includeFaqSchema) {
+      if (faqScriptTag) {
+        faqScriptTag.textContent = JSON.stringify(faqSchema);
+      } else {
+        faqScriptTag = document.createElement('script');
+        faqScriptTag.type = 'application/ld+json';
+        faqScriptTag.setAttribute('data-type', 'faq-schema');
+        faqScriptTag.textContent = JSON.stringify(faqSchema);
+        document.head.appendChild(faqScriptTag);
+      }
+    } else if (faqScriptTag) {
+      faqScriptTag.remove();
+    }
+  }, [title, description, keywords, canonical, ogImage, ogType, includeFaqSchema, robots, isDutch]);
 
   return null;
 }

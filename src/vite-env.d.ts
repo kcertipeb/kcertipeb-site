@@ -1,10 +1,13 @@
 /// <reference types="vite/client" />
 
+type GtagConfig = Record<string, unknown>;
+
 interface Window {
-  dataLayer: any[];
+  dataLayer: unknown[];
   gtag: (
-    command: 'config' | 'event' | 'js',
+    command: 'config' | 'event' | 'js' | 'consent',
     targetId: string | Date,
-    config?: Record<string, any>
+    config?: GtagConfig
   ) => void;
+  fbq?: (...args: unknown[]) => void;
 }
