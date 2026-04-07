@@ -1,154 +1,143 @@
-import { Phone, Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { trackPhoneCallConversion } from '../lib/tracking';
+import { useLanguage } from '../lib/language';
+
+const VAT_NUMBER = '0800.521.796';
+const ACCREDITATION_NUMBER = '001859432';
 
 export default function Footer() {
+  const { isDutch } = useLanguage();
+
+  const content = isDutch
+    ? {
+        description:
+          'EPC -certificaat in Brussel voor appartementen en woningen. Snelle interventie, duidelijke prijzen en eenvoudige begeleiding van het eerste contact tot het certificaat.',
+        navigation: 'Navigatie',
+        home: 'Home',
+        apartment: 'EPC Appartement',
+        house: 'EPC Woning',
+        audit: 'Energie-audit',
+        pricing: 'Tarieven',
+        faq: 'FAQ',
+        contact: 'Contact',
+        services: 'Diensten',
+        cta: 'Bekijk mijn prijs',
+        details: 'Contactgegevens',
+        region: 'Brussels Hoofdstedelijk Gewest, België',
+        privacy: 'Privacybeleid',
+        gdpr: 'AVG-bescherming',
+        accredited: 'Erkend certificateur door Leefmilieu Brussel',
+        accreditation: 'Erkenningsnummer',
+        compliance: 'EPC-certificering conform de regelgeving van het Brussels Hoofdstedelijk Gewest',
+      }
+    : {
+        description:
+          'Certificateur PEB à Bruxelles pour appartements et maisons. Intervention rapide, prix clairs et accompagnement simple du premier contact jusqu’au certificat.',
+        navigation: 'Navigation',
+        home: 'Accueil',
+        apartment: 'PEB Appartement',
+        house: 'PEB Maison',
+        audit: 'Audit énergétique',
+        pricing: 'Tarifs',
+        faq: 'FAQ',
+        contact: 'Contact',
+        services: 'Services',
+        cta: 'Voir mon prix',
+        details: 'Coordonnées',
+        region: 'Région de Bruxelles-Capitale, Belgique',
+        privacy: 'Politique de confidentialité',
+        gdpr: 'Protection RGPD',
+        accredited: 'Certificateur agréé par Bruxelles Environnement',
+        accreditation: "N° d'agrément",
+        compliance: 'Certification PEB conforme à la réglementation de la Région de Bruxelles-Capitale',
+      };
+
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-slate-950 text-white">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center mb-4">
-              <img src="/logo-kcertipeb.png" alt="KcertiPEB Logo" className="w-8 h-8 object-contain mr-3" />
+            <div className="flex items-center gap-3">
+              <img src="/logo-kcertipeb.png" alt="Logo KcertiPEB" className="h-10 w-10 object-contain" />
               <span className="text-2xl font-bold">KcertiPEB</span>
             </div>
-            <p className="text-gray-400 mb-4 leading-relaxed">
-              Expert certifié en performance énergétique des bâtiments. Votre partenaire de confiance pour tous vos certificats PEB à Bruxelles.
-            </p>
+            <p className="mt-4 max-w-sm text-sm leading-7 text-slate-300">{content.description}</p>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Navigation</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-400 hover:text-emerald-500 transition">
-                  Accueil
-                </Link>
-              </li>
-              <li>
-                <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  PEB Appartement
-                </Link>
-              </li>
-              <li>
-                <Link to="/certificat-peb-maison-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  PEB Maison
-                </Link>
-              </li>
-              <li>
-                <Link to="/audit-energetique-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  Audit Énergétique
-                </Link>
-              </li>
-              <li>
-                <Link to="/tarifs" className="text-gray-400 hover:text-emerald-500 transition">
-                  Tarifs
-                </Link>
-              </li>
-              <li>
-                <Link to="/faq" className="text-gray-400 hover:text-emerald-500 transition">
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-gray-400 hover:text-emerald-500 transition">
-                  Contact
-                </Link>
-              </li>
+            <h3 className="text-lg font-bold">{content.navigation}</h3>
+            <ul className="mt-4 space-y-3 text-sm text-slate-300">
+              <li><Link to="/" className="transition hover:text-emerald-400">{content.home}</Link></li>
+              <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
+              <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
+              <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
+              <li><Link to="/tarifs" className="transition hover:text-emerald-400">{content.pricing}</Link></li>
+              <li><Link to="/faq" className="transition hover:text-emerald-400">{content.faq}</Link></li>
+              <li><Link to="/contact" className="transition hover:text-emerald-400">{content.contact}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Nos Services</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  Certificat PEB Appartement
-                </Link>
-              </li>
-              <li>
-                <Link to="/certificat-peb-maison-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  Certificat PEB Maison
-                </Link>
-              </li>
-              <li>
-                <Link to="/audit-energetique-bruxelles" className="text-gray-400 hover:text-emerald-500 transition">
-                  Audit Énergétique Complet
-                </Link>
-              </li>
+            <h3 className="text-lg font-bold">{content.services}</h3>
+            <ul className="mt-4 space-y-3 text-sm text-slate-300">
+              <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
+              <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
+              <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
+              <li><Link to="/contact" className="transition hover:text-emerald-400">{content.cta}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Contact</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Phone className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" />
+            <h3 className="text-lg font-bold">{content.details}</h3>
+            <ul className="mt-4 space-y-4 text-sm text-slate-300">
+              <li className="flex items-start gap-3">
+                <Phone className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
                 <a
                   href="tel:+32486987484"
-                  onClick={() => {
-                    if (window.gtag) {
-                      window.gtag('event', 'conversion', {
-                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
-                        value: 1.0,
-                        currency: 'EUR'
-                      });
-                    }
-                  }}
-                  className="text-gray-400 hover:text-emerald-500 transition"
+                  onClick={trackPhoneCallConversion}
+                  className="transition hover:text-emerald-400"
                 >
                   +32 486 98 74 84
                 </a>
               </li>
-              <li className="flex items-start">
-                <Mail className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" />
-                <a href="mailto:info@kcertipeb.be" className="text-gray-400 hover:text-emerald-500 transition">
+              <li className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+                <a href="mailto:info@kcertipeb.be" className="transition hover:text-emerald-400">
                   info@kcertipeb.be
                 </a>
               </li>
-              <li className="flex items-start">
-                <MapPin className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400">
-                  Région de Bruxelles-Capitale<br />Belgique
-                </span>
+              <li className="flex items-start gap-3">
+                <MapPin className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+                <span>{content.region}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8">
-          <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-400">
+        <div className="mt-10 border-t border-slate-800 pt-6">
+          <div className="flex flex-col gap-4 text-sm text-slate-400 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <div className="flex items-center gap-3">
-                <img
-                  src="/logo-kcertipeb.png"
-                  alt="KcertiPEB Logo"
-                  className="w-10 h-10 object-contain"
-                />
-                <p>&copy; 2024 KcertiPEB. Tous droits réservés.</p>
-              </div>
-              <div className="mt-2 space-x-4">
-                <Link to="/politique-confidentialite" className="hover:text-emerald-500 transition">Politique de Confidentialité</Link>
+              <p className="font-medium text-slate-200">© {new Date().getFullYear()} KcertiPEB</p>
+              <div className="mt-2 flex flex-wrap gap-3">
+                <Link to="/politique-confidentialite" className="transition hover:text-emerald-400">{content.privacy}</Link>
                 <span>•</span>
-                <Link to="/politique-confidentialite" className="hover:text-emerald-500 transition">Protection RGPD</Link>
+                <Link to="/politique-confidentialite" className="transition hover:text-emerald-400">{content.gdpr}</Link>
               </div>
             </div>
-            <div className="md:text-right">
-              <p>
-                Certificateur agréé par Bruxelles Environnement | TVA BE 0XXX.XXX.XXX
-              </p>
-              <p className="mt-2 text-xs">
-                Vos données personnelles sont protégées conformément au Règlement Général sur la Protection des Données (RGPD)
-              </p>
+
+            <div className="space-y-1 lg:text-right">
+              <p>{content.accredited}</p>
+              <p>{content.accreditation} {ACCREDITATION_NUMBER}</p>
+              <p>TVA BE {VAT_NUMBER}</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg-emerald-600 py-3">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white text-sm">
-          <p>
-            <strong>Certification PEB obligatoire</strong> - Conforme à l'Arrêté du Gouvernement de la Région de Bruxelles-Capitale
-          </p>
+      <div className="border-t border-emerald-500/30 bg-emerald-700/90">
+        <div className="mx-auto max-w-7xl px-4 py-3 text-center text-sm text-white sm:px-6 lg:px-8">
+          {content.compliance}
         </div>
       </div>
     </footer>

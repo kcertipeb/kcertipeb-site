@@ -30,7 +30,7 @@ export default function ThankYou() {
     ? [
         'Facturen van werken met betrekking tot isolatie, ramen, dak, verwarming en andere energetische verbeteringen',
         'Technische documentatie van de verwarmingsinstallatie en de productie van sanitair warm water',
-        'Voor een appartement: nuttige documenten van de mede-eigendom en toegang tot het stooklokaal. Dit is belangrijk, want een gebrek aan toegang kan het EPB-resultaat benadelen',
+        'Voor een appartement: nuttige documenten van de mede-eigendom en toegang tot het stooklokaal. Dit is belangrijk, want een gebrek aan toegang kan het EPC-resultaat benadelen',
         'Plan van het pand, indien beschikbaar',
         'Als u bepaalde werken zelf hebt uitgevoerd: foto’s van de werf, bewijsstukken en aankoopbewijzen van materialen',
       ]
@@ -73,12 +73,12 @@ export default function ThankYou() {
         documents: 'Documenten om voor te bereiden',
         guide: 'Officiële gids vóór het bezoek',
         guideText:
-          'Het officiële document legt uit hoe een residentieel EPB-bezoek verloopt en welke informatie nuttig is voor de certificateur.',
+          'Het officiële document legt uit hoe een residentieel EPC-bezoek verloopt en welke informatie nuttig is voor de certificateur.',
         guideButton: 'Open het officiële document',
         guideNote: 'U kunt het nu openen of later raadplegen vóór het bezoek.',
         apartmentPoint: 'Belangrijk punt voor een appartement',
         apartmentText:
-          'Als toegang tot het stooklokaal of tot nuttige informatie van de mede-eigendom niet mogelijk is, kan dat het EPB-resultaat benadelen. Bereid die toegang dus best vooraf voor.',
+          'Als toegang tot het stooklokaal of tot nuttige informatie van de mede-eigendom niet mogelijk is, kan dat het EPC-resultaat benadelen. Bereid die toegang dus best vooraf voor.',
         call: 'Bel de certificateur',
         whatsapp: 'Stel een vraag',
         back: 'Terug naar de site',

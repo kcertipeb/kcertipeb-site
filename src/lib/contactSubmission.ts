@@ -44,7 +44,31 @@ export const insertContactSubmission = async (payload: ContactSubmissionPayload)
       address: submission.address,
       message: submission.message,
     };
+
     result = await supabase.from('contact_submissions').insert([fallbackSubmission]);
+  }
+
+  // ✅ ENVOI EMAIL VIA NETLIFY
+  try {
+    await fetch("/.netlify/functions/send-contact-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: submission.name,
+        email: submission.email,
+        phone: submission.phone,
+        property_type: submission.property_type,
+        surface_range: submission.surface_range,
+        address: submission.address,
+        message: submission.message,
+      }),
+    });
+
+    console.log("✅ Email envoyé via Netlify");
+  } catch (err) {
+    console.error("❌ Erreur envoi email:", err);
   }
 
   return result;

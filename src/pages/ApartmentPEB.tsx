@@ -1,64 +1,103 @@
-import { Building2, Clock, CheckCircle2, Euro, FileText, Award } from 'lucide-react';
+import { Building2, Clock, CheckCircle2, Euro, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { useLanguage } from '../lib/language';
+import { trackPhoneCallConversion } from '../lib/tracking';
 
 export default function ApartmentPEB() {
+  const { isDutch } = useLanguage();
+
+  const content = isDutch
+    ? {
+        seoTitle: 'EPC-certificaat appartement in Brussel',
+        seoDescription: 'EPC-certificaat voor appartement in Brussel vanaf 120 €.',
+        badge: 'EPC-certificaat appartement',
+        title: 'EPC-certificaat voor appartement in Brussel',
+        intro: 'Professionele service voor appartementen in Brussel. Snelle interventie en duidelijke prijzen.',
+        cta: 'Bekijk mijn prijs',
+        call: 'Bel nu',
+        from: 'Vanaf',
+        whyTitle: 'Waarom KcertiPEB voor uw appartement?',
+        whyText: 'Wij zijn gespecialiseerd in EPC-certificering van appartementen in Brussel.',
+        cards: [
+          { title: 'Snelle interventie', text: 'Beschikbaarheid volgens uw agenda in Brussel.' },
+          { title: 'Erkende expert', text: 'Erkende certificateur met ervaring in appartementen en mede-eigendom.' },
+          { title: 'Duidelijke prijs', text: 'Tarieven vanaf 120 €, aangepast aan de oppervlakte.' },
+        ],
+        mandatoryTitle: 'Een verplicht en nuttig document',
+        mandatoryText: 'Bij verkoop of verhuur van een appartement in Brussel is het EPC-certificaat verplicht.',
+        mandatoryPoints: ['Verplicht voor verkoop en verhuur', '10 jaar geldig', 'Kan de aantrekkelijkheid van uw appartement versterken'],
+        pricingTitle: 'Onze tarieven voor appartementen',
+        pricing: [
+          { title: 'Studio / klein appartement', size: 'Minder dan 50 m²', price: '120 €' },
+          { title: 'Gemiddeld appartement', size: '50 - 75 m²', price: '165 €' },
+          { title: 'Groot appartement', size: '76 - 100 m²', price: '185 €' },
+          { title: 'Zeer groot appartement', size: 'Meer dan 100 m²', price: '205 €' },
+        ],
+        order: 'Bestellen',
+        finalTitle: 'Klaar om uw EPC-certificaat te ontvangen?',
+        finalText: 'Neem nu contact met ons op voor een snelle tussenkomst in Brussel.',
+      }
+    : {
+        seoTitle: 'Certificat PEB appartement à Bruxelles',
+        seoDescription: 'Certificat PEB pour appartement à Bruxelles dès 120 €.',
+        badge: 'Certificat PEB Appartement',
+        title: 'Certificat PEB pour appartement à Bruxelles',
+        intro: 'Service professionnel pour les appartements à Bruxelles. Intervention rapide et tarif transparent.',
+        cta: 'Voir mon prix',
+        call: 'Appeler maintenant',
+        from: 'À partir de',
+        whyTitle: 'Pourquoi KcertiPEB pour votre appartement ?',
+        whyText: 'Nous sommes spécialisés dans la certification PEB des appartements à Bruxelles.',
+        cards: [
+          { title: 'Intervention rapide', text: 'Disponibilité selon votre agenda à Bruxelles.' },
+          { title: 'Expert agréé', text: 'Certificateur expérimenté pour appartements et copropriétés.' },
+          { title: 'Prix transparent', text: 'Tarifs à partir de 120 €, adaptés à la surface.' },
+        ],
+        mandatoryTitle: 'Un document obligatoire et utile',
+        mandatoryText: 'À Bruxelles, le certificat PEB est obligatoire pour toute vente ou location d’un appartement.',
+        mandatoryPoints: ['Obligatoire pour la vente et la location', 'Valable 10 ans', 'Peut renforcer l’attractivité du bien'],
+        pricingTitle: 'Nos tarifs pour appartements',
+        pricing: [
+          { title: 'Studio / petit appartement', size: 'Moins de 50 m²', price: '120 €' },
+          { title: 'Appartement moyen', size: '50 - 75 m²', price: '165 €' },
+          { title: 'Grand appartement', size: '76 - 100 m²', price: '185 €' },
+          { title: 'Très grand appartement', size: 'Plus de 100 m²', price: '205 €' },
+        ],
+        order: 'Commander',
+        finalTitle: 'Prêt à obtenir votre certificat PEB ?',
+        finalText: 'Contactez-nous dès maintenant pour une intervention rapide à Bruxelles.',
+      };
+
   return (
     <>
-      <SEO
-        title="Certificat PEB appartement à Bruxelles | Dès 120€"
-        description="Certificat PEB pour appartement à Bruxelles dès 120 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
-        keywords="certificat PEB appartement bruxelles, PEB appartement prix, certificat énergétique appartement, PEB location appartement, PEB vente appartement bruxelles, certificat PEB obligatoire appartement, PEB studio bruxelles, prix PEB appartement bruxelles"
-        canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles"
-      />
+      <SEO title={content.seoTitle} description={content.seoDescription} canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles" />
 
-      <section className="pt-32 pb-16 bg-gradient-to-b from-emerald-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="bg-gradient-to-b from-emerald-50 to-white pb-16 pt-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <div className="inline-block bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                Certificat PEB Appartement
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Certificat PEB pour appartement à Bruxelles
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Service professionnel pour tous les appartements à Bruxelles. Intervention rapide et tarif transparent garanti.
-
-              </p>
+              <div className="mb-6 inline-block rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-800">{content.badge}</div>
+              <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{content.title}</h1>
+              <p className="mb-8 text-xl text-gray-600">{content.intro}</p>
               <div className="flex flex-wrap gap-4">
-                <Link
-                  to="/contact"
-                  className="bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-emerald-700 transition-all transform hover:scale-105 shadow-lg"
-                >
-                  Demander un devis gratuit
+                <Link to="/contact" className="rounded-lg bg-emerald-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-emerald-700">
+                  {content.cta}
                 </Link>
                 <a
                   href="tel:+32486987484"
-                  onClick={() => {
-                    if (window.gtag) {
-                      window.gtag('event', 'conversion', {
-                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
-                        value: 1.0,
-                        currency: 'EUR'
-                      });
-                    }
-                  }}
-                  className="bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold border-2 border-emerald-600 hover:bg-emerald-50 transition-all"
+                  onClick={trackPhoneCallConversion}
+                  className="rounded-lg border-2 border-emerald-600 bg-white px-8 py-4 font-semibold text-emerald-600 transition hover:bg-emerald-50"
                 >
-                  Appeler maintenant
+                  {content.call}
                 </a>
               </div>
             </div>
             <div className="relative">
-              <img
-                src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Immeuble d'appartements moderne à Bruxelles"
-                className="rounded-lg shadow-2xl"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl">
-                <p className="text-3xl font-bold text-emerald-600">120€</p>
-                <p className="text-gray-600">À partir de</p>
+              <img src="https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800" alt={content.title} className="rounded-lg shadow-2xl" />
+              <div className="absolute -bottom-6 -left-6 rounded-lg bg-white p-6 shadow-xl">
+                <p className="text-3xl font-bold text-emerald-600">120 €</p>
+                <p className="text-gray-600">{content.from}</p>
               </div>
             </div>
           </div>
@@ -66,287 +105,82 @@ export default function ApartmentPEB() {
       </section>
 
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Pourquoi Choisir K Certipeb pour Votre Appartement ?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Nous sommes spécialisés dans la certification PEB des appartements à Bruxelles, avec une expertise reconnue et des milliers de clients satisfaits.
-            </p>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.whyTitle}</h2>
+            <p className="mx-auto max-w-3xl text-xl text-gray-600">{content.whyText}</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-6">
-                <Clock className="w-6 h-6 text-emerald-600" />
+          <div className="grid gap-8 md:grid-cols-3">
+            {[Clock, Award, Euro].map((Icon, index) => (
+              <div key={content.cards[index].title} className="rounded-lg border border-gray-100 bg-white p-8 shadow-lg">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-emerald-100">
+                  <Icon className="h-6 w-6 text-emerald-600" />
+                </div>
+                <h3 className="mb-4 text-xl font-bold text-gray-900">{content.cards[index].title}</h3>
+                <p className="text-gray-600">{content.cards[index].text}</p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Intervention Rapide</h3>
-              <p className="text-gray-600">
-                Disponibilité sous 48h pour tous les appartements à Bruxelles. Nous nous adaptons à votre emploi du temps.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-6">
-                <Award className="w-6 h-6 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Expert Agréé</h3>
-              <p className="text-gray-600">
-                Certificateur PEB agréé par la Région de Bruxelles-Capitale. Expertise et conformité garanties.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
-              <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mb-6">
-                <Euro className="w-6 h-6 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Prix Transparent</h3>
-              <p className="text-gray-600">
-                Tarif à partir de 120€, prix adapté selon le métrage. Pas de frais cachés, tout est inclus.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="bg-gray-50 py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Le Certificat PEB pour Appartement : Obligatoire et Essentiel
-              </h2>
-              <p className="text-gray-600 mb-6">
-                À Bruxelles, le certificat PEB est obligatoire pour toute vente ou location d'appartement. Ce document officiel évalue la performance énergétique de votre bien et doit être présenté aux futurs acheteurs ou locataires.
-              </p>
+              <h2 className="mb-6 text-3xl font-bold text-gray-900">{content.mandatoryTitle}</h2>
+              <p className="mb-6 text-gray-600">{content.mandatoryText}</p>
               <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Obligatoire pour la vente et la location</h4>
-                    <p className="text-gray-600">Sans certificat PEB valide, vous ne pouvez pas vendre ou louer votre appartement</p>
+                {content.mandatoryPoints.map((point) => (
+                  <div key={point} className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-1 h-6 w-6 flex-shrink-0 text-emerald-600" />
+                    <p className="text-gray-700">{point}</p>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Valable 10 ans</h4>
-                    <p className="text-gray-600">Un investissement durable qui valorise votre appartement sur le long terme</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Valorise votre bien</h4>
-                    <p className="text-gray-600">Un bon certificat PEB peut augmenter la valeur et l'attractivité de votre appartement</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
             <div>
-              <img
-                src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Intérieur d'appartement moderne et lumineux"
-                className="rounded-lg shadow-xl"
-              />
+              <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt={content.title} className="rounded-lg shadow-xl" />
             </div>
           </div>
         </div>
       </section>
 
       <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Notre Processus pour Votre Appartement
-            </h2>
-            <p className="text-xl text-gray-600">Simple, rapide et professionnel</p>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-gray-900">{content.pricingTitle}</h2>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                1
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+            {content.pricing.map((item) => (
+              <div key={item.title} className="rounded-lg border-2 border-gray-200 bg-white p-8 shadow-lg">
+                <h3 className="mb-2 text-xl font-bold text-gray-900">{item.title}</h3>
+                <p className="mb-4 text-gray-600">{item.size}</p>
+                <p className="mb-6 text-4xl font-bold text-emerald-600">{item.price}</p>
+                <Link to="/contact" className="block w-full rounded-lg bg-emerald-600 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-emerald-700">
+                  {content.order}
+                </Link>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Demande de Devis</h3>
-              <p className="text-gray-600">Contactez-nous par téléphone ou formulaire. Réponse sous 2h.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                2
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Prise de Rendez-vous</h3>
-              <p className="text-gray-600">Visite planifiée sous 48h à votre convenance.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                3
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Visite de l'Appartement</h3>
-              <p className="text-gray-600">Inspection complète en 30-45 minutes environ.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
-                4
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2">Certificat Officiel</h3>
-              <p className="text-gray-600">Livraison sous 48h par email et sur la plateforme officielle.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Nos tarifs pour appartements
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Studio / petit appartement</h3>
-              <p className="text-gray-600 mb-4">Moins de 50 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">120€</p>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Visite complète
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Certificat officiel
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Délai de 3-5 jours
-                </li>
-              </ul>
-              <Link
-                to="/contact"
-                className="block w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition font-semibold text-sm text-center mt-4"
-              >
-                Commander
-              </Link>
-            </div>
-
-            <div className="bg-emerald-600 text-white p-8 rounded-lg shadow-xl border-2 border-emerald-700 transform scale-105">
-              <div className="inline-block bg-white text-emerald-600 px-3 py-1 rounded-full text-sm font-semibold mb-4">
-                Populaire
-              </div>
-              <h3 className="text-xl font-bold mb-2">Appartement moyen</h3>
-              <p className="text-emerald-100 mb-4">50 - 75 m²</p>
-              <p className="text-4xl font-bold mb-6">165€</p>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-                  Visite complète
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-                  Certificat officiel
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-                  Délai de 3-5 jours
-                </li>
-              </ul>
-              <Link
-                to="/contact"
-                className="block w-full bg-white text-emerald-600 px-4 py-2 rounded-lg hover:bg-emerald-50 transition font-semibold text-sm text-center mt-4"
-              >
-                Commander
-              </Link>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Grand appartement</h3>
-              <p className="text-gray-600 mb-4">76 - 100 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">185€</p>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Visite complète
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Certificat officiel
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Délai de 3-5 jours
-                </li>
-              </ul>
-              <Link
-                to="/contact"
-                className="block w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition font-semibold text-sm text-center mt-4"
-              >
-                Commander
-              </Link>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Très grand appartement</h3>
-              <p className="text-gray-600 mb-4">Plus de 100 m²</p>
-              <p className="text-4xl font-bold text-emerald-600 mb-6">205€</p>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Visite complète
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Certificat officiel
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                  Délai de 3-5 jours
-                </li>
-              </ul>
-              <Link
-                to="/contact"
-                className="block w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition font-semibold text-sm text-center mt-4"
-              >
-                Commander
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 bg-emerald-600 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Building2 className="w-16 h-16 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold mb-4">
-            Prêt à Obtenir Votre Certificat PEB ?
-          </h2>
-          <p className="text-xl mb-8 text-emerald-50">
-            Contactez-nous dès maintenant pour un devis gratuit et une intervention rapide.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-emerald-50 transition-all transform hover:scale-105 shadow-lg"
-            >
-              Demander un devis gratuit
+      <section className="bg-emerald-600 py-16 text-white">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <Building2 className="mx-auto mb-6 h-16 w-16" />
+          <h2 className="mb-4 text-3xl font-bold">{content.finalTitle}</h2>
+          <p className="mb-8 text-xl text-emerald-50">{content.finalText}</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/contact" className="rounded-lg bg-white px-8 py-4 font-semibold text-emerald-600 shadow-lg transition hover:bg-emerald-50">
+              {content.cta}
             </Link>
             <a
               href="tel:+32486987484"
-              onClick={() => {
-                if (window.gtag) {
-                  window.gtag('event', 'conversion', {
-                    send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
-                    value: 1.0,
-                    currency: 'EUR'
-                  });
-                }
-              }}
-              className="bg-amber-700 text-white px-8 py-4 rounded-lg font-semibold hover:bg-amber-800 transition-all border-2 border-white"
+              onClick={trackPhoneCallConversion}
+              className="rounded-lg border-2 border-white bg-emerald-700 px-8 py-4 font-semibold text-white transition hover:bg-emerald-800"
             >
               +32 486 98 74 84
             </a>

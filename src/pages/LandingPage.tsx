@@ -29,11 +29,11 @@ export default function LandingPage() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPB-certificaat Brussel vanaf 120 €',
+        seoTitle: 'EPC-certificaat Brussel vanaf 120 €',
         seoDescription:
-          'EPB-certificaat in Brussel vanaf 120 € inclusief btw. Duidelijke prijzen, snelle interventie en online reservering.',
-        topLabel: 'EPB-certificateur in Brussel',
-        title: 'EPB-certificaat in Brussel',
+          'EPC-certificaat in Brussel vanaf 120 € inclusief btw. Duidelijke prijzen, snelle interventie en online reservering.',
+        topLabel: 'EPC-certificateur in Brussel',
+        title: 'EPC-certificaat in Brussel',
         titleAccent: 'vanaf 120 € incl. btw',
         intro:
           'Duidelijke prijzen, snelle afspraak en officieel certificaat voor verkoop of verhuur. Kies het type pand en de oppervlakte om de prijs meteen te zien.',
@@ -98,7 +98,7 @@ export default function LandingPage() {
         whyLabel: 'Waarom KcertiPEB kiezen',
         whyTitle: 'Een eenvoudige, snelle en professionele service',
         whyText:
-          'Wij focussen op duidelijke prijzen, snelle opvolging en een zorgvuldige begeleiding voor uw EPB-certificaat in Brussel.',
+          'Wij focussen op duidelijke prijzen, snelle opvolging en een zorgvuldige begeleiding voor uw EPC-certificaat in Brussel.',
         whyPoints: [
           'Tarieven vooraf meegedeeld',
           'Eenvoudig formulier om in te vullen',
@@ -108,11 +108,11 @@ export default function LandingPage() {
         faqLabel: 'Veelgestelde vragen',
         faqs: [
           {
-            question: 'Hoe lang duurt het om een EPB-certificaat te ontvangen?',
+            question: 'Hoe lang duurt het om een EPC-certificaat te ontvangen?',
             answer: 'Wij plannen snel het bezoek en het officiële certificaat wordt bezorgd na de volledige analyse van het pand.',
           },
           {
-            question: 'Is een EPB-certificaat verplicht?',
+            question: 'Is een EPC-certificaat verplicht?',
             answer: 'Ja, in Brussel is het verplicht voor de verkoop of verhuur van residentieel vastgoed.',
           },
           {
@@ -124,7 +124,7 @@ export default function LandingPage() {
             answer: 'Ja, wij komen in het hele Brussels Hoofdstedelijk Gewest tussen.',
           },
         ],
-        footerText: 'EPB-certificaat in Brussel, duidelijke prijzen en snelle reservering.',
+        footerText: 'EPC-certificaat in Brussel, duidelijke prijzen en snelle reservering.',
         phoneLabel: 'Telefoon',
         emailLabel: 'E-mail',
         accreditation: "Erkenningsnummer",
