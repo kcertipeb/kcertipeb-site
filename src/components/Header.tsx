@@ -1,177 +1,142 @@
 import { Phone, Mail, Menu, X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { trackPhoneCallConversion } from '../lib/tracking';
-import LanguageSelector from './LanguageSelector';
-import { useLanguage } from '../lib/language';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
-  const { isDutch } = useLanguage();
-
-  const content = isDutch
-    ? {
-        topLabel: 'Snelle interventie in Brussel',
-        services: 'Diensten',
-        apartment: 'EPB-certificaat appartement',
-        house: 'EPB-certificaat woning',
-        audit: 'Energie-audit',
-        pricing: 'Tarieven',
-        faq: 'FAQ',
-        cta: 'Bekijk mijn prijs',
-      }
-    : {
-        topLabel: 'Intervention rapide à Bruxelles',
-        services: 'Services',
-        apartment: 'Certificat PEB Appartement',
-        house: 'Certificat PEB Maison',
-        audit: 'Audit énergétique',
-        pricing: 'Tarifs',
-        faq: 'FAQ',
-        cta: 'Voir mon prix',
-      };
 
   return (
-    <header className="fixed top-0 z-50 w-full bg-white shadow-md">
-      <div className="bg-emerald-700 py-2 text-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between text-sm">
+    <header className="bg-white shadow-md fixed w-full top-0 z-50">
+      <div className="bg-emerald-700 text-white py-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center text-sm">
             <div className="flex items-center space-x-6">
               <a
                 href="tel:+32486987484"
-                onClick={trackPhoneCallConversion}
-                className="flex items-center transition hover:text-emerald-200"
+                onClick={() => {
+                  if (window.gtag) {
+                    window.gtag('event', 'conversion', {
+                      send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                      value: 1.0,
+                      currency: 'EUR'
+                    });
+                  }
+                }}
+                className="flex items-center hover:text-emerald-200 transition"
               >
-                <Phone className="mr-2 h-4 w-4" />
+                <Phone className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">+32 486 98 74 84</span>
               </a>
-              <a href="mailto:info@kcertipeb.be" className="flex items-center transition hover:text-emerald-200">
-                <Mail className="mr-2 h-4 w-4" />
+              <a href="mailto:info@kcertipeb.be" className="flex items-center hover:text-emerald-200 transition">
+                <Mail className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">info@kcertipeb.be</span>
               </a>
             </div>
-
-            <div className="flex items-center gap-3">
-              <div className="hidden text-xs sm:text-sm md:block">{content.topLabel}</div>
-              <LanguageSelector />
+            <div className="text-xs sm:text-sm">
+              Intervention rapide à Bruxelles
             </div>
           </div>
         </div>
       </div>
 
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-3 transition hover:opacity-80">
-              <img src="/logo.png" alt="KcertiPEB" className="h-12 w-auto object-contain" />
+            <Link
+              to="/"
+              className="flex items-center hover:opacity-80 transition gap-3"
+            >
+              <img
+                src="/logo.png"
+                alt="KcertiPEB"
+                className="h-12 w-auto object-contain"
+              />
               <span className="text-2xl font-bold text-emerald-700">KcertiPEB</span>
             </Link>
           </div>
 
-          <div className="hidden items-center space-x-8 md:flex">
+          <div className="hidden md:flex items-center space-x-8">
             <div
               className="relative"
               onMouseEnter={() => setServicesDropdownOpen(true)}
               onMouseLeave={() => setServicesDropdownOpen(false)}
             >
-              <button className="flex items-center gap-1 py-2 text-gray-700 transition hover:text-emerald-700">
-                {content.services}
-                <ChevronDown className="h-4 w-4" />
+              <button className="text-gray-700 hover:text-emerald-700 transition flex items-center gap-1 py-2">
+                Services
+                <ChevronDown className="w-4 h-4" />
               </button>
-
               {servicesDropdownOpen && (
-                <div className="absolute left-0 top-full pt-2">
-                  <div className="w-64 rounded-lg border border-gray-100 bg-white py-2 shadow-lg">
+                <div className="absolute top-full left-0 pt-2">
+                  <div className="w-64 bg-white shadow-lg rounded-lg py-2 border border-gray-100">
                     <Link
                       to="/certificat-peb-appartement-bruxelles"
-                      className="block px-4 py-3 text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
                     >
-                      {content.apartment}
+                      Certificat PEB Appartement
                     </Link>
                     <Link
                       to="/certificat-peb-maison-bruxelles"
-                      className="block px-4 py-3 text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
                     >
-                      {content.house}
+                      Certificat PEB Maison
                     </Link>
                     <Link
                       to="/audit-energetique-bruxelles"
-                      className="block px-4 py-3 text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                      className="block px-4 py-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition"
                     >
-                      {content.audit}
+                      Audit Énergétique
                     </Link>
                   </div>
                 </div>
               )}
             </div>
-
-            <Link to="/tarifs" className="text-gray-700 transition hover:text-emerald-700">
-              {content.pricing}
+            <Link to="/tarifs" className="text-gray-700 hover:text-emerald-700 transition">
+              Tarifs
             </Link>
-            <Link to="/faq" className="text-gray-700 transition hover:text-emerald-700">
-              {content.faq}
+            <Link to="/faq" className="text-gray-700 hover:text-emerald-700 transition">
+              FAQ
             </Link>
             <Link
               to="/contact"
-              className="rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition hover:bg-emerald-700"
+              className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium"
             >
-              {content.cta}
+              Devis Gratuit
             </Link>
           </div>
 
-          <button className="text-gray-700 md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button
+            className="md:hidden text-gray-700"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
         {mobileMenuOpen && (
-          <div className="border-t py-4 md:hidden">
+          <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <div className="pb-2">
-                <LanguageSelector />
-              </div>
-              <Link
-                to="/certificat-peb-appartement-bruxelles"
-                className="text-left text-gray-700 transition hover:text-emerald-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {content.apartment}
+              <Link to="/certificat-peb-appartement-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Certificat PEB Appartement
               </Link>
-              <Link
-                to="/certificat-peb-maison-bruxelles"
-                className="text-left text-gray-700 transition hover:text-emerald-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {content.house}
+              <Link to="/certificat-peb-maison-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Certificat PEB Maison
               </Link>
-              <Link
-                to="/audit-energetique-bruxelles"
-                className="text-left text-gray-700 transition hover:text-emerald-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {content.audit}
+              <Link to="/audit-energetique-bruxelles" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Audit Énergétique
               </Link>
-              <Link
-                to="/tarifs"
-                className="text-left text-gray-700 transition hover:text-emerald-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {content.pricing}
+              <Link to="/tarifs" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                Tarifs
               </Link>
-              <Link
-                to="/faq"
-                className="text-left text-gray-700 transition hover:text-emerald-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {content.faq}
+              <Link to="/faq" className="text-gray-700 hover:text-emerald-700 transition text-left" onClick={() => setMobileMenuOpen(false)}>
+                FAQ
               </Link>
               <Link
                 to="/contact"
-                className="rounded-lg bg-emerald-600 px-6 py-2 text-center font-medium text-white transition hover:bg-emerald-700"
+                className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition font-medium text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {content.cta}
+                Devis Gratuit
               </Link>
             </div>
           </div>

@@ -160,7 +160,7 @@ export default function Pricing() {
             onClick={scrollToContact}
             className="inline-block bg-white text-emerald-600 px-8 py-3 rounded-lg hover:bg-emerald-50 transition font-semibold"
           >
-            Voir mon prix
+            Demander un devis
           </button>
         </div>
       </div>

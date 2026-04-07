@@ -12,7 +12,6 @@ interface ContactData {
   email: string;
   phone: string;
   property_type: string;
-  surface_range?: string;
   address: string;
   message: string;
 }
@@ -26,7 +25,7 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const { name, email, phone, property_type, surface_range, address, message }: ContactData = await req.json();
+    const { name, email, phone, property_type, address, message }: ContactData = await req.json();
 
     const SMTP_PASSWORD = Deno.env.get("SMTP_PASSWORD");
 
@@ -66,7 +65,6 @@ Deno.serve(async (req: Request) => {
       <h3>Informations Bien</h3>
       <ul>
         <li><strong>Type:</strong> ${property_type}</li>
-        <li><strong>Surface:</strong> ${surface_range || "-"}</li>
         <li><strong>Adresse:</strong> ${address}</li>
       </ul>
 

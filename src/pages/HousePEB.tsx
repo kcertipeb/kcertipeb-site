@@ -1,99 +1,63 @@
-import { Home, Clock, CheckCircle2, Shield, Award } from 'lucide-react';
+import { Home, Clock, CheckCircle2, Euro, Shield, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
-import { useLanguage } from '../lib/language';
-import { trackPhoneCallConversion } from '../lib/tracking';
 
 export default function HousePEB() {
-  const { isDutch } = useLanguage();
-
-  const content = isDutch
-    ? {
-        seoTitle: 'EPB-certificaat woning in Brussel',
-        seoDescription: 'EPB-certificaat voor woningen in Brussel vanaf 210 €.',
-        badge: 'EPB-certificaat woning',
-        title: 'EPB-certificaat voor woning in Brussel',
-        intro: 'Specialist in woningen in Brussel. Volledige analyse, officieel verslag en duidelijke tarieven.',
-        cta: 'Bekijk mijn prijs',
-        call: 'Bel nu',
-        from: 'Vanaf',
-        strengthsTitle: 'Specialist in woningen in Brussel',
-        strengthsText: 'Wij certificeren verschillende soorten woningen in Brussel met een nauwkeurige analyse van het gebouw en de installaties.',
-        cards: [
-          { title: 'Snelle afspraak', text: 'Afspraak volgens uw beschikbaarheid in Brussel.' },
-          { title: 'Volledige expertise', text: 'Analyse van isolatie, verwarming, ventilatie en technische elementen.' },
-          { title: 'Officiële garantie', text: 'Officieel certificaat conform de Brusselse regelgeving.' },
-        ],
-        includedTitle: 'Wat is inbegrepen',
-        included: ['Volledig bezoek van de woning', 'Evaluatie van de installaties', 'Officieel certificaat', 'Duidelijke toelichting op verzoek'],
-        pricingTitle: 'Transparante tarieven voor woningen',
-        pricing: [
-          { title: 'Kleine woning', size: 'Minder dan 100 m²', price: '210 €' },
-          { title: 'Standaardwoning', size: '101 - 200 m²', price: '240 €' },
-          { title: 'Grote woning', size: 'Meer dan 200 m²', price: '275 €' },
-        ],
-        order: 'Bestellen',
-        finalTitle: 'Een EPB-certificaat nodig voor uw woning?',
-        finalText: 'Neem nu contact met ons op voor een snelle en professionele service.',
-      }
-    : {
-        seoTitle: 'Certificat PEB maison à Bruxelles',
-        seoDescription: 'Certificat PEB pour maison à Bruxelles dès 210 €.',
-        badge: 'Certificat PEB Maison',
-        title: 'Certificat PEB pour maison à Bruxelles',
-        intro: 'Spécialiste des maisons à Bruxelles. Analyse complète, rapport officiel et tarifs transparents.',
-        cta: 'Voir mon prix',
-        call: 'Appeler maintenant',
-        from: 'À partir de',
-        strengthsTitle: 'Spécialiste des maisons à Bruxelles',
-        strengthsText: 'Nous certifions différents types de maisons à Bruxelles avec une analyse précise du bâtiment et des installations.',
-        cards: [
-          { title: 'Rendez-vous rapide', text: 'Créneau selon vos disponibilités à Bruxelles.' },
-          { title: 'Expertise complète', text: 'Analyse de l’isolation, du chauffage, de la ventilation et des éléments techniques.' },
-          { title: 'Garantie officielle', text: 'Certificat officiel conforme à la réglementation bruxelloise.' },
-        ],
-        includedTitle: 'Ce qui est inclus',
-        included: ['Visite complète de la maison', 'Évaluation des installations', 'Certificat officiel', 'Explications claires sur demande'],
-        pricingTitle: 'Tarifs transparents pour maisons',
-        pricing: [
-          { title: 'Petite maison', size: 'Moins de 100 m²', price: '210 €' },
-          { title: 'Maison standard', size: '101 - 200 m²', price: '240 €' },
-          { title: 'Grande maison', size: 'Plus de 200 m²', price: '275 €' },
-        ],
-        order: 'Commander',
-        finalTitle: 'Besoin d’un certificat PEB pour votre maison ?',
-        finalText: 'Contactez-nous dès maintenant pour un service rapide et professionnel.',
-      };
-
   return (
     <>
-      <SEO title={content.seoTitle} description={content.seoDescription} canonical="https://kcertipeb.be/certificat-peb-maison-bruxelles" />
+      <SEO
+        title="Certificat PEB maison à Bruxelles | Dès 210€"
+        description="Certificat PEB pour maison à Bruxelles dès 210 €. Rapide pour vente ou location, intervention sous 48h dans toutes les communes."
+        keywords="certificat PEB maison bruxelles, PEB maison unifamiliale, certificat énergétique maison, PEB vente maison bruxelles, PEB location maison bruxelles, PEB maison uccle, PEB maison woluwe, prix PEB maison bruxelles, certificat PEB obligatoire maison"
+        canonical="https://kcertipeb.be/certificat-peb-maison-bruxelles"
+      />
 
-      <section className="bg-gradient-to-b from-blue-50 to-white pb-16 pt-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 md:grid-cols-2">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-blue-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="mb-6 inline-block rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-800">{content.badge}</div>
-              <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{content.title}</h1>
-              <p className="mb-8 text-xl text-gray-600">{content.intro}</p>
+              <div className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                Certificat PEB Maison
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Certificat PEB pour maison à Bruxelles
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                Spécialiste des maisons unifamiliales à Bruxelles. Expertise complète, rapport détaillé et recommandations personnalisées incluses.
+              </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/contact" className="rounded-lg bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-blue-700">
-                  {content.cta}
+                <Link
+                  to="/contact"
+                  className="bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg"
+                >
+                  Demander un devis gratuit
                 </Link>
                 <a
                   href="tel:+32486987484"
-                  onClick={trackPhoneCallConversion}
-                  className="rounded-lg border-2 border-blue-600 bg-white px-8 py-4 font-semibold text-blue-600 transition hover:bg-blue-50"
+                  onClick={() => {
+                    if (window.gtag) {
+                      window.gtag('event', 'conversion', {
+                        send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                        value: 1.0,
+                        currency: 'EUR'
+                      });
+                    }
+                  }}
+                  className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold border-2 border-blue-600 hover:bg-blue-50 transition-all"
                 >
-                  {content.call}
+                  Appeler maintenant
                 </a>
               </div>
             </div>
             <div className="relative">
-              <img src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800" alt={content.title} className="rounded-lg shadow-2xl" />
-              <div className="absolute -bottom-6 -left-6 rounded-lg bg-white p-6 shadow-xl">
-                <p className="text-3xl font-bold text-blue-600">210 €</p>
-                <p className="text-gray-600">{content.from}</p>
+              <img
+                src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Maison unifamiliale moderne à Bruxelles"
+                className="rounded-lg shadow-2xl"
+              />
+              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-lg shadow-xl">
+                <p className="text-3xl font-bold text-blue-600">210€</p>
+                <p className="text-gray-600">À partir de</p>
               </div>
             </div>
           </div>
@@ -101,41 +65,93 @@ export default function HousePEB() {
       </section>
 
       <section className="py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-gray-900">{content.strengthsTitle}</h2>
-            <p className="mx-auto max-w-3xl text-xl text-gray-600">{content.strengthsText}</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Spécialistes des Maisons à Bruxelles
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Nous certifions tous types de maisons : maison de maître, maison mitoyenne, villa, cottage... Expertise reconnue et service professionnel.
+            </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {[Clock, Award, Shield].map((Icon, index) => (
-              <div key={content.cards[index].title} className="rounded-lg border border-gray-100 bg-white p-8 shadow-lg">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-                  <Icon className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="mb-4 text-xl font-bold text-gray-900">{content.cards[index].title}</h3>
-                <p className="text-gray-600">{content.cards[index].text}</p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                <Clock className="w-6 h-6 text-blue-600" />
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Intervention Rapide</h3>
+              <p className="text-gray-600">
+                Rendez-vous sous 48h pour toutes les maisons de Bruxelles et environs. Flexibilité horaire garantie.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                <Award className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Expertise Complète</h3>
+              <p className="text-gray-600">
+                Analyse détaillée de tous les éléments : isolation, chauffage, ventilation.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-100">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                <Shield className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Garantie Officielle</h3>
+              <p className="text-gray-600">
+                Certificat officiel conforme à la réglementation de la Région de Bruxelles-Capitale.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-gray-50 py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 md:grid-cols-2">
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800" alt={content.title} className="rounded-lg shadow-xl" />
+              <img
+                src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Expert PEB inspectant une maison"
+                className="rounded-lg shadow-xl"
+              />
             </div>
             <div>
-              <h2 className="mb-6 text-3xl font-bold text-gray-900">{content.includedTitle}</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">
+                Ce Qui Est Inclus dans Notre Service Maison
+              </h2>
               <div className="space-y-4">
-                {content.included.map((item) => (
-                  <div key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-1 h-6 w-6 flex-shrink-0 text-blue-600" />
-                    <p className="text-gray-700">{item}</p>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Visite complète de la maison</h4>
+                    <p className="text-gray-600">Inspection détaillée de toutes les pièces, combles, cave, garage.</p>
                   </div>
-                ))}
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Évaluation des installations</h4>
+                    <p className="text-gray-600">Chaudière, système de ventilation, panneaux solaires si présents.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Recommandations personnalisées</h4>
+                    <p className="text-gray-600">Conseils pour améliorer la performance énergétique de votre maison.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Certificat officiel</h4>
+                    <p className="text-gray-600">Document légal déposé sur la plateforme régionale.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -143,39 +159,163 @@ export default function HousePEB() {
       </section>
 
       <section className="py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">{content.pricingTitle}</h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Types de Maisons Certifiées
+            </h2>
+            <p className="text-xl text-gray-600">Nous intervenons sur tous types de biens immobiliers</p>
           </div>
 
-          <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-3">
-            {content.pricing.map((item) => (
-              <div key={item.title} className="rounded-lg border-2 border-gray-200 bg-white p-8 shadow-lg">
-                <h3 className="mb-2 text-xl font-bold text-gray-900">{item.title}</h3>
-                <p className="mb-4 text-gray-600">{item.size}</p>
-                <p className="mb-6 text-4xl font-bold text-blue-600">{item.price}</p>
-                <Link to="/contact" className="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-blue-700">
-                  {content.order}
-                </Link>
-              </div>
-            ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center border border-gray-100 hover:border-blue-600 transition-all">
+              <Home className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="font-bold text-gray-900 mb-2">Maison Mitoyenne</h3>
+              <p className="text-gray-600 text-sm">La plus courante à Bruxelles</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center border border-gray-100 hover:border-blue-600 transition-all">
+              <Home className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="font-bold text-gray-900 mb-2">Maison de Maître</h3>
+              <p className="text-gray-600 text-sm">Expertise des bâtiments anciens</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center border border-gray-100 hover:border-blue-600 transition-all">
+              <Home className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="font-bold text-gray-900 mb-2">Villa / Cottage</h3>
+              <p className="text-gray-600 text-sm">Maisons individuelles isolées</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center border border-gray-100 hover:border-blue-600 transition-all">
+              <Home className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="font-bold text-gray-900 mb-2">Maison Passive</h3>
+              <p className="text-gray-600 text-sm">Constructions récentes</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-blue-600 py-16 text-white">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <Home className="mx-auto mb-6 h-16 w-16" />
-          <h2 className="mb-4 text-3xl font-bold">{content.finalTitle}</h2>
-          <p className="mb-8 text-xl text-blue-50">{content.finalText}</p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 shadow-lg transition hover:bg-blue-50">
-              {content.cta}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Tarifs Transparents pour Maisons
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Petite maison</h3>
+              <p className="text-gray-600 mb-4">Moins de 100 m²</p>
+              <p className="text-4xl font-bold text-blue-600 mb-6">210€</p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Visite complète
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Certificat officiel
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Délai de 3-5 jours
+                </li>
+              </ul>
+              <Link
+                to="/contact"
+                className="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-semibold text-sm text-center mt-4"
+              >
+                Commander
+              </Link>
+            </div>
+
+            <div className="bg-blue-600 text-white p-8 rounded-lg shadow-xl border-2 border-blue-700 transform scale-105">
+              <div className="inline-block bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                Populaire
+              </div>
+              <h3 className="text-xl font-bold mb-2">Maison standard</h3>
+              <p className="text-blue-100 mb-4">101 - 200 m²</p>
+              <p className="text-4xl font-bold mb-6">240€</p>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                  Visite complète
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                  Certificat officiel
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
+                  Délai de 3-5 jours
+                </li>
+              </ul>
+              <Link
+                to="/contact"
+                className="block w-full bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition font-semibold text-sm text-center mt-4"
+              >
+                Commander
+              </Link>
+            </div>
+
+            <div className="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Grande maison</h3>
+              <p className="text-gray-600 mb-4">Plus de 201 m²</p>
+              <p className="text-4xl font-bold text-blue-600 mb-6">275€</p>
+              <ul className="space-y-2 text-gray-600">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Visite complète
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Certificat officiel
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                  Délai de 3-5 jours
+                </li>
+              </ul>
+              <Link
+                to="/contact"
+                className="block w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-semibold text-sm text-center mt-4"
+              >
+                Commander
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-blue-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Home className="w-16 h-16 mx-auto mb-6" />
+          <h2 className="text-3xl font-bold mb-4">
+            Besoin d'un Certificat PEB pour Votre Maison ?
+          </h2>
+          <p className="text-xl mb-8 text-blue-50">
+          Contactez-nous dès maintenant pour un service rapide et professionne
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-lg"
+            >
+              Demander un devis gratuit
             </Link>
             <a
               href="tel:+32486987484"
-              onClick={trackPhoneCallConversion}
-              className="rounded-lg border-2 border-white bg-blue-700 px-8 py-4 font-semibold text-white transition hover:bg-blue-800"
+              onClick={() => {
+                if (window.gtag) {
+                  window.gtag('event', 'conversion', {
+                    send_to: 'AW-17839824839/9dHFCOCL0fkbEMe_2LpC',
+                    value: 1.0,
+                    currency: 'EUR'
+                  });
+                }
+              }}
+              className="bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-800 transition-all border-2 border-white"
             >
               +32 486 98 74 84
             </a>

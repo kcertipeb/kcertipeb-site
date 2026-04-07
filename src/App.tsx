@@ -13,9 +13,6 @@ import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
 import PricingPage from './pages/PricingPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import LandingPage from './pages/LandingPage';
-import ThankYou from './pages/ThankYou';
-import { LanguageProvider } from './lib/language';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -27,41 +24,28 @@ function ScrollToTop() {
   return null;
 }
 
-function AppShell() {
-  const { pathname } = useLocation();
-  const isStandalonePage = pathname === '/lp' || pathname === '/merci';
-
-  return (
-    <div className="min-h-screen bg-white">
-      {!isStandalonePage && <Header />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/certificat-peb-appartement-bruxelles" element={<ApartmentPEB />} />
-        <Route path="/certificat-peb-maison-bruxelles" element={<HousePEB />} />
-        <Route path="/audit-energetique-bruxelles" element={<EnergyAudit />} />
-        <Route path="/tarifs" element={<PricingPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/faq" element={<FAQPage />} />
-        <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
-        <Route path="/lp" element={<LandingPage />} />
-        <Route path="/merci" element={<ThankYou />} />
-      </Routes>
-      {!isStandalonePage && <Footer />}
-      {!isStandalonePage && <CallButton />}
-      {!isStandalonePage && <FacebookButton />}
-      {!isStandalonePage && <WhatsAppButton />}
-    </div>
-  );
-}
-
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
-        <ScrollToTop />
-        <AppShell />
-      </Router>
-    </LanguageProvider>
+    <Router>
+      <ScrollToTop />
+      <div className="min-h-screen bg-white">
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/certificat-peb-appartement-bruxelles" element={<ApartmentPEB />} />
+          <Route path="/certificat-peb-maison-bruxelles" element={<HousePEB />} />
+          <Route path="/audit-energetique-bruxelles" element={<EnergyAudit />} />
+          <Route path="/tarifs" element={<PricingPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
+        </Routes>
+        <Footer />
+        <CallButton />
+        <FacebookButton />
+        <WhatsAppButton />
+      </div>
+    </Router>
   );
 }
 
