@@ -10,6 +10,7 @@ interface SEOProps {
   ogType?: string;
   includeFaqSchema?: boolean;
   robots?: string;
+  extraSchema?: object;
 }
 
 export default function SEO({
@@ -21,6 +22,7 @@ export default function SEO({
   ogType = 'website',
   includeFaqSchema = false,
   robots = 'index, follow',
+  extraSchema,
 }: SEOProps) {
   const { isDutch } = useLanguage();
 
@@ -100,6 +102,13 @@ export default function SEO({
         '@type': 'GeoCoordinates',
         latitude: '50.8503',
         longitude: '4.3517',
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '5.0',
+        reviewCount: '4',
+        bestRating: '5',
+        worstRating: '1',
       },
       areaServed: [
         'Bruxelles-Ville',
@@ -211,6 +220,22 @@ export default function SEO({
           ],
     };
 
+    // Extra schema (BlogPosting, Service, etc.)
+    let extraScriptTag = document.querySelector<HTMLScriptElement>('script[data-type="extra-schema"]');
+    if (extraSchema) {
+      if (extraScriptTag) {
+        extraScriptTag.textContent = JSON.stringify(extraSchema);
+      } else {
+        extraScriptTag = document.createElement('script');
+        extraScriptTag.type = 'application/ld+json';
+        extraScriptTag.setAttribute('data-type', 'extra-schema');
+        extraScriptTag.textContent = JSON.stringify(extraSchema);
+        document.head.appendChild(extraScriptTag);
+      }
+    } else if (extraScriptTag) {
+      extraScriptTag.remove();
+    }
+
     let faqScriptTag = document.querySelector<HTMLScriptElement>('script[data-type="faq-schema"]');
     if (includeFaqSchema) {
       if (faqScriptTag) {
@@ -225,7 +250,7 @@ export default function SEO({
     } else if (faqScriptTag) {
       faqScriptTag.remove();
     }
-  }, [title, description, keywords, canonical, ogImage, ogType, includeFaqSchema, robots, isDutch]);
+  }, [title, description, keywords, canonical, ogImage, ogType, includeFaqSchema, robots, extraSchema, isDutch]);
 
   return null;
 }

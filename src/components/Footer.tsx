@@ -20,6 +20,7 @@ export default function Footer() {
         audit: 'Energie-audit',
         pricing: 'Tarieven',
         faq: 'FAQ',
+        blog: 'Blog',
         contact: 'Contact',
         services: 'Diensten',
         cta: 'Bekijk mijn prijs',
@@ -41,6 +42,7 @@ export default function Footer() {
         audit: 'Audit énergétique',
         pricing: 'Tarifs',
         faq: 'FAQ',
+        blog: 'Blog',
         contact: 'Contact',
         services: 'Services',
         cta: 'Voir mon prix',
@@ -74,6 +76,7 @@ export default function Footer() {
               <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
               <li><Link to="/tarifs" className="transition hover:text-emerald-400">{content.pricing}</Link></li>
               <li><Link to="/faq" className="transition hover:text-emerald-400">{content.faq}</Link></li>
+              <li><Link to="/blog" className="transition hover:text-emerald-400">{content.blog}</Link></li>
               <li><Link to="/contact" className="transition hover:text-emerald-400">{content.contact}</Link></li>
             </ul>
           </div>

@@ -1,27 +1,9 @@
 import { MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../lib/language';
+import { communes as communesData } from '../data/communes';
 
-const communes = [
-  'Anderlecht',
-  'Auderghem',
-  'Berchem-Sainte-Agathe',
-  'Bruxelles-Ville',
-  'Etterbeek',
-  'Evere',
-  'Forest',
-  'Ganshoren',
-  'Ixelles',
-  'Jette',
-  'Koekelberg',
-  'Molenbeek-Saint-Jean',
-  'Saint-Gilles',
-  'Saint-Josse-ten-Noode',
-  'Schaerbeek',
-  'Uccle',
-  'Watermael-Boitsfort',
-  'Woluwe-Saint-Lambert',
-  'Woluwe-Saint-Pierre',
-];
+const communes = communesData.map((c) => ({ name: c.name, nameNl: c.nameNl, slug: c.slug }));
 
 export default function BrusselsCommunes() {
   const { isDutch } = useLanguage();
@@ -45,12 +27,15 @@ export default function BrusselsCommunes() {
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {communes.map((commune) => (
-            <div
-              key={commune}
-              className="rounded-lg border border-gray-100 bg-white p-4 text-center shadow-sm transition hover:shadow-md"
+            <Link
+              key={commune.slug}
+              to={`/certificat-peb/${commune.slug}`}
+              className="rounded-lg border border-gray-100 bg-white p-4 text-center shadow-sm transition hover:shadow-md hover:border-emerald-200 hover:text-emerald-700"
             >
-              <p className="font-medium text-gray-800">{commune}</p>
-            </div>
+              <p className="font-medium text-gray-800 hover:text-emerald-700">
+                {isDutch ? commune.nameNl : commune.name}
+              </p>
+            </Link>
           ))}
         </div>
 

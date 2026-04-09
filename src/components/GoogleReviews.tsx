@@ -3,23 +3,30 @@ import { useLanguage } from '../lib/language';
 
 const REVIEWS = [
   {
+    name: 'Bri Lefrancq',
+    rating: 5,
+    text: 'Réactif et donnant de très judicieux conseils.',
+    dateFr: 'il y a 22 heures',
+    dateNl: '22 uur geleden',
+  },
+  {
     name: 'Paulo Correia',
     rating: 5,
     text: 'Ponctuel, sérieux et compétent !',
-    dateFr: 'il y a 1 semaine',
-    dateNl: '1 week geleden',
+    dateFr: 'il y a 2 semaines',
+    dateNl: '2 weken geleden',
   },
   {
     name: 'Carla Goncalves',
     rating: 5,
     text: 'Super certificateur ! Rapide, clair et efficace, je suis très satisfaite ! Je recommande.',
-    dateFr: 'il y a 1 semaine',
-    dateNl: '1 week geleden',
+    dateFr: 'il y a 2 semaines',
+    dateNl: '2 weken geleden',
   },
   {
     name: 'Andreia Gomes',
     rating: 5,
-    text: 'Service rapide et très professionnel. Le certificateur a été clair dans ses explications et le certificat a été reçu rapidement.',
+    text: 'Service rapide et très professionnel. Le certificateur a été clair dans ses explications, de bons conseils et le certificat a été reçu rapidement. Très satisfaite, je recommande !',
     dateFr: 'il y a 2 semaines',
     dateNl: '2 weken geleden',
   },
@@ -108,7 +115,7 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {REVIEWS.map((review) => (
             <div
               key={review.name}

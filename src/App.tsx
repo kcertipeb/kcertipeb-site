@@ -15,6 +15,9 @@ import PricingPage from './pages/PricingPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import LandingPage from './pages/LandingPage';
 import ThankYou from './pages/ThankYou';
+import BlogPage from './pages/BlogPage';
+import BlogPostCertificatPEB from './pages/BlogPostCertificatPEB';
+import CommunePage from './pages/CommunePage';
 import { LanguageProvider } from './lib/language';
 
 function ScrollToTop() {
@@ -43,6 +46,9 @@ function AppShell() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/certificat-peb-bruxelles-guide-complet-2026" element={<BlogPostCertificatPEB />} />
+        <Route path="/certificat-peb/:slug" element={<CommunePage />} />
         <Route path="/lp" element={<LandingPage />} />
         <Route path="/merci" element={<ThankYou />} />
       </Routes>

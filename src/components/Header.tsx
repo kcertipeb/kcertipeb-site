@@ -19,6 +19,7 @@ export default function Header() {
         audit: 'Energie-audit',
         pricing: 'Tarieven',
         faq: 'FAQ',
+        blog: 'Blog',
         cta: 'Bekijk mijn prijs',
       }
     : {
@@ -29,6 +30,7 @@ export default function Header() {
         audit: 'Audit énergétique',
         pricing: 'Tarifs',
         faq: 'FAQ',
+        blog: 'Blog',
         cta: 'Voir mon prix',
       };
 
@@ -112,6 +114,9 @@ export default function Header() {
             <Link to="/faq" className="text-gray-700 transition hover:text-emerald-700">
               {content.faq}
             </Link>
+            <Link to="/blog" className="text-gray-700 transition hover:text-emerald-700">
+              {content.blog}
+            </Link>
             <Link
               to="/contact"
               className="rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition hover:bg-emerald-700"
@@ -165,6 +170,13 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {content.faq}
+              </Link>
+              <Link
+                to="/blog"
+                className="text-left text-gray-700 transition hover:text-emerald-700"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {content.blog}
               </Link>
               <Link
                 to="/contact"
