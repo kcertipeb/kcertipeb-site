@@ -32,14 +32,14 @@ export default function ThankYou() {
         'Technische documentatie van de verwarmingsinstallatie en de productie van sanitair warm water',
         'Voor een appartement: nuttige documenten van de mede-eigendom en toegang tot het stooklokaal. Dit is belangrijk, want een gebrek aan toegang kan het EPC-resultaat benadelen',
         'Plan van het pand, indien beschikbaar',
-        'Als u bepaalde werken zelf hebt uitgevoerd: foto’s van de werf, bewijsstukken en aankoopbewijzen van materialen',
+        "Als u bepaalde werken zelf hebt uitgevoerd: foto's van de werf, bewijsstukken en aankoopbewijzen van materialen",
       ]
     : [
-        'Factures de travaux liées à l’isolation, aux châssis, à la toiture, au chauffage et aux autres améliorations énergétiques',
-        'Documentation technique des équipements de chauffage et de production d’eau chaude sanitaire',
-        'Pour un appartement : documents utiles de la copropriété et accès au local de chaufferie. Ce point est important, car l’absence d’accès peut pénaliser le résultat du PEB',
+        "Factures de travaux liées à l'isolation, aux châssis, à la toiture, au chauffage et aux autres améliorations énergétiques",
+        "Documentation technique des équipements de chauffage et de production d'eau chaude sanitaire",
+        "Pour un appartement : documents utiles de la copropriété et accès au local de chaufferie. Ce point est important, car l'absence d'accès peut pénaliser le résultat du PEB",
         'Plan du bien, si vous le possédez',
-        'Si vous avez réalisé certains travaux vous-même : photos du chantier, justificatifs et preuves d’achat des matériaux',
+        "Si vous avez réalisé certains travaux vous-même : photos du chantier, justificatifs et preuves d'achat des matériaux",
       ];
 
   const nextSteps = isDutch
@@ -91,23 +91,23 @@ export default function ThankYou() {
         badge: 'Réservation bien enregistrée',
         heading: 'Votre demande de visite a bien été prise en compte',
         intro:
-          'Nous revenons vers vous sous 12 heures pour confirmer l’organisation de la visite et valider les derniers détails avec vous.',
+          "Nous revenons vers vous sous 12 heures pour confirmer l'organisation de la visite et valider les derniers détails avec vous.",
         summary: 'Récapitulatif de votre demande',
         propertyType: 'Type de bien',
         surface: 'Surface',
         price: 'Prix affiché',
         address: 'Adresse du bien',
         validation: 'Le rendez-vous est fixé avec vous après validation finale de la demande.',
-        fallback: 'Le récapitulatif complet n’est pas disponible pour le moment, mais votre demande a bien été prise en compte.',
+        fallback: "Le récapitulatif complet n'est pas disponible pour le moment, mais votre demande a bien été prise en compte.",
         documents: 'Documents à préparer',
         guide: 'Guide officiel avant la visite',
         guideText:
-          'Le document officiel explique le déroulement d’une visite PEB résidentielle et les informations qui peuvent aider le certificateur le jour du rendez-vous.',
+          "Le document officiel explique le déroulement d'une visite PEB résidentielle et les informations qui peuvent aider le certificateur le jour du rendez-vous.",
         guideButton: 'Ouvrir le document officiel',
-        guideNote: 'Vous pouvez l’ouvrir maintenant ou le consulter plus tard avant la visite.',
+        guideNote: "Vous pouvez l'ouvrir maintenant ou le consulter plus tard avant la visite.",
         apartmentPoint: 'Point important pour un appartement',
         apartmentText:
-          'Si l’accès au local de chaufferie ou aux informations utiles de la copropriété n’est pas possible, cela peut pénaliser le résultat du PEB. Il est donc préférable de préparer cet accès avant la visite.',
+          "Si l'accès au local de chaufferie ou aux informations utiles de la copropriété n'est pas possible, cela peut pénaliser le résultat du PEB. Il est donc préférable de préparer cet accès avant la visite.",
         call: 'Appeler le certificateur',
         whatsapp: 'Poser une question',
         back: 'Retourner vers le site',

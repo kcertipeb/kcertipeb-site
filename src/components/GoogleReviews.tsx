@@ -3,6 +3,13 @@ import { useLanguage } from '../lib/language';
 
 const REVIEWS = [
   {
+    name: 'Pascal Messinne',
+    rating: 5,
+    text: 'Super rapide, très aimable, efficace. Devis respecté à la lettre et ponctuel. Je recommande largement.',
+    dateFr: 'il y a 4 jours',
+    dateNl: '4 dagen geleden',
+  },
+  {
     name: 'Bri Lefrancq',
     rating: 5,
     text: 'Réactif et donnant de très judicieux conseils.',
@@ -81,7 +88,7 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
         />
         <StarRating rating={5} size="sm" />
         <span className="text-sm font-bold text-gray-900">
-          {isDutch ? 'Selectie van klantbeoordelingen' : 'Extrait d’avis clients'}
+          {isDutch ? 'Selectie van klantbeoordelingen' : "Extrait d'avis clients"}
         </span>
       </div>
     );
@@ -115,8 +122,41 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
           </div>
         </div>
 
+        {/* Featured review (1st) */}
+        {(() => {
+          const featured = REVIEWS[0];
+          return (
+            <div className="mb-8 relative overflow-hidden rounded-2xl bg-emerald-700 px-8 py-7 shadow-xl text-white">
+              <div className="absolute -right-6 -top-6 h-32 w-32 rounded-full bg-emerald-600 opacity-40" />
+              <div className="absolute -bottom-8 -left-8 h-40 w-40 rounded-full bg-emerald-800 opacity-30" />
+              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
+                <div className="flex-shrink-0">
+                  <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-widest text-emerald-100 mb-3">
+                    {isDutch ? '⭐ Nieuwste avis' : '⭐ Avis le plus récent'}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    <Avatar name={featured.name} />
+                    <div>
+                      <p className="font-bold text-white">{featured.name}</p>
+                      <p className="text-xs text-emerald-200">{isDutch ? featured.dateNl : featured.dateFr}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <StarRating rating={featured.rating} size="md" />
+                  </div>
+                </div>
+                <div className="sm:border-l sm:border-emerald-500 sm:pl-8">
+                  <Quote className="mb-2 h-8 w-8 text-emerald-400" />
+                  <p className="text-lg font-medium leading-relaxed text-emerald-50 italic">"{featured.text}"</p>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Grid — 4 remaining reviews */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {REVIEWS.map((review) => (
+          {REVIEWS.slice(1).map((review) => (
             <div
               key={review.name}
               className="relative rounded-xl border border-gray-100 bg-white p-6 shadow-md transition hover:shadow-lg"

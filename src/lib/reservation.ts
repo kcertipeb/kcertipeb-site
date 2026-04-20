@@ -41,12 +41,14 @@ const PROPERTY_TYPE_LABELS: Record<Language, Record<string, string>> = {
   fr: {
     appartement: 'Appartement',
     maison: 'Maison',
+    immeuble: 'Immeuble',
     audit: 'Audit énergétique',
     autre: 'Autre demande',
   },
   nl: {
     appartement: 'Appartement',
     maison: 'Woning',
+    immeuble: 'Gebouw',
     audit: 'Energie-audit',
     autre: 'Andere aanvraag',
   },
@@ -66,14 +68,14 @@ const FALLBACK_LABELS: Record<
     property: 'Bien à analyser',
     surface: 'À confirmer',
     address: 'Adresse à confirmer',
-    price: 'Tarif à confirmer',
+    price: 'Sur devis',
     vat: 'TVAC',
   },
   nl: {
     property: 'Te analyseren pand',
     surface: 'Te bevestigen',
     address: 'Adres te bevestigen',
-    price: 'Tarief te bevestigen',
+    price: 'Op offerte',
     vat: 'incl. btw',
   },
 };

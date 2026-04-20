@@ -171,31 +171,31 @@ export default function PrivacyPolicy() {
           {
             title: '9. Vos droits',
             list: [
-              'Droit d’accès',
+              "Droit d'accès",
               'Droit de rectification',
-              'Droit à l’effacement',
+              "Droit à l'effacement",
               'Droit à la limitation du traitement',
-              'Droit d’opposition',
+              "Droit d'opposition",
               'Droit à la portabilité des données',
             ],
-            paragraphs: ['Vous pouvez exercer ces droits via info@kcertipeb.be. Nous vous répondrons dans un délai maximal d’un mois.'],
+            paragraphs: ["Vous pouvez exercer ces droits via info@kcertipeb.be. Nous vous répondrons dans un délai maximal d'un mois."],
           },
           {
             title: '10. Cookies',
             paragraphs: [
-              'Le site peut utiliser des cookies strictement nécessaires ou des outils de mesure d’audience. Lorsqu’un outil marketing est utilisé, un bandeau de consentement conforme au RGPD est affiché.',
+              "Le site peut utiliser des cookies strictement nécessaires ou des outils de mesure d'audience. Lorsqu'un outil marketing est utilisé, un bandeau de consentement conforme au RGPD est affiché.",
             ],
           },
           {
             title: '11. Transfert hors Union européenne',
             paragraphs: [
-              'Certains services peuvent traiter des données hors de l’Union européenne. Dans ce cas, ces transferts sont encadrés par les garanties prévues par le RGPD.',
+              "Certains services peuvent traiter des données hors de l'Union européenne. Dans ce cas, ces transferts sont encadrés par les garanties prévues par le RGPD.",
             ],
           },
           {
-            title: '12. Réclamation auprès de l’autorité de contrôle',
+            title: "12. Réclamation auprès de l'autorité de contrôle",
             paragraphs: [
-              'Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de l’Autorité de protection des données, Rue de la Presse 35, 1000 Bruxelles.',
+              "Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de l'Autorité de protection des données, Rue de la Presse 35, 1000 Bruxelles.",
             ],
           },
           {
@@ -207,7 +207,7 @@ export default function PrivacyPolicy() {
         ],
         contactTitle: "Besoin d'informations complémentaires ?",
         contactText:
-          'Pour toute question concernant cette politique de confidentialité ou l’exercice de vos droits, contactez-nous à info@kcertipeb.be ou au +32 486 98 74 84.',
+          "Pour toute question concernant cette politique de confidentialité ou l'exercice de vos droits, contactez-nous à info@kcertipeb.be ou au +32 486 98 74 84.",
       };
 
   return (

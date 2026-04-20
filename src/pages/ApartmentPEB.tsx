@@ -1,4 +1,4 @@
-import { Building2, Clock, CheckCircle2, Euro, Award } from 'lucide-react';
+import { Building2, Clock, CheckCircle2, Euro, Award, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { useLanguage } from '../lib/language';
@@ -27,6 +27,9 @@ export default function ApartmentPEB() {
         mandatoryTitle: 'Een verplicht en nuttig document',
         mandatoryText: 'Bij verkoop of verhuur van een appartement in Brussel is het EPC-certificaat verplicht.',
         mandatoryPoints: ['Verplicht voor verkoop en verhuur', '10 jaar geldig', 'Kan de aantrekkelijkheid van uw appartement versterken'],
+        coproTitle: 'In een mede-eigendom?',
+        coproText: 'Elk appartement heeft een individueel EPC-certificaat nodig. De VME wordt mede-aansprakelijk in 2033.',
+        coproCta: 'Gids voor mede-eigendom lezen',
         pricingTitle: 'Onze tarieven voor appartementen',
         pricing: [
           { title: 'Studio / klein appartement', size: 'Minder dan 50 m²', price: '120 €' },
@@ -55,8 +58,11 @@ export default function ApartmentPEB() {
           { title: 'Prix transparent', text: 'Tarifs à partir de 120 €, adaptés à la surface.' },
         ],
         mandatoryTitle: 'Un document obligatoire et utile',
-        mandatoryText: 'À Bruxelles, le certificat PEB est obligatoire pour toute vente ou location d’un appartement.',
-        mandatoryPoints: ['Obligatoire pour la vente et la location', 'Valable 10 ans', 'Peut renforcer l’attractivité du bien'],
+        mandatoryText: "À Bruxelles, le certificat PEB est obligatoire pour toute vente ou location d'un appartement.",
+        mandatoryPoints: ['Obligatoire pour la vente et la location', 'Valable 10 ans', "Peut renforcer l'attractivité du bien"],
+        coproTitle: 'Vous êtes en copropriété ?',
+        coproText: "Chaque appartement doit avoir son certificat PEB individuel. L'ACP devient co-responsable en 2033.",
+        coproCta: 'Lire le guide copropriété',
         pricingTitle: 'Nos tarifs pour appartements',
         pricing: [
           { title: 'Studio / petit appartement', size: 'Moins de 50 m²', price: '120 €' },
@@ -143,6 +149,23 @@ export default function ApartmentPEB() {
             <div>
               <img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=800" alt={content.title} className="rounded-lg shadow-xl" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-10">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-6 rounded-2xl border border-emerald-100 bg-emerald-50 px-7 py-6">
+            <div>
+              <p className="font-bold text-gray-900">{content.coproTitle}</p>
+              <p className="mt-1 text-sm text-gray-600">{content.coproText}</p>
+            </div>
+            <Link
+              to="/blog/certificat-peb-copropriete-bruxelles"
+              className="flex flex-shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+            >
+              {content.coproCta} <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

@@ -65,6 +65,7 @@ export default function LandingPage() {
         propertyType: 'Type pand',
         apartment: 'Appartement',
         house: 'Woning',
+        building: 'Gebouw',
         other: 'Andere aanvraag',
         surface: 'Oppervlakte van het pand',
         surfaceChip: 'Oppervlakte',
@@ -135,7 +136,7 @@ export default function LandingPage() {
         phonePlaceholder: '+32 4xx xx xx xx',
         emailPlaceholder: 'uw@email.be',
         addressPlaceholder: 'Straat, nummer, gemeente',
-        fallbackPrice: 'Tarief te bevestigen',
+        fallbackPrice: 'Op offerte',
       }
     : {
         seoTitle: 'Certificat PEB Bruxelles dès 120 €',
@@ -167,13 +168,14 @@ export default function LandingPage() {
         formLabel: 'Réserver une visite',
         formTitle: 'Choisissez votre bien et confirmez la visite',
         formIntro:
-          'Le prix s’affiche selon le type de bien et la surface. Nous vous recontactons ensuite pour organiser la visite.',
+          "Le prix s'affiche selon le type de bien et la surface. Nous vous recontactons ensuite pour organiser la visite.",
         name: 'Nom',
         phone: 'Téléphone',
         email: 'Email',
         propertyType: 'Type de bien',
         apartment: 'Appartement',
         house: 'Maison',
+        building: 'Immeuble',
         other: 'Autre',
         surface: 'Surface du bien',
         surfaceChip: 'Surface',
@@ -207,7 +209,7 @@ export default function LandingPage() {
         whyLabel: 'Pourquoi choisir KcertiPEB',
         whyTitle: 'Un service simple, rapide et professionnel',
         whyText:
-          'Nous mettons l’accent sur la clarté des tarifs, la rapidité de prise en charge et un accompagnement sérieux pour votre certificat PEB à Bruxelles.',
+          "Nous mettons l'accent sur la clarté des tarifs, la rapidité de prise en charge et un accompagnement sérieux pour votre certificat PEB à Bruxelles.",
         whyPoints: [
           'Tarifs annoncés dès le départ',
           'Formulaire simple à compléter',
@@ -226,7 +228,7 @@ export default function LandingPage() {
           },
           {
             question: 'Le prix est-il fixe ?',
-            answer: 'Oui, les tarifs affichés sont communiqués avant l’intervention selon le type et la surface du bien.',
+            answer: "Oui, les tarifs affichés sont communiqués avant l'intervention selon le type et la surface du bien.",
           },
           {
             question: 'Intervenez-vous partout à Bruxelles ?',
@@ -244,7 +246,7 @@ export default function LandingPage() {
         phonePlaceholder: '+32 4xx xx xx xx',
         emailPlaceholder: 'votre@email.be',
         addressPlaceholder: 'Rue, numéro, commune',
-        fallbackPrice: 'Tarif à confirmer',
+        fallbackPrice: 'Sur devis',
       };
 
   const priceOptions = isDutch
@@ -467,6 +469,7 @@ export default function LandingPage() {
                     >
                       <option value="appartement">{content.apartment}</option>
                       <option value="maison">{content.house}</option>
+                      <option value="immeuble">{content.building}</option>
                       <option value="autre">{content.other}</option>
                     </select>
                   </div>
@@ -510,7 +513,7 @@ export default function LandingPage() {
                         <p className="text-sm font-semibold text-slate-900">{content.price}</p>
                         <p className="text-lg font-bold text-emerald-700">{reservationSummary.priceLabel}</p>
                         <p className="text-xs text-slate-500">
-                          {selectedPrice !== content.fallbackPrice ? content.priceShown : content.pickSurface}
+                          {showSurfaceSelect ? (selectedPrice !== content.fallbackPrice ? content.priceShown : content.pickSurface) : ''}
                         </p>
                       </div>
                     </div>

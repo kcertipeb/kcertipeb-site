@@ -66,7 +66,7 @@ export default function Benefits() {
         {
           icon: <TrendingUp className="h-8 w-8 text-emerald-600" />,
           title: 'Valorisation du bien',
-          description: 'Un bon PEB augmente la valeur de votre propriété et attire davantage d’acheteurs.',
+          description: "Un bon PEB augmente la valeur de votre propriété et attire davantage d'acheteurs.",
         },
       ];
 

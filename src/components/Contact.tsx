@@ -36,6 +36,7 @@ export default function Contact() {
         propertyType: 'Type pand *',
         apartment: 'Appartement',
         house: 'Woning',
+        building: 'Gebouw',
         audit: 'Energie-audit',
         surface: 'Oppervlakte van het pand',
         surfaceChip: 'Oppervlakte',
@@ -62,7 +63,7 @@ export default function Contact() {
         phonePlaceholder: '+32 4XX XX XX XX',
         addressPlaceholder: 'Straat, nummer, postcode, gemeente',
         messagePlaceholder: 'Beschrijf uw situatie, termijnen of nuttige informatie.',
-        fallbackPrice: 'Tarief te bevestigen',
+        fallbackPrice: 'Op offerte',
       }
     : {
         title: 'Contact – Certificat PEB à Bruxelles',
@@ -74,6 +75,7 @@ export default function Contact() {
         propertyType: 'Type de bien *',
         apartment: 'Appartement',
         house: 'Maison',
+        building: 'Immeuble',
         audit: 'Audit énergétique',
         surface: 'Surface du bien',
         surfaceChip: 'Surface',
@@ -100,7 +102,7 @@ export default function Contact() {
         phonePlaceholder: '+32 4XX XX XX XX',
         addressPlaceholder: 'Rue, numéro, code postal, commune',
         messagePlaceholder: 'Précisez vos besoins, vos délais ou toute information utile.',
-        fallbackPrice: 'Tarif à confirmer',
+        fallbackPrice: 'Sur devis',
       };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -215,6 +217,7 @@ export default function Contact() {
                     >
                       <option value="appartement">{content.apartment}</option>
                       <option value="maison">{content.house}</option>
+                      <option value="immeuble">{content.building}</option>
                       <option value="audit">{content.audit}</option>
                     </select>
                   </div>
@@ -257,7 +260,7 @@ export default function Contact() {
                   <p className="text-sm font-semibold text-gray-900">{content.price}</p>
                   <p className="mt-1 text-2xl font-bold text-emerald-700">{reservationSummary.priceLabel}</p>
                   <p className="mt-1 text-sm text-gray-600">
-                    {selectedPrice !== content.fallbackPrice ? content.fixedPrice : content.pickSurface}
+                    {showSurfaceSelect ? (selectedPrice !== content.fallbackPrice ? content.fixedPrice : content.pickSurface) : ''}
                   </p>
                 </div>
 

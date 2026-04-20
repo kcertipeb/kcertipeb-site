@@ -5,6 +5,20 @@ import { useLanguage } from '../lib/language';
 
 const blogPosts = [
   {
+    slug: 'certificat-peb-copropriete-bruxelles',
+    title: 'Certificat PEB Copropriété Bruxelles : Guide Syndics 2026',
+    titleNl: 'EPC-certificaat Mede-eigendom Brussel: Gids Syndici 2026',
+    excerpt: 'Chaque appartement doit avoir son propre certificat PEB. L\'ACP devient co-responsable dès 2033. Guide complet pour syndics et copropriétaires à Bruxelles.',
+    excerptNl: 'Elk appartement moet zijn eigen EPC-certificaat hebben. De VME wordt mede-verantwoordelijk vanaf 2033. Volledige gids voor syndici en mede-eigenaars in Brussel.',
+    date: '20 avril 2026',
+    dateNl: '20 april 2026',
+    readTime: '10 min',
+    badge: '🏢 Copropriété — Avril 2026',
+    badgeNl: '🏢 Mede-eigendom — April 2026',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=400&fit=crop',
+    category: 'Guide Syndic',
+  },
+  {
     slug: 'certificat-peb-bruxelles-guide-complet-2026',
     title: 'Certificat PEB à Bruxelles : Guide Complet 2026',
     titleNl: 'EPC-certificaat in Brussel: Complete Gids 2026',

@@ -65,7 +65,7 @@ export default function Process() {
           number: '4',
           icon: <FileCheck className="h-10 w-10 text-white" />,
           title: 'Remise du certificat',
-          description: 'Réception de votre certificat PEB officiel par e-mail après la visite et l’analyse.',
+          description: "Réception de votre certificat PEB officiel par e-mail après la visite et l'analyse.",
           duration: '3 à 5 jours',
         },
       ];

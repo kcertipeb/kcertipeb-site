@@ -17,10 +17,12 @@ export default function Footer() {
         home: 'Home',
         apartment: 'EPC Appartement',
         house: 'EPC Woning',
+        building: 'EPC Gebouw',
         audit: 'Energie-audit',
         pricing: 'Tarieven',
         faq: 'FAQ',
         blog: 'Blog',
+        blogCopro: 'Gids Mede-eigendom',
         contact: 'Contact',
         services: 'Diensten',
         cta: 'Bekijk mijn prijs',
@@ -34,15 +36,17 @@ export default function Footer() {
       }
     : {
         description:
-          'Certificateur PEB à Bruxelles pour appartements et maisons. Intervention rapide, prix clairs et accompagnement simple du premier contact jusqu’au certificat.',
+          "Certificateur PEB à Bruxelles pour appartements et maisons. Intervention rapide, prix clairs et accompagnement simple du premier contact jusqu'au certificat.",
         navigation: 'Navigation',
         home: 'Accueil',
         apartment: 'PEB Appartement',
         house: 'PEB Maison',
+        building: 'PEB Immeuble',
         audit: 'Audit énergétique',
         pricing: 'Tarifs',
         faq: 'FAQ',
         blog: 'Blog',
+        blogCopro: 'Guide Copropriété',
         contact: 'Contact',
         services: 'Services',
         cta: 'Voir mon prix',
@@ -73,10 +77,12 @@ export default function Footer() {
               <li><Link to="/" className="transition hover:text-emerald-400">{content.home}</Link></li>
               <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
               <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
+              <li><Link to="/certificat-peb-immeuble-bruxelles" className="transition hover:text-emerald-400">{content.building}</Link></li>
               <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
               <li><Link to="/tarifs" className="transition hover:text-emerald-400">{content.pricing}</Link></li>
               <li><Link to="/faq" className="transition hover:text-emerald-400">{content.faq}</Link></li>
               <li><Link to="/blog" className="transition hover:text-emerald-400">{content.blog}</Link></li>
+              <li><Link to="/blog/certificat-peb-copropriete-bruxelles" className="transition hover:text-emerald-400">{content.blogCopro}</Link></li>
               <li><Link to="/contact" className="transition hover:text-emerald-400">{content.contact}</Link></li>
             </ul>
           </div>
@@ -86,6 +92,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-3 text-sm text-slate-300">
               <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
               <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
+              <li><Link to="/certificat-peb-immeuble-bruxelles" className="transition hover:text-emerald-400">{content.building}</Link></li>
               <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
               <li><Link to="/contact" className="transition hover:text-emerald-400">{content.cta}</Link></li>
             </ul>

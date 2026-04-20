@@ -64,6 +64,7 @@ export default function Hero() {
         propertyType: 'Type pand',
         apartment: 'Appartement',
         house: 'Woning',
+        building: 'Gebouw',
         audit: 'Energie-audit',
         surface: 'Oppervlakte van het pand',
         surfaceChip: 'Oppervlakte',
@@ -82,12 +83,12 @@ export default function Hero() {
         successNote: 'Daarna ontvangt u het bezoekoverzicht en de gids van de certificateur.',
         unavailable: 'Dienst tijdelijk onbeschikbaar. Bel ons op +32 486 98 74 84.',
         sendError: 'Fout bij het verzenden. Probeer opnieuw.',
-        fallbackPrice: 'Tarief te bevestigen',
+        fallbackPrice: 'Op offerte',
       }
     : {
         title: 'Certificat PEB à Bruxelles avec des tarifs clairs dès',
         subtitle:
-          'Choisissez le type de bien, la surface, et réservez votre visite. Le prix s’affiche directement avant votre réservation.',
+          "Choisissez le type de bien, la surface, et réservez votre visite. Le prix s'affiche directement avant votre réservation.",
         primaryCta: 'Réserver une visite',
         secondaryCta: 'Appeler maintenant',
         reviewTitle: 'Retours clients positifs',
@@ -110,6 +111,7 @@ export default function Hero() {
         propertyType: 'Type de bien',
         apartment: 'Appartement',
         house: 'Maison',
+        building: 'Immeuble',
         audit: 'Audit énergétique',
         surface: 'Surface du bien',
         surfaceChip: 'Surface',
@@ -128,7 +130,7 @@ export default function Hero() {
         successNote: 'Vous recevez ensuite le récapitulatif de visite et le document du certificateur.',
         unavailable: 'Service temporairement indisponible. Appelez-nous au +32 486 98 74 84.',
         sendError: "Erreur lors de l'envoi. Veuillez réessayer.",
-        fallbackPrice: 'Tarif à confirmer',
+        fallbackPrice: 'Sur devis',
       };
 
   const scrollToReservationForm = () => {
@@ -333,6 +335,7 @@ export default function Hero() {
                   >
                     <option value="appartement">{content.apartment}</option>
                     <option value="maison">{content.house}</option>
+                    <option value="immeuble">{content.building}</option>
                     <option value="audit">{content.audit}</option>
                   </select>
                 </div>
@@ -377,7 +380,7 @@ export default function Hero() {
                       <p className="text-sm font-semibold text-slate-900">{content.visitPrice}</p>
                       <p className="text-lg font-bold text-emerald-700">{reservationSummary.priceLabel}</p>
                       <p className="text-xs text-slate-500">
-                        {selectedPrice !== content.fallbackPrice ? content.priceShown : content.pickSurface}
+                        {showSurfaceSelect ? (selectedPrice !== content.fallbackPrice ? content.priceShown : content.pickSurface) : ''}
                       </p>
                     </div>
                   </div>

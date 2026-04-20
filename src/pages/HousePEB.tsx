@@ -49,7 +49,7 @@ export default function HousePEB() {
         strengthsText: 'Nous certifions différents types de maisons à Bruxelles avec une analyse précise du bâtiment et des installations.',
         cards: [
           { title: 'Rendez-vous rapide', text: 'Créneau selon vos disponibilités à Bruxelles.' },
-          { title: 'Expertise complète', text: 'Analyse de l’isolation, du chauffage, de la ventilation et des éléments techniques.' },
+          { title: 'Expertise complète', text: "Analyse de l'isolation, du chauffage, de la ventilation et des éléments techniques." },
           { title: 'Garantie officielle', text: 'Certificat officiel conforme à la réglementation bruxelloise.' },
         ],
         includedTitle: 'Ce qui est inclus',
@@ -61,7 +61,7 @@ export default function HousePEB() {
           { title: 'Grande maison', size: 'Plus de 200 m²', price: '275 €' },
         ],
         order: 'Commander',
-        finalTitle: 'Besoin d’un certificat PEB pour votre maison ?',
+        finalTitle: "Besoin d'un certificat PEB pour votre maison ?",
         finalText: 'Contactez-nous dès maintenant pour un service rapide et professionnel.',
       };
 
