@@ -47,7 +47,6 @@
       "/certificat-peb/woluwe-saint-lambert",
       "/certificat-peb/woluwe-saint-pierre"
     ],
-    "puppeteerExecutablePath": "google-chrome-stable",
     "puppeteerArgs": [
       "--no-sandbox",
       "--disable-setuid-sandbox"
