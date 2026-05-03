@@ -20,6 +20,7 @@ import BlogPostCertificatPEB from './pages/BlogPostCertificatPEB';
 import BlogPostCopropriete from './pages/BlogPostCopropriete';
 import ImmeubelePEB from './pages/ImmeubelePEB';
 import CommunePage from './pages/CommunePage';
+import CookieConsent from './components/CookieConsent';
 import { LanguageProvider } from './lib/language';
 
 function ScrollToTop() {
@@ -60,6 +61,7 @@ function AppShell() {
       {!isStandalonePage && <CallButton />}
       {!isStandalonePage && <FacebookButton />}
       {!isStandalonePage && <WhatsAppButton />}
+      <CookieConsent />
     </div>
   );
 }
