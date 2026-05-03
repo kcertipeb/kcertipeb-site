@@ -6,17 +6,59 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "react-snap",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
+  "reactSnap": {
+    "routes": [
+      "/",
+      "/certificat-peb-appartement-bruxelles",
+      "/certificat-peb-maison-bruxelles",
+      "/audit-energetique-bruxelles",
+      "/tarifs",
+      "/contact",
+      "/faq",
+      "/politique-confidentialite",
+      "/blog",
+      "/blog/certificat-peb-bruxelles-guide-complet-2026",
+      "/blog/certificat-peb-copropriete-bruxelles",
+      "/certificat-peb-immeuble-bruxelles",
+      "/certificat-peb/anderlecht",
+      "/certificat-peb/auderghem",
+      "/certificat-peb/berchem-sainte-agathe",
+      "/certificat-peb/bruxelles-ville",
+      "/certificat-peb/etterbeek",
+      "/certificat-peb/evere",
+      "/certificat-peb/forest",
+      "/certificat-peb/ganshoren",
+      "/certificat-peb/ixelles",
+      "/certificat-peb/jette",
+      "/certificat-peb/koekelberg",
+      "/certificat-peb/molenbeek-saint-jean",
+      "/certificat-peb/saint-gilles",
+      "/certificat-peb/saint-josse-ten-noode",
+      "/certificat-peb/schaerbeek",
+      "/certificat-peb/uccle",
+      "/certificat-peb/watermael-boitsfort",
+      "/certificat-peb/woluwe-saint-lambert",
+      "/certificat-peb/woluwe-saint-pierre"
+    ],
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ],
+    "removeBlobs": true,
+    "inlineCss": false
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "lucide-react": "^0.344.0",
+    "nodemailer": "^6.9.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.11.0",
-    "nodemailer": "^6.9.8"
+    "react-router-dom": "^7.11.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
@@ -29,6 +71,7 @@
     "eslint-plugin-react-refresh": "^0.4.11",
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
+    "react-snap": "^1.23.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.3.0",
