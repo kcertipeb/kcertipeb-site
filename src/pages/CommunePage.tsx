@@ -25,32 +25,98 @@ export default function CommunePage() {
 
   const communeSchema = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: isDutch ? `EPC-certificaat ${name}` : `Certificat PEB ${name}`,
-    description: isDutch ? commune.descriptionNl : commune.description,
-    provider: {
-      '@type': 'LocalBusiness',
-      name: 'KCertiPEB',
-      url: 'https://kcertipeb.be',
-      telephone: '+32486987484',
-    },
-    areaServed: {
-      '@type': 'City',
-      name: commune.name,
-      containedInPlace: {
-        '@type': 'AdministrativeArea',
-        name: 'Région de Bruxelles-Capitale',
+    '@graph': [
+      {
+        '@type': 'Service',
+        name: isDutch ? `EPC-certificaat ${name}` : `Certificat PEB ${name}`,
+        description: isDutch ? commune.descriptionNl : commune.description,
+        provider: {
+          '@type': 'LocalBusiness',
+          name: 'KCertiPEB',
+          url: 'https://kcertipeb.be',
+          telephone: '+32486987484',
+        },
+        areaServed: {
+          '@type': 'City',
+          name: commune.name,
+          containedInPlace: {
+            '@type': 'AdministrativeArea',
+            name: 'Région de Bruxelles-Capitale',
+          },
+        },
+        offers: {
+          '@type': 'Offer',
+          priceSpecification: {
+            '@type': 'PriceSpecification',
+            minPrice: '120',
+            priceCurrency: 'EUR',
+          },
+        },
       },
-    },
-    offers: {
-      '@type': 'Offer',
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        minPrice: '120',
-        priceCurrency: 'EUR',
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: isDutch ? 'Home' : 'Accueil',
+            item: 'https://kcertipeb.be/',
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: isDutch ? `EPC-certificaat ${name}` : `Certificat PEB ${name}`,
+            item: `https://kcertipeb.be/certificat-peb/${commune.slug}`,
+          },
+        ],
       },
-    },
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: isDutch
+              ? `Is een EPC-certificaat verplicht voor mijn woning in ${name}?`
+              : `Le certificat PEB est-il obligatoire pour mon bien à ${name} ?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: isDutch
+                ? `Ja, het EPC-certificaat is verplicht voor elke verkoop of verhuur in ${name} en in alle 19 gemeenten van het Brussels Gewest, conform de COBRACE-ordonnantie van 2013. Zonder geldig certificaat riskeert u boetes van 200 tot 3 000 €.`
+                : `Oui, le certificat PEB est obligatoire pour toute vente ou location à ${name} et dans les 19 communes de la Région bruxelloise, conformément à l'ordonnance COBRACE de 2013. Sans certificat valide, vous risquez des amendes de 200 à 3 000 €.`,
+            },
+          },
+          {
+            '@type': 'Question',
+            name: isDutch
+              ? `Wat kost een EPC-certificaat in ${name}?`
+              : `Quel est le prix d'un certificat PEB à ${name} ?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: isDutch
+                ? `De prijs van een EPC-certificaat in ${name} begint vanaf 120 € incl. btw voor een appartement van minder dan 50 m². Voor een woning beginnen de tarieven vanaf 210 € incl. btw.`
+                : `Le prix d'un certificat PEB à ${name} commence dès 120 € TVAC pour un appartement de moins de 50 m². Pour une maison, les tarifs démarrent à partir de 210 € TVAC.`,
+            },
+          },
+          {
+            '@type': 'Question',
+            name: isDutch
+              ? `Hoe snel kan KCertiPEB langskomen in ${name}?`
+              : `Quel est le délai d'intervention de KCertiPEB à ${name} ?`,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: isDutch
+                ? `KCertiPEB komt langs in ${name} binnen 24 tot 48 uur na uw aanvraag. Het officiële EPC-certificaat wordt afgeleverd binnen 48u na het bezoek.`
+                : `KCertiPEB intervient à ${name} sous 24 à 48h après votre demande. Le certificat PEB officiel est remis sous 48h après la visite.`,
+            },
+          },
+        ],
+      },
+    ],
   };
+
+  const keywords = isDutch
+    ? `EPC-certificaat ${name}, EPC ${name}, EPC Brussel, erkend certificateur ${name}, energiecertificaat ${name}, EPC-attest ${name}`
+    : `certificat PEB ${name}, PEB ${name}, certificat PEB Bruxelles, certificateur agréé ${name}, certificat énergétique ${name}, prix PEB ${name}`;
 
   return (
     <>
@@ -59,6 +125,7 @@ export default function CommunePage() {
           ? `EPC-certificaat ${name} — Vanaf 120€ | KCertiPEB`
           : `Certificat PEB ${name} — Dès 120€ | KCertiPEB`}
         description={isDutch ? commune.metaDescriptionNl : commune.metaDescription}
+        keywords={keywords}
         canonical={`https://kcertipeb.be/certificat-peb/${commune.slug}`}
         extraSchema={communeSchema}
       />

@@ -55,13 +55,19 @@
   <!-- Blog -->
   <url>
     <loc>https://kcertipeb.be/blog</loc>
-    <lastmod>2026-04-20</lastmod>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://kcertipeb.be/blog/certificat-peb-bruxelles-guide-complet-2026</loc>
     <lastmod>2026-04-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kcertipeb.be/blog/ameliorer-certificat-peb-bruxelles</loc>
+    <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

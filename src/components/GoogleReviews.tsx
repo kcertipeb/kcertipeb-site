@@ -82,7 +82,7 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
     return (
       <div className="flex items-center gap-2">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png"
+          src="/google-logo.svg"
           alt="Google"
           className="h-4 w-4"
         />
@@ -100,7 +100,7 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
         <div className="mb-12 text-center">
           <div className="mb-4 flex items-center justify-center gap-3">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png"
+              src="/google-logo.svg"
               alt="Google"
               className="h-7 w-7"
             />
@@ -183,7 +183,7 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
             className="inline-flex items-center gap-2 rounded-xl border-2 border-gray-200 bg-white px-6 py-3 font-semibold text-gray-700 shadow-sm transition hover:border-emerald-500 hover:text-emerald-700"
           >
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png"
+              src="/google-logo.svg"
               alt="Google"
               className="h-5 w-5"
             />

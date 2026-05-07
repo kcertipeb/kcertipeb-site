@@ -5,6 +5,20 @@ import { useLanguage } from '../lib/language';
 
 const blogPosts = [
   {
+    slug: 'ameliorer-certificat-peb-bruxelles',
+    title: 'Améliorer son Certificat PEB à Bruxelles : Guide Travaux 2026',
+    titleNl: 'EPC-certificaat verbeteren in Brussel: Gids Werken 2026',
+    excerpt: 'Votre bien est classé F ou G ? Découvrez les travaux prioritaires pour gagner 1 à 3 classes PEB, dans le bon ordre, avec les coûts et gains attendus. Guide complet par KCertiPEB.',
+    excerptNl: 'Uw pand is F of G geklasseerd? Ontdek de prioritaire werken om 1 tot 3 EPC-klassen te winnen, in de juiste volgorde, met kosten en verwachte winsten.',
+    date: '7 mai 2026',
+    dateNl: '7 mei 2026',
+    readTime: '10 min',
+    badge: '🌿 Rénovation — Mai 2026',
+    badgeNl: '🌿 Renovatie — Mei 2026',
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=400&fit=crop',
+    category: 'Guide Rénovation',
+  },
+  {
     slug: 'certificat-peb-copropriete-bruxelles',
     title: 'Certificat PEB Copropriété Bruxelles : Guide Syndics 2026',
     titleNl: 'EPC-certificaat Mede-eigendom Brussel: Gids Syndici 2026',
