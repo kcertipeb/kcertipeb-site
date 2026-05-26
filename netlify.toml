@@ -2,3 +2,17 @@
   command = "npm run build"
   publish = "dist"
   functions = "./netlify/functions"
+
+# Strip trailing slashes — prevents Netlify from redirecting /blog → /blog/
+# Google sees /blog directly from prerendered HTML without any redirect
+[[redirects]]
+  from = "/:splat/"
+  to = "/:splat"
+  status = 301
+  force = true
+
+# SPA fallback — serves index.html for any route not found as a static file
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
