@@ -48,6 +48,21 @@ export default function FAQ() {
           answer:
             'Ja, het EPC-certificaat is in Brussel verplicht voor elke verkoop of verhuur van een woning en moet vermeld worden in vastgoedadvertenties.',
         },
+        {
+          question: 'Is het EPC verplicht in heel België?',
+          answer:
+            'Ja, een energieprestatiecertificaat is verplicht in de drie gewesten van België: het Brusselse Hoofdstedelijke Gewest (EPC / PEB), het Vlaamse Gewest (EPC) en het Waalse Gewest (PEB). Elk gewest heeft zijn eigen regelgeving, zijn eigen certificateurs en zijn eigen register. Een Waals of Vlaams attest is niet geldig in Brussel.',
+        },
+        {
+          question: 'Wie mag een EPC-certificaat opmaken in Brussel?',
+          answer:
+            'Alleen een erkende EPC-certificateur (Expert PEB) die door Leefmilieu Brussel is goedgekeurd, mag een wettelijk geldig EPC-certificaat afleveren in het Brussels Hoofdstedelijk Gewest. KCertiPEB is een erkende certificateur die actief is in alle 19 Brusselse gemeenten.',
+        },
+        {
+          question: 'Wat is het verschil tussen een EPC en een energie-audit?',
+          answer:
+            'Het EPC is een verplicht document dat uw woning een energieklasse van A tot G geeft — nodig voor verkoop of verhuur. Een energie-audit is een vrijwillige, diepgaande analyse die concrete renovatieaanbevelingen geeft om uw energieprestatie te verbeteren. Het EPC is de wettelijke minimumverplichting; de audit is de volgende stap om te renoveren.',
+        },
       ]
     : [
         {
@@ -84,6 +99,21 @@ export default function FAQ() {
           question: 'Le certificat PEB est-il obligatoire ?',
           answer:
             "Oui, le certificat PEB est obligatoire à Bruxelles pour toute vente ou location d'un bien immobilier et doit figurer dans les annonces immobilières.",
+        },
+        {
+          question: 'Le certificat PEB est-il obligatoire en Belgique ?',
+          answer:
+            "Oui, un certificat de performance énergétique est obligatoire dans les trois régions de Belgique : la Région de Bruxelles-Capitale (PEB), la Région flamande (EPC) et la Région wallonne (PEB). Chaque région dispose de sa propre législation, de ses propres certificateurs agréés et de son propre registre. Un certificat établi en Wallonie ou en Flandre n'est pas valable à Bruxelles.",
+        },
+        {
+          question: 'Qui peut établir un certificat PEB à Bruxelles ?',
+          answer:
+            "Seul un Expert PEB agréé par Bruxelles Environnement est habilité à délivrer un certificat PEB légalement valable en Région de Bruxelles-Capitale. KCertiPEB est certificateur agréé, actif dans les 19 communes bruxelloises. Tout certificat établi par une personne non agréée est nul et sans effet.",
+        },
+        {
+          question: "Quelle est la différence entre le certificat PEB et un audit énergétique ?",
+          answer:
+            "Le certificat PEB est un document obligatoire qui classe votre bien de A à G — indispensable pour vendre ou louer. L'audit énergétique est une analyse approfondie et volontaire qui identifie les travaux prioritaires pour améliorer la performance de votre logement. Le PEB est la condition légale minimale ; l'audit est l'étape suivante pour planifier une rénovation.",
         },
       ];
 

@@ -19,6 +19,10 @@ import BlogPage from './pages/BlogPage';
 import BlogPostCertificatPEB from './pages/BlogPostCertificatPEB';
 import BlogPostCopropriete from './pages/BlogPostCopropriete';
 import BlogPostAmeliorerPEB from './pages/BlogPostAmeliorerPEB';
+import BlogPostCombienCoute from './pages/BlogPostCombienCoute';
+import BlogPostAmende from './pages/BlogPostAmende';
+import BlogPostDifferencePebAudit from './pages/BlogPostDifferencePebAudit';
+import BlogPostCommentObtenir from './pages/BlogPostCommentObtenir';
 import ImmeubelePEB from './pages/ImmeubelePEB';
 import CommunePage from './pages/CommunePage';
 import UrgentPEB from './pages/UrgentPEB';
@@ -55,6 +59,10 @@ function AppShell() {
         <Route path="/blog/certificat-peb-bruxelles-guide-complet-2026" element={<BlogPostCertificatPEB />} />
         <Route path="/blog/certificat-peb-copropriete-bruxelles" element={<BlogPostCopropriete />} />
         <Route path="/blog/ameliorer-certificat-peb-bruxelles" element={<BlogPostAmeliorerPEB />} />
+        <Route path="/blog/combien-coute-certificat-peb-bruxelles" element={<BlogPostCombienCoute />} />
+        <Route path="/blog/amende-sans-certificat-peb-bruxelles" element={<BlogPostAmende />} />
+        <Route path="/blog/difference-peb-audit-energetique" element={<BlogPostDifferencePebAudit />} />
+        <Route path="/blog/comment-obtenir-certificat-peb-bruxelles" element={<BlogPostCommentObtenir />} />
         <Route path="/certificat-peb-immeuble-bruxelles" element={<ImmeubelePEB />} />
         <Route path="/certificat-peb-urgent-bruxelles" element={<UrgentPEB />} />
         <Route path="/certificat-peb/:slug" element={<CommunePage />} />

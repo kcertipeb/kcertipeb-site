@@ -140,7 +140,7 @@ export default function Pricing() {
               <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">
                 <span className="text-2xl">✓</span>
               </div>
-              <p className="text-gray-700 font-semibold">Délai de 3-5 jours</p>
+              <p className="text-gray-700 font-semibold">Certificat en 48h</p>
             </div>
             <div className="text-center">
               <div className="bg-emerald-100 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3">

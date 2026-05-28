@@ -12,7 +12,7 @@ export default function Services() {
           title: 'EPC Appartement & Woning',
           description: 'EPC-certificaat voor appartementen en woningen in Brussel. Vaste prijzen vanaf 120 €, snelle interventie.',
           features: ["Appartementen van alle oppervlaktes", "Eengezinswoningen", "Studio's en penthouses", "Villa's en residentiële woningen"],
-          link: '/certificat-peb-appartement-bruxelles',
+          link: '/tarifs',
           linkLabel: 'Bekijk tarieven',
         },
         {
@@ -38,7 +38,7 @@ export default function Services() {
           title: 'PEB Appartement & Maison',
           description: 'Certificat PEB pour appartements et maisons à Bruxelles. Tarifs fixes dès 120 €, intervention rapide.',
           features: ['Appartements de toutes surfaces', 'Maisons unifamiliales', 'Studios et penthouses', 'Villas et résidences'],
-          link: '/certificat-peb-appartement-bruxelles',
+          link: '/tarifs',
           linkLabel: 'Voir les tarifs',
         },
         {

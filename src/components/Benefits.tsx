@@ -14,7 +14,7 @@ export default function Benefits() {
         {
           icon: <Clock className="h-8 w-8 text-emerald-600" />,
           title: 'Snelle termijn',
-          description: 'Interventie binnen 48 uur en aflevering van het certificaat binnen 3 tot 5 werkdagen.',
+          description: 'Interventie binnen 48 uur en aflevering van het officiële EPC-certificaat binnen 48 uur na het bezoek.',
         },
         {
           icon: <MapPin className="h-8 w-8 text-emerald-600" />,
@@ -46,7 +46,7 @@ export default function Benefits() {
         {
           icon: <Clock className="h-8 w-8 text-emerald-600" />,
           title: 'Délai rapide',
-          description: 'Intervention sous 48 h et remise du certificat en 3 à 5 jours ouvrables maximum.',
+          description: 'Intervention sous 48 h et remise du certificat PEB officiel sous 48 h après la visite.',
         },
         {
           icon: <MapPin className="h-8 w-8 text-emerald-600" />,

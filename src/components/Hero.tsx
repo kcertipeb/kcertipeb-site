@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Shield, Clock, Star, Phone, Send, CalendarDays } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { insertContactSubmission } from '../lib/contactSubmission';
@@ -39,7 +40,7 @@ export default function Hero() {
 
   const content = isDutch
     ? {
-        title: 'EPC-certificaat in Brussel met duidelijke tarieven vanaf',
+        title: 'Energieprestatiecertificaat in Brussel — heldere tarieven vanaf',
         subtitle:
           'Kies het type pand en de oppervlakte en reserveer uw bezoek. De prijs verschijnt meteen vóór de reservering.',
         primaryCta: 'Reserveer een bezoek',
@@ -58,6 +59,7 @@ export default function Hero() {
         formIntro:
           'De prijs wordt onmiddellijk weergegeven volgens het type pand en de oppervlakte. Daarna nemen wij contact op om het bezoek te plannen.',
         urgentHelp: 'Onmiddellijk antwoord nodig?',
+        urgentLink: 'Spoedservice bekijken — interventie binnen 48u',
         name: 'Naam',
         phone: 'Telefoon',
         email: 'E-mail',
@@ -105,6 +107,7 @@ export default function Hero() {
         formIntro:
           'Le prix est indiqué directement selon le type de bien et la surface. Nous vous recontactons ensuite pour organiser la visite.',
         urgentHelp: "Besoin d'une réponse immédiate ?",
+        urgentLink: 'Service urgent — intervention sous 48h',
         name: 'Nom',
         phone: 'Téléphone',
         email: 'Email',
@@ -287,6 +290,12 @@ export default function Hero() {
                       </a>
                     </div>
                   </div>
+                  <Link
+                    to="/certificat-peb-urgent-bruxelles"
+                    className="mt-2 block text-xs font-semibold text-red-600 hover:underline"
+                  >
+                    ⚡ {content.urgentLink}
+                  </Link>
                 </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">

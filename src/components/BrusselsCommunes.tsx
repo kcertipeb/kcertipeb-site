@@ -60,7 +60,7 @@ export default function BrusselsCommunes() {
               <h4 className="mb-2 font-semibold">{isDutch ? 'Voor woningen' : 'Pour les maisons'}</h4>
               <p>
                 {isDutch
-                  ? 'Energiecertificering voor eengezinswoningen in Brussel. Tarieven vanaf 210 € inclusief btw avec certificat officiel.'
+                  ? 'Energiecertificering voor eengezinswoningen in Brussel. Tarieven vanaf 210 € inclusief btw met officieel certificaat.'
                   : 'Certification énergétique pour maisons unifamiliales à Bruxelles. Tarifs à partir de 210 € TVAC avec certificat officiel.'}
               </p>
             </div>
