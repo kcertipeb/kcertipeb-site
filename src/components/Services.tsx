@@ -1,4 +1,4 @@
-import { Home, Building2, ClipboardCheck } from 'lucide-react';
+import { Home, Building2, ClipboardCheck, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../lib/language';
 
@@ -98,6 +98,24 @@ export default function Services() {
               </Link>
             </div>
           ))}
+        </div>
+
+        {/* Urgency banner */}
+        <div className="mt-10 flex items-center justify-between gap-4 rounded-xl bg-red-50 px-6 py-4 md:px-8">
+          <div className="flex items-center gap-3">
+            <Zap className="h-6 w-6 flex-shrink-0 text-red-600" />
+            <p className="font-medium text-gray-800">
+              {isDutch
+                ? 'Heeft u uw EPC dringend nodig? Wij garanderen een afspraak binnen 48 uur.'
+                : 'Besoin de votre PEB en urgence ? Nous garantissons un rendez-vous sous 48h.'}
+            </p>
+          </div>
+          <Link
+            to="/certificat-peb-urgent-bruxelles"
+            className="flex-shrink-0 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+          >
+            {isDutch ? 'PEB Express' : 'PEB Express'}
+          </Link>
         </div>
       </div>
     </section>

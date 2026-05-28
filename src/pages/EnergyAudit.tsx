@@ -6,10 +6,19 @@ export default function EnergyAudit() {
   return (
     <>
       <SEO
-        title="Audit énergétique à Bruxelles | Réduisez vos factures"
-        description="Audit énergétique complet à Bruxelles. Analyse détaillée et recommandations concrètes pour réduire vos factures d'énergie. Devis gratuit."
+        title="Audit énergétique à Bruxelles"
+        description="Audit énergétique complet à Bruxelles. Réduisez vos factures jusqu'à 50 %, accédez aux primes rénovation. Rapport officiel remis en 5-7 jours. Devis gratuit."
         keywords="audit énergétique bruxelles, audit énergétique maison, rénovation énergétique bruxelles, économie d'énergie, audit thermique bruxelles, bilan énergétique maison, amélioration performance énergétique"
         canonical="https://kcertipeb.be/audit-energetique-bruxelles"
+        extraSchema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'Audit énergétique Bruxelles',
+          serviceType: 'Audit énergétique',
+          provider: { '@type': 'LocalBusiness', name: 'K Certipeb', url: 'https://kcertipeb.be' },
+          areaServed: { '@type': 'City', name: 'Bruxelles' },
+          description: "Audit énergétique complet avec rapport officiel, recommandations de travaux et accès aux primes rénovation à Bruxelles.",
+        }}
       />
 
       {/* Hero */}

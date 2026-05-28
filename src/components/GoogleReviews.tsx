@@ -6,36 +6,26 @@ const REVIEWS = [
     name: 'Pascal Messinne',
     rating: 5,
     text: 'Super rapide, très aimable, efficace. Devis respecté à la lettre et ponctuel. Je recommande largement.',
-    dateFr: 'il y a 4 jours',
-    dateNl: '4 dagen geleden',
   },
   {
     name: 'Bri Lefrancq',
     rating: 5,
     text: 'Réactif et donnant de très judicieux conseils.',
-    dateFr: 'il y a 22 heures',
-    dateNl: '22 uur geleden',
   },
   {
     name: 'Paulo Correia',
     rating: 5,
     text: 'Ponctuel, sérieux et compétent !',
-    dateFr: 'il y a 2 semaines',
-    dateNl: '2 weken geleden',
   },
   {
     name: 'Carla Goncalves',
     rating: 5,
     text: 'Super certificateur ! Rapide, clair et efficace, je suis très satisfaite ! Je recommande.',
-    dateFr: 'il y a 2 semaines',
-    dateNl: '2 weken geleden',
   },
   {
     name: 'Andreia Gomes',
     rating: 5,
     text: 'Service rapide et très professionnel. Le certificateur a été clair dans ses explications, de bons conseils et le certificat a été reçu rapidement. Très satisfaite, je recommande !',
-    dateFr: 'il y a 2 semaines',
-    dateNl: '2 weken geleden',
   },
 ];
 
@@ -138,7 +128,6 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
                     <Avatar name={featured.name} />
                     <div>
                       <p className="font-bold text-white">{featured.name}</p>
-                      <p className="text-xs text-emerald-200">{isDutch ? featured.dateNl : featured.dateFr}</p>
                     </div>
                   </div>
                   <div className="mt-2">
@@ -166,7 +155,6 @@ export default function GoogleReviews({ compact = false }: { compact?: boolean }
                 <Avatar name={review.name} />
                 <div>
                   <p className="text-sm font-semibold text-gray-900">{review.name}</p>
-                  <p className="text-xs text-gray-400">{isDutch ? review.dateNl : review.dateFr}</p>
                 </div>
               </div>
               <StarRating rating={review.rating} size="sm" />

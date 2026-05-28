@@ -9,8 +9,8 @@ export default function HousePEB() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPC-certificaat woning in Brussel',
-        seoDescription: 'EPC-certificaat voor woningen in Brussel vanaf 210 €.',
+        seoTitle: 'EPC woning Brussel',
+        seoDescription: 'EPC-certificaat voor woning in Brussel vanaf 210 € TVAC. Erkende expert, interventie binnen 48u, officieel attest in 3-5 werkdagen.',
         badge: 'EPC-certificaat woning',
         title: 'EP-certificaat voor woning in Brussel',
         intro: 'Specialist in woningen in Brussel. Volledige analyse, officieel verslag en duidelijke tarieven.',
@@ -37,8 +37,8 @@ export default function HousePEB() {
         finalText: 'Neem nu contact met ons op voor een snelle en professionele service.',
       }
     : {
-        seoTitle: 'Certificat PEB maison à Bruxelles',
-        seoDescription: 'Certificat PEB pour maison à Bruxelles dès 210 €.',
+        seoTitle: 'PEB Maison Bruxelles',
+        seoDescription: 'Certificat PEB pour maison à Bruxelles dès 210 € TVAC. Expert agréé, intervention sous 48h, certificat officiel en 3-5 jours ouvrables.',
         badge: 'Certificat PEB Maison',
         title: 'Certificat PEB pour maison à Bruxelles',
         intro: 'Spécialiste des maisons à Bruxelles. Analyse complète, rapport officiel et tarifs transparents.',
@@ -67,7 +67,20 @@ export default function HousePEB() {
 
   return (
     <>
-      <SEO title={content.seoTitle} description={content.seoDescription} canonical="https://kcertipeb.be/certificat-peb-maison-bruxelles" />
+      <SEO
+        title={content.seoTitle}
+        description={content.seoDescription}
+        canonical="https://kcertipeb.be/certificat-peb-maison-bruxelles"
+        extraSchema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: isDutch ? 'EPC-certificaat woning Brussel' : 'Certificat PEB maison Bruxelles',
+          serviceType: isDutch ? 'EPC-certificering' : 'Certification PEB',
+          provider: { '@type': 'LocalBusiness', name: 'K Certipeb', url: 'https://kcertipeb.be' },
+          areaServed: { '@type': 'City', name: isDutch ? 'Brussel' : 'Bruxelles' },
+          offers: { '@type': 'Offer', price: '210', priceCurrency: 'EUR', description: isDutch ? 'Vanaf 210 € TVAC voor woning < 100 m²' : 'Dès 210 € TVAC pour maison < 100 m²' },
+        }}
+      />
 
       <section className="bg-gradient-to-b from-blue-50 to-white pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

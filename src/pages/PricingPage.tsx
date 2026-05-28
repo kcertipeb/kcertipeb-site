@@ -47,9 +47,9 @@ export default function PricingPage() {
         prosText:
           'Bent u makelaar, projectontwikkelaar of architect? Dan kunnen wij u aangepaste tarieven voorstellen voor meerdere certificeringen.',
         cta: 'Bekijk mijn prijs',
-        seoTitle: 'Tarieven EPC-certificaat in Brussel',
+        seoTitle: 'Tarieven EPC Brussel 2025',
         seoDescription:
-          'Tarieven van het EPC-certificaat in Brussel vanaf 120 € voor een appartement en 210 € voor een woning.',
+          'EPC-tarieven in Brussel: appartement vanaf 120 € TVAC, woning vanaf 210 € TVAC. Vaste prijs zonder verborgen kosten. Direct online reserveren.',
       }
     : {
         title: 'Tarifs certificat PEB à Bruxelles',
@@ -69,9 +69,9 @@ export default function PricingPage() {
         prosText:
           'Vous êtes agent immobilier, promoteur ou architecte ? Nous pouvons vous proposer des tarifs adaptés pour plusieurs certifications.',
         cta: 'Voir mon prix',
-        seoTitle: 'Tarifs certificat PEB à Bruxelles',
+        seoTitle: 'Tarifs PEB Bruxelles 2025',
         seoDescription:
-          'Tarifs du certificat PEB à Bruxelles dès 120 € pour appartement et 210 € pour maison.',
+          'Tarifs certificat PEB à Bruxelles : appartement dès 120 € TVAC, maison dès 210 € TVAC. Prix fixes, sans surprise. Comparez et réservez en ligne.',
       };
 
   return (
@@ -81,6 +81,23 @@ export default function PricingPage() {
         description={content.seoDescription}
         keywords={isDutch ? 'tarieven EPC Brussel, prijs EPC certificaat' : 'tarifs certificat EPC bruxelles, prix certificat EPC'}
         canonical="https://kcertipeb.be/tarifs"
+        extraSchema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: isDutch ? 'EPC-certificering Brussel' : 'Certification PEB Bruxelles',
+          serviceType: isDutch ? 'EPC-certificering' : 'Certification PEB',
+          provider: { '@type': 'LocalBusiness', name: 'K Certipeb', url: 'https://kcertipeb.be' },
+          areaServed: { '@type': 'City', name: isDutch ? 'Brussel' : 'Bruxelles' },
+          offers: [
+            { '@type': 'Offer', name: isDutch ? 'EPC appartement < 50m²' : 'PEB appartement < 50m²', price: '120', priceCurrency: 'EUR', description: isDutch ? 'Appartement of studio minder dan 50 m²' : 'Appartement ou studio moins de 50 m²' },
+            { '@type': 'Offer', name: isDutch ? 'EPC appartement 50-75m²' : 'PEB appartement 50-75m²', price: '165', priceCurrency: 'EUR' },
+            { '@type': 'Offer', name: isDutch ? 'EPC appartement 76-100m²' : 'PEB appartement 76-100m²', price: '185', priceCurrency: 'EUR' },
+            { '@type': 'Offer', name: isDutch ? 'EPC appartement > 100m²' : 'PEB appartement > 100m²', price: '205', priceCurrency: 'EUR' },
+            { '@type': 'Offer', name: isDutch ? 'EPC woning < 100m²' : 'PEB maison < 100m²', price: '210', priceCurrency: 'EUR' },
+            { '@type': 'Offer', name: isDutch ? 'EPC woning 101-200m²' : 'PEB maison 101-200m²', price: '240', priceCurrency: 'EUR' },
+            { '@type': 'Offer', name: isDutch ? 'EPC woning > 200m²' : 'PEB maison > 200m²', price: '275', priceCurrency: 'EUR' },
+          ],
+        }}
       />
 
       <section className="bg-gradient-to-b from-emerald-50 to-white pb-16 pt-32">

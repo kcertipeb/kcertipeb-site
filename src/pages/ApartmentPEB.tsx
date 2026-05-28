@@ -9,8 +9,8 @@ export default function ApartmentPEB() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPC-certificaat appartement in Brussel',
-        seoDescription: 'EPC-certificaat voor appartement in Brussel vanaf 120 €.',
+        seoTitle: 'EPC appartement Brussel',
+        seoDescription: 'EPC-certificaat voor appartement in Brussel vanaf 120 € TVAC. Interventie binnen 48u, attest in 3-5 werkdagen. Verplicht bij verkoop of verhuur.',
         badge: 'EPC-certificaat appartement',
         title: 'EPC-certificaat voor appartement in Brussel',
         intro: 'Professionele service voor appartementen in Brussel. Snelle interventie en duidelijke prijzen.',
@@ -42,8 +42,8 @@ export default function ApartmentPEB() {
         finalText: 'Neem nu contact met ons op voor een snelle tussenkomst in Brussel.',
       }
     : {
-        seoTitle: 'Certificat PEB appartement à Bruxelles',
-        seoDescription: 'Certificat PEB pour appartement à Bruxelles dès 120 €.',
+        seoTitle: 'PEB Appartement Bruxelles',
+        seoDescription: 'Certificat PEB pour appartement à Bruxelles dès 120 € TVAC. Intervention sous 48h, certificat en 3-5 jours. Obligatoire pour toute vente ou location.',
         badge: 'Certificat PEB Appartement',
         title: 'Certificat PEB pour appartement à Bruxelles',
         intro: 'Service professionnel pour les appartements à Bruxelles. Intervention rapide et tarif transparent.',
@@ -77,7 +77,20 @@ export default function ApartmentPEB() {
 
   return (
     <>
-      <SEO title={content.seoTitle} description={content.seoDescription} canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles" />
+      <SEO
+        title={content.seoTitle}
+        description={content.seoDescription}
+        canonical="https://kcertipeb.be/certificat-peb-appartement-bruxelles"
+        extraSchema={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: isDutch ? 'EPC-certificaat appartement Brussel' : 'Certificat PEB appartement Bruxelles',
+          serviceType: isDutch ? 'EPC-certificering' : 'Certification PEB',
+          provider: { '@type': 'LocalBusiness', name: 'K Certipeb', url: 'https://kcertipeb.be' },
+          areaServed: { '@type': 'City', name: isDutch ? 'Brussel' : 'Bruxelles' },
+          offers: { '@type': 'Offer', price: '120', priceCurrency: 'EUR', description: isDutch ? 'Vanaf 120 € TVAC voor appartement < 50 m²' : 'Dès 120 € TVAC pour appartement < 50 m²' },
+        }}
+      />
 
       <section className="bg-gradient-to-b from-emerald-50 to-white pb-16 pt-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

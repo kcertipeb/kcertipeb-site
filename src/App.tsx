@@ -21,6 +21,7 @@ import BlogPostCopropriete from './pages/BlogPostCopropriete';
 import BlogPostAmeliorerPEB from './pages/BlogPostAmeliorerPEB';
 import ImmeubelePEB from './pages/ImmeubelePEB';
 import CommunePage from './pages/CommunePage';
+import UrgentPEB from './pages/UrgentPEB';
 import CookieConsent from './components/CookieConsent';
 import { LanguageProvider } from './lib/language';
 
@@ -55,6 +56,7 @@ function AppShell() {
         <Route path="/blog/certificat-peb-copropriete-bruxelles" element={<BlogPostCopropriete />} />
         <Route path="/blog/ameliorer-certificat-peb-bruxelles" element={<BlogPostAmeliorerPEB />} />
         <Route path="/certificat-peb-immeuble-bruxelles" element={<ImmeubelePEB />} />
+        <Route path="/certificat-peb-urgent-bruxelles" element={<UrgentPEB />} />
         <Route path="/certificat-peb/:slug" element={<CommunePage />} />
         <Route path="/lp" element={<LandingPage />} />
         <Route path="/merci" element={<ThankYou />} />

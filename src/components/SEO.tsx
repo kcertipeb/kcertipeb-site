@@ -27,7 +27,7 @@ export default function SEO({
   const { isDutch } = useLanguage();
 
   useEffect(() => {
-    const fullTitle = `${title} | K Certipeb - Expert PEB Bruxelles`;
+    const fullTitle = `${title} | K Certipeb`;
     const siteUrl = 'https://kcertipeb.be';
     const fullCanonical = canonical || window.location.href;
 

@@ -16,8 +16,8 @@ export default function Home() {
         title={isDutch ? 'EPC-certificaat in Brussel' : 'Certificat PEB à Bruxelles'}
         description={
           isDutch
-            ? 'Snel EPC-certificaat in Brussel vanaf 120 € inclusief btw. Appartement of woning, voor verkoop of verhuur. Snelle interventie en officieel conform verslag.'
-            : 'Certificat PEB rapide à Bruxelles dès 120 € TVAC. Appartement ou maison, vente ou location. Intervention rapide et rapport officiel conforme.'
+            ? 'EPC-certificaat in Brussel vanaf 120 € TVAC. Erkend certificateur, interventie binnen 48u, officieel attest in 3-5 werkdagen. Bestel direct online.'
+            : 'Certificat PEB à Bruxelles dès 120 € TVAC. Expert agréé Bruxelles Environnement, intervention sous 48h, certificat en 3-5 jours. Devis en 2 minutes.'
         }
         keywords={
           isDutch
