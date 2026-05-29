@@ -9,8 +9,8 @@ export default function ApartmentPEB() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPC appartement Brussel',
-        seoDescription: 'EPC-certificaat voor appartement in Brussel vanaf 120 € TVAC. Interventie binnen 48u, attest in 3-5 werkdagen. Verplicht bij verkoop of verhuur.',
+        seoTitle: 'Energieprestatiecertificaat appartement Brussel — vanaf 120 €',
+        seoDescription: 'Energieprestatiecertificaat (EPC) voor appartement in Brussel vanaf 120 € incl. btw. Erkend certificateur, interventie binnen 48u, attest in 48u.',
         badge: 'EPC-certificaat appartement',
         title: 'EPC-certificaat voor appartement in Brussel',
         intro: 'Professionele service voor appartementen in Brussel. Snelle interventie en duidelijke prijzen.',
@@ -38,12 +38,13 @@ export default function ApartmentPEB() {
           { title: 'Zeer groot appartement', size: 'Meer dan 100 m²', price: '205 €' },
         ],
         order: 'Bestellen',
+        pricingLink: 'Alle EPC-tarieven voor appartementen bekijken →',
         finalTitle: 'Klaar om uw EPC-certificaat te ontvangen?',
         finalText: 'Neem nu contact met ons op voor een snelle tussenkomst in Brussel.',
       }
     : {
-        seoTitle: 'PEB Appartement Bruxelles',
-        seoDescription: 'Certificat PEB pour appartement à Bruxelles dès 120 € TVAC. Intervention sous 48h, certificat en 3-5 jours. Obligatoire pour toute vente ou location.',
+        seoTitle: 'Certificat PEB Appartement Bruxelles — dès 120 €',
+        seoDescription: 'Certificat PEB pour appartement à Bruxelles dès 120 € TVAC. Intervention sous 48h, certificat en 48h. Obligatoire pour toute vente ou location.',
         badge: 'Certificat PEB Appartement',
         title: 'Certificat PEB pour appartement à Bruxelles',
         intro: 'Service professionnel pour les appartements à Bruxelles. Intervention rapide et tarif transparent.',
@@ -71,6 +72,7 @@ export default function ApartmentPEB() {
           { title: 'Très grand appartement', size: 'Plus de 100 m²', price: '205 €' },
         ],
         order: 'Commander',
+        pricingLink: 'Voir le tableau complet des tarifs appartement →',
         finalTitle: 'Prêt à obtenir votre certificat PEB ?',
         finalText: 'Contactez-nous dès maintenant pour une intervention rapide à Bruxelles.',
       };
@@ -201,6 +203,11 @@ export default function ApartmentPEB() {
               </div>
             ))}
           </div>
+          <p className="mt-8 text-center text-sm">
+            <Link to="/tarifs#appartement" className="font-semibold text-emerald-600 hover:underline">
+              {content.pricingLink}
+            </Link>
+          </p>
         </div>
       </section>
 

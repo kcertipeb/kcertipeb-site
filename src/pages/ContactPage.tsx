@@ -11,8 +11,8 @@ export default function ContactPage() {
         title={isDutch ? 'Contact EPC-certificaat in Brussel' : 'Contact certificat PEB à Bruxelles'}
         description={
           isDutch
-            ? 'Vraag uw EPC-certificaat aan in Brussel. Reactie binnen 1 uur, interventie binnen 48u. Erkend certificateur Brussel Leefmilieu. Bel: +32 486 98 74 84.'
-            : 'Demandez votre certificat PEB à Bruxelles. Réponse en moins d\'1h, visite sous 48h. Certificateur agréé Bruxelles Environnement. Tél : +32 486 98 74 84.'
+            ? 'Dringend EPC-certificaat nodig in Brussel? Interventie binnen 48u, beschikbaar 7 dagen op 7. Erkend certificateur. Reserveer nu uw afspraak.'
+            : "Besoin d'un certificat PEB urgent à Bruxelles ? Intervention sous 48h, disponible 7j/7. Réservez votre créneau maintenant."
         }
         keywords={
           isDutch

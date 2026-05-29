@@ -160,8 +160,8 @@ export default function CommunePage() {
                 <div className="flex">
                   {[1,2,3,4,5].map((s) => <Star key={s} className="h-5 w-5 fill-yellow-400 text-yellow-400" />)}
                 </div>
-                <span className="text-sm font-semibold text-gray-700">4.9/5</span>
-                <span className="text-sm text-gray-500">(127 avis Google)</span>
+                <span className="text-sm font-semibold text-gray-700">5/5</span>
+                <span className="text-sm text-gray-500">{isDutch ? '(6 Google beoordelingen)' : '(6 avis Google)'}</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -346,8 +346,8 @@ export default function CommunePage() {
                 title: isDutch ? 'Energie-audit' : 'Audit énergétique',
                 price: isDutch ? 'Op aanvraag' : 'Sur devis',
                 desc: isDutch
-                  ? `Volledige energie-audit voor uw woning in ${name}. Prioritaire werken en subsidies.`
-                  : `Audit énergétique complet pour votre bien à ${name}. Travaux prioritaires et primes.`,
+                  ? `Volledige energie-audit voor uw woning in ${name}. Prioritaire werken en persoonlijk renovatieplan.`
+                  : `Audit énergétique complet pour votre bien à ${name}. Travaux prioritaires et plan de rénovation sur mesure.`,
                 link: '/audit-energetique-bruxelles',
               },
             ].map(({ title, price, desc, link }) => (

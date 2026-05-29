@@ -9,18 +9,18 @@ export default function UrgentPEB() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPC spoed Brussel',
-        seoDescription: 'Urgent EPC-certificaat in Brussel nodig? Afspraak binnen 48u, attest in 3-5 werkdagen. Erkend certificateur. Bel +32 486 98 74 84.',
+        seoTitle: 'Urgent EPC-certificaat Brussel — Interventie 48u',
+        seoDescription: 'Urgent EPC-certificaat in Brussel nodig? Afspraak binnen 48u, attest in 48u. Erkend certificateur, beschikbaar 7 dagen op 7. Bel +32 486 98 74 84.',
         badge: 'EPC Express',
         title: 'EPC-certificaat in spoed te Brussel',
         subtitle: '48u interventie gegarandeerd',
-        intro: 'Uw verkoop of verhuur kan niet wachten? Wij garanderen een afspraak binnen 48 uur en leveren uw officieel EPC-attest binnen 3 tot 5 werkdagen.',
+        intro: 'Uw verkoop of verhuur kan niet wachten? Wij garanderen een afspraak binnen 48 uur en leveren uw officieel EPC-attest binnen 48 uur na het bezoek.',
         cta: 'Bel nu – Directe reactie',
         ctaLink: 'Bekijk mijn prijs',
         phone: '+32486987484',
         guarantees: [
           { title: 'Afspraak binnen 48u', text: 'Wij passen ons aan uw agenda aan, ook op zaterdag.' },
-          { title: 'Attest in 3-5 werkdagen', text: 'Het officieel EPC-certificaat wordt afgeleverd binnen 3 tot 5 werkdagen na de plaatsbezoek.' },
+          { title: 'Attest in 48u', text: 'Het officieel EPC-certificaat wordt afgeleverd binnen 48 uur na het plaatsbezoek.' },
           { title: 'Erkend certificateur', text: 'Al onze certificateurs zijn erkend door Leefmilieu Brussel.' },
           { title: 'Prioritaire behandeling', text: 'Spoeddossiers worden als eerste behandeld in onze planning.' },
         ],
@@ -38,6 +38,22 @@ export default function UrgentPEB() {
           'Facturen gas en elektriciteit (optioneel)',
           'Bouwjaar van het gebouw indien bekend',
         ],
+        rapidTitle: 'Snelle EPC-interventie in Brussel',
+        rapidIntro: 'Een dringend dossier kan niet weken wachten. Bij KCertiPEB is snelheid onze hoofdbelofte — geen toeslag, geen wachtrij.',
+        rapidPoints: [
+          'Antwoord op uw aanvraag dezelfde dag',
+          'Afspraak gepland binnen maximaal 48u',
+          'Attest bezorgd binnen 48 uur na het bezoek',
+          'Officieel attest onmiddellijk geldig voor notaris en verhuur',
+        ],
+        availTitle: 'EPC-certificateur beschikbaar 7 dagen op 7 in Brussel',
+        availIntro: 'Uw verkoop wacht niet op het weekend. Wij ook niet. Wij interveniëren van maandag tot zondag in alle 19 Brusselse gemeenten.',
+        availItems: [
+          { day: 'Maandag – Vrijdag', hours: '08u00 – 21u00' },
+          { day: 'Zaterdag', hours: '08u00 – 21u00' },
+          { day: 'Zondag', hours: '08u00 – 21u00' },
+        ],
+        availCta: 'Bekijk onze tarieven',
         faqTitle: 'Veelgestelde vragen (spoed)',
         faqs: [
           { q: 'Kan ik vandaag nog een afspraak krijgen?', a: 'Wij streven ernaar om uw aanvraag dezelfde dag te beantwoorden en een afspraak in te plannen binnen 48 uur. Bel ons direct voor de snelste reactie.' },
@@ -48,18 +64,18 @@ export default function UrgentPEB() {
         pricingNote: 'Tarieven identiek aan standaard: appartement vanaf 120 € TVAC, woning vanaf 210 € TVAC.',
       }
     : {
-        seoTitle: 'PEB urgent Bruxelles',
-        seoDescription: 'Certificat PEB en urgence à Bruxelles ? Rendez-vous sous 48h, certificat en 3-5 jours. Certificateur agréé. Appelez le +32 486 98 74 84.',
+        seoTitle: 'Certificat PEB Urgent Bruxelles — Intervention 48h',
+        seoDescription: 'Certificat PEB en urgence à Bruxelles ? Rendez-vous sous 48h, certificat en 48h. Certificateur agréé disponible 7j/7. Appelez le +32 486 98 74 84.',
         badge: 'PEB Express',
         title: 'Certificat PEB en urgence à Bruxelles',
         subtitle: 'Intervention garantie sous 48h',
-        intro: 'Votre vente ou location ne peut pas attendre ? Nous garantissons un rendez-vous sous 48h et remettons votre certificat PEB officiel en 3 à 5 jours ouvrables.',
+        intro: 'Votre vente ou location ne peut pas attendre ? Nous garantissons un rendez-vous sous 48h et remettons votre certificat PEB officiel sous 48h après la visite.',
         cta: 'Appeler maintenant – Réponse immédiate',
         ctaLink: 'Voir mon prix',
         phone: '+32486987484',
         guarantees: [
           { title: 'Rendez-vous sous 48h', text: 'Nous nous adaptons à votre agenda, y compris le samedi.' },
-          { title: 'Certificat en 3-5 jours', text: 'Le certificat PEB officiel est remis dans les 3 à 5 jours ouvrables après la visite.' },
+          { title: 'Certificat en 48h', text: 'Le certificat PEB officiel est remis sous 48h après la visite.' },
           { title: 'Certificateur agréé', text: 'Tous nos certificateurs sont agréés par Bruxelles Environnement.' },
           { title: 'Traitement prioritaire', text: 'Les dossiers urgents sont traités en priorité dans notre planning.' },
         ],
@@ -77,6 +93,22 @@ export default function UrgentPEB() {
           'Factures gaz et électricité (optionnel)',
           'Année de construction du bâtiment si connue',
         ],
+        rapidTitle: 'Intervention rapide PEB à Bruxelles',
+        rapidIntro: 'Un dossier urgent ne peut pas attendre des semaines. Chez KCertiPEB, la rapidité est notre promesse principale — pas un supplément.',
+        rapidPoints: [
+          'Réponse à votre demande le jour même',
+          'Rendez-vous planifié sous 48h maximum',
+          'Certificat transmis sous 48h après la visite',
+          'Certificat officiel valable immédiatement pour notaire et bailleur',
+        ],
+        availTitle: 'Certificateur PEB disponible 7j/7 à Bruxelles',
+        availIntro: 'Votre vente imminente n\'attend pas le week-end. Ni nous. Nous intervenons du lundi au dimanche dans les 19 communes bruxelloises.',
+        availItems: [
+          { day: 'Lundi – Vendredi', hours: '08h00 – 21h00' },
+          { day: 'Samedi', hours: '08h00 – 21h00' },
+          { day: 'Dimanche', hours: '08h00 – 21h00' },
+        ],
+        availCta: 'Voir les tarifs urgence',
         faqTitle: 'Questions fréquentes (urgence)',
         faqs: [
           { q: 'Puis-je obtenir un rendez-vous aujourd\'hui même ?', a: 'Nous visons à répondre à votre demande le jour même et à fixer un rendez-vous dans les 48h. Appelez-nous directement pour la réponse la plus rapide.' },
@@ -166,6 +198,48 @@ export default function UrgentPEB() {
                 <p className="text-gray-700">{s}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Intervention rapide — targeting "peb rapide bruxelles" */}
+      <section className="bg-gray-50 py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">{content.rapidTitle}</h2>
+          <p className="mb-10 text-center text-lg text-gray-600">{content.rapidIntro}</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {content.rapidPoints.map((point, i) => (
+              <div key={point} className="flex items-start gap-4 rounded-xl bg-white p-5 shadow-sm">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-sm font-bold text-red-600">
+                  {i + 1}
+                </span>
+                <p className="text-gray-700">{point}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Disponible 7j/7 — targeting "certificateur peb disponible bruxelles" */}
+      <section className="bg-white py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-4 text-center text-3xl font-bold text-gray-900">{content.availTitle}</h2>
+          <p className="mb-10 text-center text-lg text-gray-600">{content.availIntro}</p>
+          <div className="mb-8 grid gap-4 sm:grid-cols-3">
+            {content.availItems.map((item) => (
+              <div key={item.day} className="rounded-xl border-2 border-emerald-100 bg-emerald-50 p-6 text-center">
+                <p className="mb-1 font-bold text-gray-900">{item.day}</p>
+                <p className="text-2xl font-extrabold text-emerald-600">{item.hours}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-red-700"
+            >
+              {content.availCta} <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

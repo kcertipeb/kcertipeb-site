@@ -9,8 +9,8 @@ export default function HousePEB() {
 
   const content = isDutch
     ? {
-        seoTitle: 'EPC woning Brussel',
-        seoDescription: 'EPC-certificaat voor woning in Brussel vanaf 210 € TVAC. Erkende expert, interventie binnen 48u, officieel attest in 3-5 werkdagen.',
+        seoTitle: 'Energieprestatiecertificaat woning Brussel — vanaf 210 €',
+        seoDescription: 'Energieprestatiecertificaat (EPC) voor woning in Brussel vanaf 210 € incl. btw. Erkend certificateur, interventie binnen 48u, attest in 48u.',
         badge: 'EPC-certificaat woning',
         title: 'EP-certificaat voor woning in Brussel',
         intro: 'Specialist in woningen in Brussel. Volledige analyse, officieel verslag en duidelijke tarieven.',
@@ -33,12 +33,13 @@ export default function HousePEB() {
           { title: 'Grote woning', size: 'Meer dan 200 m²', price: '275 €' },
         ],
         order: 'Bestellen',
+        pricingLink: 'Alle EPC-tarieven voor woningen bekijken →',
         finalTitle: 'Een EPB-certificaat nodig voor uw woning?',
         finalText: 'Neem nu contact met ons op voor een snelle en professionele service.',
       }
     : {
-        seoTitle: 'PEB Maison Bruxelles',
-        seoDescription: 'Certificat PEB pour maison à Bruxelles dès 210 € TVAC. Expert agréé, intervention sous 48h, certificat officiel en 3-5 jours ouvrables.',
+        seoTitle: 'Certificat PEB Maison Bruxelles — dès 210 €',
+        seoDescription: 'Certificat PEB pour maison à Bruxelles dès 210 € TVAC. Expert agréé, intervention sous 48h, certificat officiel en 48h.',
         badge: 'Certificat PEB Maison',
         title: 'Certificat PEB pour maison à Bruxelles',
         intro: 'Spécialiste des maisons à Bruxelles. Analyse complète, rapport officiel et tarifs transparents.',
@@ -61,6 +62,7 @@ export default function HousePEB() {
           { title: 'Grande maison', size: 'Plus de 200 m²', price: '275 €' },
         ],
         order: 'Commander',
+        pricingLink: 'Voir le tableau complet des tarifs maison →',
         finalTitle: "Besoin d'un certificat PEB pour votre maison ?",
         finalText: 'Contactez-nous dès maintenant pour un service rapide et professionnel.',
       };
@@ -173,6 +175,11 @@ export default function HousePEB() {
               </div>
             ))}
           </div>
+          <p className="mt-8 text-center text-sm">
+            <Link to="/tarifs#maison" className="font-semibold text-blue-600 hover:underline">
+              {content.pricingLink}
+            </Link>
+          </p>
         </div>
       </section>
 
