@@ -6,7 +6,13 @@ export async function handler(event) {
   }
 
   try {
-    const { name, email, phone, property_type, surface_range, address, message } = JSON.parse(event.body);
+    const body = JSON.parse(event.body);
+
+    // Supporte deux formats :
+    // 1) Appel direct depuis le formulaire (payload à plat)
+    // 2) Database Webhook Supabase (payload sous forme { type, table, record })
+    const data = body.record ?? body;
+    const { name, email, phone, property_type, surface_range, address, message } = data;
 
     const transporter = nodemailer.createTransport({
       host: "smtp.office365.com",
