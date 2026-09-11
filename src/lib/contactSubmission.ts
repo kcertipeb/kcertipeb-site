@@ -48,24 +48,11 @@ export const insertContactSubmission = async (payload: ContactSubmissionPayload)
     result = await supabase.from('contact_submissions').insert([fallbackSubmission]);
   }
 
-  // ✅ ENVOI EMAIL VIA NETLIFY (en arrière-plan, sans bloquer le client)
-  fetch("/.netlify/functions/send-contact-email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: submission.name,
-      email: submission.email,
-      phone: submission.phone,
-      property_type: submission.property_type,
-      surface_range: submission.surface_range,
-      address: submission.address,
-      message: submission.message,
-    }),
-  })
-    .then(() => console.log("✅ Email envoyé via Netlify"))
-    .catch((err) => console.error("❌ Erreur envoi email:", err));
+  // ℹ️ L'envoi de l'email est déclenché côté serveur par un Database Webhook
+  // Supabase (table contact_submissions, sur INSERT) qui appelle directement
+  // /.netlify/functions/send-contact-email. Ça ne dépend plus du navigateur
+  // du client, donc pas besoin de le déclencher aussi depuis ici (ça
+  // enverrait l'email en double).
 
   return result;
 };
