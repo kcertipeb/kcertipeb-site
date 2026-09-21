@@ -66,6 +66,7 @@ export default function ThankYou() {
         summary: 'Samenvatting van uw aanvraag',
         propertyType: 'Type pand',
         surface: 'Oppervlakte',
+        slot: 'Gereserveerd tijdslot',
         price: 'Getoonde prijs',
         address: 'Adres van het pand',
         validation: 'De afspraak wordt met u vastgelegd na de definitieve bevestiging van de aanvraag.',
@@ -95,6 +96,7 @@ export default function ThankYou() {
         summary: 'Récapitulatif de votre demande',
         propertyType: 'Type de bien',
         surface: 'Surface',
+        slot: 'Créneau réservé',
         price: 'Prix affiché',
         address: 'Adresse du bien',
         validation: 'Le rendez-vous est fixé avec vous après validation finale de la demande.',
@@ -194,6 +196,12 @@ export default function ThankYou() {
                     <p className="text-sm text-slate-400">{content.surface}</p>
                     <p className="mt-1 text-lg font-semibold text-white">{reservationSummary.surfaceRange}</p>
                   </div>
+                  {reservationSummary.slotLabel && (
+                    <div className="rounded-3xl border border-emerald-400/30 bg-emerald-500/10 px-5 py-5 sm:col-span-2">
+                      <p className="text-sm font-medium text-emerald-200">{content.slot}</p>
+                      <p className="mt-1 text-xl font-bold capitalize text-white">{reservationSummary.slotLabel}</p>
+                    </div>
+                  )}
                   <div className="rounded-3xl border border-emerald-400/30 bg-emerald-500/10 px-5 py-5 sm:col-span-2">
                     <p className="text-sm font-medium text-emerald-200">{content.price}</p>
                     <p className="mt-1 text-3xl font-bold text-white">{reservationSummary.priceLabel}</p>

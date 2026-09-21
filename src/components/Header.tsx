@@ -126,7 +126,7 @@ export default function Header() {
               {content.blog}
             </Link>
             <Link
-              to="/contact"
+              to="/reserver"
               className="rounded-lg bg-emerald-600 px-6 py-2 font-medium text-white transition hover:bg-emerald-700"
             >
               {content.cta}
@@ -194,7 +194,7 @@ export default function Header() {
                 {content.blog}
               </Link>
               <Link
-                to="/contact"
+                to="/reserver"
                 className="rounded-lg bg-emerald-600 px-6 py-2 text-center font-medium text-white transition hover:bg-emerald-700"
                 onClick={() => setMobileMenuOpen(false)}
               >

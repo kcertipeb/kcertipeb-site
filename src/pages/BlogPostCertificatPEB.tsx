@@ -102,7 +102,7 @@ export default function BlogPostCertificatPEB() {
                   1. Actualité : la réforme du certificat PEB change tout en 2026
                 </h2>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  À Bruxelles, <strong>le calendrier d'élimination des passoires énergétiques est désormais acté</strong> dans le Code bruxellois Air-Climat-Énergie (CoBrACE). D'ici <strong>2033</strong>, tous les logements devront atteindre l'objectif PEB 275 kWh/m²/an — ce qui correspond aujourd'hui aux classes F et G. D'ici <strong>2045</strong>, l'objectif sera abaissé à 150 kWh/m²/an. Ces échéances concernent tous les logements : qu'ils soient à vendre, à louer ou occupés par leur propriétaire.
+                  À Bruxelles, <strong>le calendrier d'élimination des passoires énergétiques est désormais acté</strong> dans le Code bruxellois Air-Climat-Énergie (CoBrACE). D'ici <strong>2033</strong>, tous les logements devront atteindre l'objectif PEB 275 kWh/m²/an — soit la classe E actuelle, ce qui condamne les classes F et G. Pour le <strong>1<sup>er</sup> janvier 2046</strong>, l'objectif sera abaissé à 150 kWh/m²/an. Ces échéances concernent tous les logements : qu'ils soient à vendre, à louer ou occupés par leur propriétaire.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   Par ailleurs, le Gouvernement bruxellois a adopté une <strong>réforme profonde du certificat PEB</strong> lui-même : les quatre modèles de certificats existants seront fusionnés en deux (un pour les habitations individuelles, un pour le non résidentiel), un nouveau logiciel de calcul unique sera déployé, et le rôle de "certificateur" évolue vers celui d'<strong>Expert PEB</strong>, formé pour conseiller les propriétaires dans leurs travaux de rénovation.
@@ -110,11 +110,11 @@ export default function BlogPostCertificatPEB() {
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 mb-4 text-sm text-gray-700">
                   <strong className="text-yellow-700">💡 Le saviez-vous ?</strong> À Bruxelles, le bâtiment représente environ <strong>70% des émissions de CO₂</strong>{' '}
                   (<a href="https://environnement.brussels/pro/reglementation/textes-de-loi/reglementation-sur-la-performance-energetique-des-batiments-peb" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">source : Bruxelles Environnement — Réglementation PEB</a>).{' '}
-                  La Région vise la neutralité carbone d'ici 2050, avec une étape clé en 2033 (max 275 kWh/m²/an) et 2045 (max 150 kWh/m²/an).
+                  La Région vise la neutralité carbone d'ici 2050, avec une étape clé en 2033 (max 275 kWh/m²/an) et au 1<sup>er</sup> janvier 2046 (max 150 kWh/m²/an).
                 </div>
                 <p className="text-gray-700 leading-relaxed">
                   Conséquence directe : la demande de certificats PEB a explosé. Les propriétaires qui n'ont pas encore fait certifier leur bien — ou dont le certificat est périmé — doivent agir rapidement.{' '}
-                  <Link to="/contact" className="text-emerald-700 hover:underline">Contacter KCertiPEB</Link> pour obtenir un rendez-vous sous 48h.
+                  <Link to="/reserver" className="text-emerald-700 hover:underline">Contacter KCertiPEB</Link> pour obtenir un rendez-vous sous 48h.
                 </p>
               </section>
 
@@ -172,7 +172,7 @@ export default function BlogPostCertificatPEB() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Besoin d'un certificat PEB à Bruxelles ?</p>
                 <p className="text-emerald-100 text-sm mb-4">KCertiPEB — certificateurs agréés Bruxelles Environnement. Intervention rapide dans les 19 communes.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Demander un devis certificat PEB →
                 </Link>
               </div>
@@ -203,19 +203,19 @@ export default function BlogPostCertificatPEB() {
                     <tbody>
                       <tr>
                         <td className="p-3 border-b border-gray-200">Certificat non fourni</td>
-                        <td className="p-3 border-b border-gray-200 font-bold">200 € à 1 000 €</td>
+                        <td className="p-3 border-b border-gray-200 font-bold">50 € à 100 000 € (sanction pénale)</td>
                       </tr>
                       <tr className="bg-emerald-50">
                         <td className="p-3 border-b border-gray-200">Certificat périmé</td>
-                        <td className="p-3 border-b border-gray-200 font-bold">300 € à 3 000 €</td>
+                        <td className="p-3 border-b border-gray-200 font-bold">Même régime qu'une absence</td>
                       </tr>
                       <tr>
-                        <td className="p-3 border-b border-gray-200">Objectifs 2033 non respectés</td>
-                        <td className="p-3 border-b border-gray-200 font-bold">jusqu'à 26 562 €</td>
+                        <td className="p-3 border-b border-gray-200">Objectif PEB 275 non atteint (2033)</td>
+                        <td className="p-3 border-b border-gray-200 font-bold">2,5 € × m² × écart (kWh/m²/an)</td>
                       </tr>
                       <tr className="bg-emerald-50">
-                        <td className="p-3 border-b border-gray-200">Louer un bien classé G (dès 2026)</td>
-                        <td className="p-3 border-b border-gray-200 font-bold">Nullité du bail possible</td>
+                        <td className="p-3 border-b border-gray-200">Classe PEB absente de l'annonce</td>
+                        <td className="p-3 border-b border-gray-200 font-bold">50 € à 100 000 € (sanction pénale)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -342,7 +342,7 @@ export default function BlogPostCertificatPEB() {
 
                 <h3 className="text-lg font-bold text-emerald-700 mt-5 mb-2">Étape 1 — Prise de contact</h3>
                 <p className="text-gray-700 text-sm mb-4">
-                  <Link to="/contact" className="text-emerald-700 hover:underline">Demandez un devis certificat PEB</Link> en ligne. Réponse sous 2h, rendez-vous sous 24 à 48h dans les 19 communes bruxelloises.
+                  <Link to="/reserver" className="text-emerald-700 hover:underline">Demandez un devis certificat PEB</Link> en ligne. Réponse sous 2h, rendez-vous sous 24 à 48h dans les 19 communes bruxelloises.
                 </p>
 
                 <h3 className="text-lg font-bold text-emerald-700 mt-5 mb-2">Étape 2 — Visite technique</h3>
@@ -385,7 +385,7 @@ export default function BlogPostCertificatPEB() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Certificat PEB sous 48h à Bruxelles</p>
                 <p className="text-emerald-100 text-sm mb-4">Appartement, maison, studio, immeuble — KCertiPEB couvre les 19 communes.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Prendre rendez-vous →
                 </Link>
               </div>
@@ -444,7 +444,7 @@ export default function BlogPostCertificatPEB() {
                         <td className="p-3 border-b border-gray-200">Sur devis</td>
                         <td className="p-3 border-b border-gray-200">Devis spécifique</td>
                         <td className="p-3 border-b border-gray-200">
-                          <Link to="/contact" className="text-emerald-700 hover:underline flex items-center gap-1">
+                          <Link to="/reserver" className="text-emerald-700 hover:underline flex items-center gap-1">
                             Demander un devis <ArrowRight className="h-3.5 w-3.5" />
                           </Link>
                         </td>
@@ -470,7 +470,7 @@ export default function BlogPostCertificatPEB() {
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Le certificat PEB est-il obligatoire pour louer ?</dt>
-                    <dd className="text-gray-700 text-sm leading-relaxed">Oui, obligatoire depuis 2011 à Bruxelles. La classe PEB doit figurer dans l'annonce, une copie est remise au locataire et le numéro de certificat doit être inscrit dans le bail. Depuis avril 2026, les biens classés G sont en outre interdits à la location.</dd>
+                    <dd className="text-gray-700 text-sm leading-relaxed">Oui, obligatoire depuis 2011 à Bruxelles. La classe PEB doit figurer dans l'annonce, une copie est remise au locataire et le numéro de certificat doit être inscrit dans le bail. En revanche, contrairement à une idée reçue, aucune réglementation bruxelloise n'interdit de louer un bien classé G — cette interdiction existe en France, pas à Bruxelles.</dd>
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Combien coûte un certificat PEB à Bruxelles ?</dt>
@@ -482,11 +482,11 @@ export default function BlogPostCertificatPEB() {
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Quel est le délai pour obtenir un certificat PEB ?</dt>
-                    <dd className="text-gray-700 text-sm leading-relaxed">Avec KCertiPEB : <strong>48 à 72h</strong> du premier contact au certificat officiel en main. <Link to="/contact" className="text-emerald-700 hover:underline">Contacter KCertiPEB →</Link></dd>
+                    <dd className="text-gray-700 text-sm leading-relaxed">Avec KCertiPEB : <strong>48 à 72h</strong> du premier contact au certificat officiel en main. <Link to="/reserver" className="text-emerald-700 hover:underline">Contacter KCertiPEB →</Link></dd>
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Que se passe-t-il sans certificat PEB ?</dt>
-                    <dd className="text-gray-700 text-sm leading-relaxed">Amende de <strong>200 à 1 000 €</strong> si non fourni, jusqu'à <strong>3 000 €</strong> si périmé, et jusqu'à <strong>26 562 €</strong> si les objectifs 2033 ne sont pas respectés. La vente peut être bloquée chez le notaire.</dd>
+                    <dd className="text-gray-700 text-sm leading-relaxed">Ne pas fournir le certificat est une infraction pénale : <strong>50 € à 100 000 €</strong> et/ou 8 jours à 2 ans d'emprisonnement — un certificat périmé relève du même régime. Le non-respect des objectifs 2033 fait l'objet d'une amende distincte, calculée à raison de <strong>2,5 € par kWh/m²/an d'écart</strong> multiplié par la surface. La vente peut aussi être bloquée chez le notaire.</dd>
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Peut-on améliorer son certificat PEB ?</dt>
@@ -506,7 +506,7 @@ export default function BlogPostCertificatPEB() {
                   </div>
                   <div className="border border-gray-100 rounded-xl p-5 bg-gray-50">
                     <dt className="font-bold text-gray-900 mb-2 text-sm">Mon bien est classé G — que faire ?</dt>
-                    <dd className="text-gray-700 text-sm leading-relaxed">Priorité : <strong>1)</strong> Isoler les combles (15-20 €/m²), <strong>2)</strong> Remplacer les châssis simple vitrage, <strong>3)</strong> Moderniser le chauffage. Renseignez-vous sur les aides régionales disponibles auprès de <a href="https://environnement.brussels" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">Bruxelles Environnement</a>. <strong>Dès 2033</strong>, tout bien dépassant 275 kWh/m²/an (classes F et G) sera interdit en Région bruxelloise. <Link to="/certificat-peb-maison-bruxelles" className="text-emerald-700 hover:underline">Voir notre page certificat PEB pour une maison →</Link></dd>
+                    <dd className="text-gray-700 text-sm leading-relaxed">Priorité : <strong>1)</strong> Isoler les combles (15-20 €/m²), <strong>2)</strong> Remplacer les châssis simple vitrage, <strong>3)</strong> Moderniser le chauffage. Renseignez-vous sur les aides régionales disponibles auprès de <a href="https://environnement.brussels" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">Bruxelles Environnement</a>. <strong>Dès 2033</strong>, tout bien dépassant 275 kWh/m²/an (classes F et G) devra avoir été rénové, sous peine d'une amende proportionnelle à l'écart constaté. <Link to="/certificat-peb-maison-bruxelles" className="text-emerald-700 hover:underline">Voir notre page certificat PEB pour une maison →</Link></dd>
                   </div>
                 </dl>
               </section>
@@ -515,7 +515,7 @@ export default function BlogPostCertificatPEB() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Besoin d'un certificat PEB à Bruxelles ?</p>
                 <p className="text-emerald-100 text-sm mb-4">Faites confiance à KCertiPEB — certificateurs agréés Bruxelles Environnement. Intervention dans les 19 communes, résultat sous 48h.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Demander un devis gratuit →
                 </Link>
               </div>
@@ -524,7 +524,7 @@ export default function BlogPostCertificatPEB() {
               <section id="sources" className="scroll-mt-24">
                 <h2 className="text-2xl font-bold text-gray-900 border-b-2 border-emerald-100 pb-3 mb-5">Sources</h2>
                 <ul className="space-y-2 text-xs text-gray-500 list-disc list-inside">
-                  <li><a href="https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors">Bruxelles Environnement — Fin programmée des passoires énergétiques (objectifs 2033 et 2045)</a></li>
+                  <li><a href="https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors">Bruxelles Environnement — Fin programmée des passoires énergétiques (objectifs 2033 et 2046)</a></li>
                   <li><a href="https://environnement.brussels/citoyen/reglementation-et-inspection/obligations-et-autorisations/le-certificat-peb-dun-logement-en-region-bruxelloise" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors">Bruxelles Environnement — Le certificat PEB d'un logement en Région bruxelloise</a></li>
                   <li><a href="https://environnement.brussels/pro/reglementation-et-inspection/obligations-et-autorisations/les-certificats-peb" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors">Bruxelles Environnement — Nouveaux certificats PEB à Bruxelles (réforme 2026)</a></li>
                   <li><a href="https://environnement.brussels/pro/reglementation/textes-de-loi/reglementation-sur-la-performance-energetique-des-batiments-peb" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-700 transition-colors">Bruxelles Environnement — Réglementation PEB : les bâtiments représentent 70% des consommations énergétiques</a></li>

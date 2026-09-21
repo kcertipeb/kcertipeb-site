@@ -217,7 +217,7 @@ export default function BlogPostDifferencePebAudit() {
                 <div className="space-y-4 mb-6">
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
                     <h3 className="font-bold text-emerald-900 mb-2">Vous vendez ou louez → Certificat PEB obligatoire</h3>
-                    <p className="text-gray-700 text-sm">Aucune alternative. Le certificat PEB est requis par la loi. Commencez par là. <Link to="/contact" className="text-emerald-700 hover:underline">Demandez votre certificat PEB →</Link></p>
+                    <p className="text-gray-700 text-sm">Aucune alternative. Le certificat PEB est requis par la loi. Commencez par là. <Link to="/reserver" className="text-emerald-700 hover:underline">Demandez votre certificat PEB →</Link></p>
                   </div>
                   <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
                     <h3 className="font-bold text-blue-900 mb-2">Votre bien est classé E, F ou G → Audit recommandé en complément</h3>

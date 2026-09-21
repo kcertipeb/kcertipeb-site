@@ -23,12 +23,15 @@ export interface ReservationPayload {
   propertyType: string;
   surfaceRange: string;
   address: string;
+  /** Libellé du créneau retenu, présent uniquement via le parcours `/reserver`. */
+  slotLabel?: string;
 }
 
 interface StoredReservationSummary {
   propertyType: string;
   surfaceRange: string;
   address: string;
+  slotLabel?: string;
 }
 
 export interface ReservationSummary extends StoredReservationSummary {
@@ -111,6 +114,7 @@ export const buildReservationSummary = (payload: ReservationPayload, language: L
     propertyType: payload.propertyType,
     surfaceRange: payload.surfaceRange || FALLBACK_LABELS[language].surface,
     address: payload.address.trim() || FALLBACK_LABELS[language].address,
+    slotLabel: payload.slotLabel,
     propertyTypeLabel:
       PROPERTY_TYPE_LABELS[language][payload.propertyType] || FALLBACK_LABELS[language].property,
     priceLabel: formatReservationPrice(priceValue, language),
@@ -123,6 +127,7 @@ export const saveReservationSummary = (payload: ReservationPayload) => {
     propertyType: payload.propertyType,
     surfaceRange: payload.surfaceRange,
     address: payload.address.trim(),
+    slotLabel: payload.slotLabel,
   };
 
   sessionStorage.setItem(RESERVATION_SUMMARY_KEY, JSON.stringify(summary));

@@ -7,17 +7,17 @@ export default function BlogPostAmende() {
     <>
       <SEO
         title="Amende sans certificat PEB à Bruxelles : montants 2026 | KCertiPEB"
-        description="Vendre ou louer sans certificat PEB à Bruxelles expose à une amende de 200 à 26 562 €. Montants officiels 2026, situations concernées et comment régulariser rapidement."
+        description="Vendre ou louer sans certificat PEB à Bruxelles est une infraction pénale : 50 € à 100 000 €. Montants officiels 2026, calcul de l'amende liée aux objectifs 2033 et comment régulariser rapidement."
         canonical="https://kcertipeb.be/blog/amende-sans-certificat-peb-bruxelles"
         extraSchema={{
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: 'Amende sans certificat PEB à Bruxelles : montants et sanctions 2026',
-          description: 'Montants des amendes PEB à Bruxelles : de 200 € à 26 562 €. Guide complet des sanctions et comment les éviter.',
+          description: "Montants officiels des amendes PEB à Bruxelles : sanction pénale de 50 € à 100 000 € pour l'absence de certificat, et amende calculée au kWh pour les objectifs 2033 et 2046.",
           author: { '@type': 'Organization', name: 'KCertiPEB', url: 'https://kcertipeb.be' },
           publisher: { '@type': 'Organization', name: 'KCertiPEB', logo: { '@type': 'ImageObject', url: 'https://kcertipeb.be/logo.png' } },
           datePublished: '2026-05-28',
-          dateModified: '2026-05-28',
+          dateModified: '2026-09-21',
           image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1200&h=600&fit=crop',
           url: 'https://kcertipeb.be/blog/amende-sans-certificat-peb-bruxelles',
           mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://kcertipeb.be/blog/amende-sans-certificat-peb-bruxelles' },
@@ -68,10 +68,10 @@ export default function BlogPostAmende() {
 
               {/* GEO-optimized lede — answer in first 2 sentences */}
               <p className="text-gray-700 leading-relaxed mb-4 text-lg font-medium">
-                À Bruxelles, vendre ou louer sans certificat PEB expose à une <strong>amende de 200 à 1 000 €</strong>. En cas de certificat périmé, l'amende peut atteindre <strong>3 000 €</strong>, et si les objectifs énergétiques 2033 ne sont pas respectés, jusqu'à <strong>26 562 €</strong>.
+                À Bruxelles, vendre ou louer sans certificat PEB est une <strong>infraction pénale</strong> : elle expose à une peine d'emprisonnement de 8 jours à 2 ans et/ou à une <strong>amende de 50 € à 100 000 €</strong>. En pratique, Bruxelles Environnement privilégie une amende administrative dont le montant est fixé selon la gravité des faits.
               </p>
               <p className="text-gray-700 leading-relaxed mb-8">
-                Ces sanctions sont prononcées par Bruxelles Environnement et peuvent s'accompagner de la nullité du bail ou d'un blocage de la vente chez le notaire. Ce guide fait le point sur tous les montants officiels, les situations à risque et la marche à suivre pour se régulariser rapidement.
+                Une seconde sanction, totalement distincte, vise le <strong>non-respect des objectifs énergétiques</strong> de 2033 et 2046 : elle se calcule au kWh près, proportionnellement à la surface du bien. Ce guide détaille les deux mécanismes, les situations à risque et la marche à suivre pour se régulariser rapidement.
               </p>
 
               {/* Alert */}
@@ -115,33 +115,33 @@ export default function BlogPostAmende() {
                     <tbody>
                       <tr>
                         <td className="p-3 border-b border-gray-200">Absence de certificat PEB lors d'une vente</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">200 € – 1 000 €</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">50 € – 100 000 € (pénal)</td>
                         <td className="p-3 border-b border-gray-200">Blocage possible chez le notaire</td>
                       </tr>
                       <tr className="bg-red-50">
                         <td className="p-3 border-b border-gray-200">Absence de certificat PEB lors d'une location</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">200 € – 1 000 €</td>
-                        <td className="p-3 border-b border-gray-200">Nullité du bail possible</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">50 € – 100 000 € (pénal)</td>
+                        <td className="p-3 border-b border-gray-200">Réduction de loyer ou nullité du bail possible</td>
                       </tr>
                       <tr>
                         <td className="p-3 border-b border-gray-200">Certificat PEB périmé (+ de 10 ans)</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">300 € – 3 000 €</td>
-                        <td className="p-3 border-b border-gray-200">Idem vente/location sans certificat</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">Même régime qu'une absence</td>
+                        <td className="p-3 border-b border-gray-200">Indexation du loyer impossible</td>
                       </tr>
                       <tr className="bg-red-50">
                         <td className="p-3 border-b border-gray-200">Classe PEB absente de l'annonce immobilière</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">200 € – 500 €</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">50 € – 100 000 € (pénal)</td>
                         <td className="p-3 border-b border-gray-200">Avertissement ou amende selon récidive</td>
                       </tr>
                       <tr>
-                        <td className="p-3 border-b border-gray-200">Non-respect des objectifs PEB 2033 (275 kWh/m²/an)</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">jusqu'à 26 562 €</td>
-                        <td className="p-3 border-b border-gray-200">Interdiction de louer le bien</td>
+                        <td className="p-3 border-b border-gray-200">Objectif PEB 275 non atteint (2033)</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">2,5 € × m² × écart (kWh/m²/an)</td>
+                        <td className="p-3 border-b border-gray-200">Réclamée si le total dépasse 125 €</td>
                       </tr>
                       <tr className="bg-red-50">
-                        <td className="p-3 border-b border-gray-200">Location d'un bien classé G (dès 2026)</td>
-                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">Nullité du bail</td>
-                        <td className="p-3 border-b border-gray-200">Recours possible du locataire</td>
+                        <td className="p-3 border-b border-gray-200">Objectif PEB 150 non atteint (2046)</td>
+                        <td className="p-3 border-b border-gray-200 font-bold text-red-700">Idem — écart plafonné à 125 kWh/m²/an</td>
+                        <td className="p-3 border-b border-gray-200">Ex. officiel 85 m² : jusqu'à 26 562,50 €</td>
                       </tr>
                     </tbody>
                   </table>
@@ -189,7 +189,8 @@ export default function BlogPostAmende() {
                 </div>
 
                 <div className="bg-red-50 border-l-4 border-red-600 rounded-r-lg p-4 text-sm text-gray-700">
-                  <strong className="text-red-700">⚠️ Cas particulier — Biens classés G :</strong> Depuis 2026, les biens classés G sont progressivement interdits à la location à Bruxelles. Un locataire occupant un bien classé G peut demander la nullité du bail et le remboursement des loyers versés. <strong>La situation peut devenir extrêmement coûteuse pour le propriétaire.</strong>
+                  <strong className="text-red-700">⚠️ Idée reçue — Les biens classés G :</strong> contrairement à ce qu'on lit souvent, <strong>aucune réglementation bruxelloise n'interdit de louer un bien classé F ou G</strong>. Cette interdiction existe en France, sur base du DPE. À Bruxelles, la contrainte est un objectif à atteindre en 2033, sanctionné par une amende proportionnelle. En revanche, une classe E, F ou G <strong>réduit bien le montant dont vous pouvez indexer le loyer</strong> pour les baux antérieurs au 14 octobre 2022. Détails dans notre article{' '}
+                  <Link to="/blog/louer-vendre-bien-classe-f-g-bruxelles" className="text-red-700 underline">louer ou vendre un bien classé F ou G à Bruxelles</Link>.
                 </div>
               </section>
 
@@ -197,7 +198,7 @@ export default function BlogPostAmende() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Régularisez votre situation sous 48h</p>
                 <p className="text-emerald-100 text-sm mb-4">KCertiPEB — certificateurs agréés Bruxelles Environnement. Intervention dans les 19 communes bruxelloises.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Demander un certificat PEB d'urgence →
                 </Link>
               </div>
@@ -292,7 +293,7 @@ export default function BlogPostAmende() {
                   {[
                     {
                       q: "Peut-on vendre un bien sans certificat PEB à Bruxelles ?",
-                      a: "Légalement, non. Le notaire ne peut pas authentifier la vente sans certificat PEB valide. En pratique, des actes sont parfois passés sous réserve, mais le vendeur s'expose à une amende de 200 à 1 000 €.",
+                      a: "Légalement, non. Le notaire ne peut pas authentifier la vente sans certificat PEB valide. En pratique, des actes sont parfois passés sous réserve, mais le vendeur commet alors une infraction pénale passible de 50 € à 100 000 €.",
                     },
                     {
                       q: "Le locataire peut-il annuler le bail si le bailleur n'a pas de certificat PEB ?",
@@ -308,7 +309,7 @@ export default function BlogPostAmende() {
                     },
                     {
                       q: "Combien coûte un certificat PEB par rapport à une amende ?",
-                      a: "Un certificat PEB chez KCertiPEB coûte entre 120 € et 310 € TVAC. L'amende minimale est de 200 €, la maximale de 26 562 €. La régularisation est toujours moins coûteuse que la sanction.",
+                      a: "Un certificat PEB chez KCertiPEB coûte entre 120 € et 310 € TVAC. En face, l'absence de certificat est une infraction pénale pouvant atteindre 100 000 €, et l'amende liée aux objectifs 2033 se chiffre en milliers d'euros dès qu'un bien dépasse nettement le seuil. La régularisation est toujours moins coûteuse que la sanction.",
                     },
                   ].map((item) => (
                     <div key={item.q} className="border border-gray-100 rounded-xl p-5 bg-gray-50">
@@ -323,7 +324,7 @@ export default function BlogPostAmende() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Évitez l'amende — obtenez votre certificat PEB sous 48h</p>
                 <p className="text-emerald-100 text-sm mb-4">KCertiPEB, certificateurs agréés Bruxelles Environnement. Appartement dès 120 €, maison dès 210 €.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Demander un devis →
                 </Link>
               </div>

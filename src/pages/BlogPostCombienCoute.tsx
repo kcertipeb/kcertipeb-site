@@ -199,7 +199,7 @@ export default function BlogPostCombienCoute() {
                     Contactez-nous pour recevoir un devis gratuit sous 24h, adapté au nombre d'unités et à la superficie totale.
                   </p>
                   <Link
-                    to="/contact"
+                    to="/reserver"
                     className="inline-block rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
                   >
                     Demander un devis gratuit →
@@ -326,7 +326,7 @@ export default function BlogPostCombienCoute() {
                     Voir tous les tarifs
                   </Link>
                   <Link
-                    to="/contact"
+                    to="/reserver"
                     className="rounded-lg border-2 border-white px-8 py-3 font-semibold text-white transition hover:bg-emerald-700"
                   >
                     Commander maintenant

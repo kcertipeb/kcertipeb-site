@@ -1,7 +1,9 @@
 // netlify/functions/get-google-reviews.js
 // Fetches Google Reviews server-side to keep the API key secret
 
-exports.handler = async function (event, context) {
+// Syntaxe ESM obligatoire : `package.json` déclare `"type": "module"`, donc Node refuse
+// de charger un fichier .js écrit en CommonJS (`exports.handler`).
+export async function handler() {
   const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
   const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID;
 
@@ -63,4 +65,4 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ error: err.message })
     };
   }
-};
+}

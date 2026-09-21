@@ -34,10 +34,10 @@ export default function ImmeubelePEB() {
           'Geldig 10 jaar, geregistreerd bij Leefmilieu Brussel',
         ],
         obligationsTitle: 'Uw verplichtingen als eigenaar of syndicus',
-        obligationsText: 'Elk appartement in een mede-eigendom moet een individueel EPC-certificaat hebben. Tegen 2030 voor alle woningen, tegen 2033 voor alle passief aandelen.',
+        obligationsText: 'Elk appartement in een mede-eigendom moet een individueel EPC-certificaat hebben. Tegen 1 januari 2031 voor alle woningen, tegen 2033 om de energieverslindende panden weg te werken.',
         obligationPoints: [
           'Verplicht bij verkoop of verhuur (geldt al)',
-          'Verplicht voor alle woningen tegen 31/12/2030',
+          'Verplicht voor alle woningen tegen 1 januari 2031',
           'VME mede-aansprakelijk voor conformiteit vanaf 2033',
           'Boete: 2,5 €/kWh/jaar bij overschrijding van het objectief',
         ],
@@ -73,10 +73,10 @@ export default function ImmeubelePEB() {
           'Valable 10 ans, enregistré chez Bruxelles Environnement',
         ],
         obligationsTitle: 'Vos obligations en tant que propriétaire ou syndic',
-        obligationsText: "Chaque appartement d'une copropriété doit avoir son propre certificat PEB individuel. D'ici 2030 pour tous les logements, d'ici 2033 pour éliminer les passoires énergétiques.",
+        obligationsText: "Chaque appartement d'une copropriété doit avoir son propre certificat PEB individuel. Pour le 1er janvier 2031 pour tous les logements, d'ici 2033 pour éliminer les passoires énergétiques.",
         obligationPoints: [
           'Obligatoire à la vente ou location (déjà en vigueur)',
-          "Obligatoire pour tous les logements d'ici le 31/12/2030",
+          "Obligatoire pour tous les logements pour le 1er janvier 2031",
           'ACP co-responsable de la conformité à partir de 2033',
           "Amende : 2,5 €/kWh/an en cas de dépassement de l'objectif",
         ],
@@ -104,7 +104,7 @@ export default function ImmeubelePEB() {
               <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{content.title}</h1>
               <p className="mb-8 text-xl text-gray-600">{content.intro}</p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/contact" className="rounded-lg bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-blue-700">
+                <Link to="/reserver" className="rounded-lg bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-blue-700">
                   {content.cta}
                 </Link>
                 <a
@@ -207,7 +207,7 @@ export default function ImmeubelePEB() {
           <h2 className="mb-4 text-3xl font-bold">{content.finalTitle}</h2>
           <p className="mb-8 text-xl text-blue-50">{content.finalText}</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 shadow-lg transition hover:bg-blue-50">
+            <Link to="/reserver" className="rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 shadow-lg transition hover:bg-blue-50">
               {content.cta}
             </Link>
             <a

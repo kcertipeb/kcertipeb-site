@@ -7,14 +7,14 @@ export default function BlogPostCopropriete() {
     <>
       <SEO
         title="Certificat PEB Copropriété Bruxelles : Guide Syndics 2026 | KCertiPEB"
-        description="Certificat PEB en copropriété à Bruxelles : qui est responsable, délai 2030, rôle de l'ACP, prix par unité. Guide complet pour syndics et copropriétaires."
+        description="Certificat PEB en copropriété à Bruxelles : qui est responsable, délai 2031, rôle de l'ACP, prix par unité. Guide complet pour syndics et copropriétaires."
         canonical="https://kcertipeb.be/blog/certificat-peb-copropriete-bruxelles"
         extraSchema={{
           '@context': 'https://schema.org',
           '@type': 'BlogPosting',
           headline: 'Certificat PEB Copropriété Bruxelles : Guide Syndics 2026',
           description:
-            'Guide complet sur le certificat PEB en copropriété à Bruxelles : obligations légales, responsabilités, délais 2030/2033, prix par unité et rôle du syndic.',
+            'Guide complet sur le certificat PEB en copropriété à Bruxelles : obligations légales, responsabilités, délais 2031/2033, prix par unité et rôle du syndic.',
           author: { '@type': 'Organization', name: 'KCertiPEB', url: 'https://kcertipeb.be' },
           publisher: {
             '@type': 'Organization',
@@ -68,9 +68,9 @@ export default function BlogPostCopropriete() {
               <div className="mb-8 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-5">
                 <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
                 <div>
-                  <p className="font-bold text-amber-900">Délai légal : 31 décembre 2030</p>
+                  <p className="font-bold text-amber-900">Délai légal : 1er janvier 2031</p>
                   <p className="mt-1 text-sm text-amber-800">
-                    Tous les appartements de la Région de Bruxelles-Capitale doivent disposer d'un certificat PEB valide avant le 31/12/2030. À partir de 2033, l'ACP devient co-responsable du respect de cette obligation.
+                    Tous les logements de la Région de Bruxelles-Capitale devront disposer d'un certificat PEB pour le 1er janvier 2031. À partir de 2033, l'ACP devient co-responsable du respect des objectifs PEB par chaque logement de l'immeuble.
                   </p>
                 </div>
               </div>
@@ -117,13 +117,13 @@ export default function BlogPostCopropriete() {
                   En Région de Bruxelles-Capitale, le <strong>certificat PEB</strong> est obligatoire pour toute vente ou mise en location d'un appartement — cette obligation existe depuis 2011 pour les ventes et 2012 pour les locations.
                 </p>
                 <p className="mb-6 text-gray-700">
-                  Depuis la réforme de 2026, une nouvelle obligation s'ajoute : <strong>chaque appartement devra disposer d'un certificat PEB valide avant le 31 décembre 2030</strong>, indépendamment de toute transaction immobilière.
+                  Depuis la réforme de 2026, une nouvelle obligation s'ajoute : <strong>chaque appartement devra disposer d'un certificat PEB pour le 1<sup>er</sup> janvier 2031</strong>, indépendamment de toute transaction immobilière. Cette date dépend de l'entrée en vigueur d'un Arrêté du Gouvernement, prévue au 1<sup>er</sup> janvier 2026 au plus tôt.
                 </p>
                 <div className="grid gap-4 sm:grid-cols-2">
                   {[
                     { label: "Vente d'appartement", detail: "PEB obligatoire depuis 2011 — à remettre à l'acheteur avant signature" },
                     { label: "Location d'appartement", detail: 'PEB obligatoire depuis 2012 — doit figurer dans chaque annonce' },
-                    { label: 'Conformité générale 2030', detail: 'Tous les appartements devront avoir un PEB valide avant le 31/12/2030' },
+                    { label: 'Conformité générale 2031', detail: "Tous les logements devront avoir un PEB pour le 1er janvier 2031" },
                     { label: "Responsabilité ACP dès 2033", detail: "L'Association des Copropriétaires devient co-responsable de la conformité" },
                   ].map((item) => (
                     <div key={item.label} className="rounded-lg border border-emerald-100 bg-emerald-50 p-4">
@@ -158,7 +158,7 @@ export default function BlogPostCopropriete() {
                         <td className="px-4 py-3 text-gray-500">Doit commander son propre PEB</td>
                       </tr>
                       <tr className="bg-gray-50">
-                        <td className="px-4 py-3">Conformité 2030</td>
+                        <td className="px-4 py-3">Conformité 2031</td>
                         <td className="px-4 py-3 font-medium text-emerald-700">Le copropriétaire</td>
                         <td className="px-4 py-3 text-gray-500">Chaque unité = son propre certificat individuel</td>
                       </tr>
@@ -269,9 +269,9 @@ export default function BlogPostCopropriete() {
                 </h2>
                 <div className="mb-6 grid gap-4 sm:grid-cols-3">
                   {[
-                    { label: 'Vente sans PEB', penalty: '500 à 50 000 €', who: 'Copropriétaire vendeur' },
-                    { label: 'Location sans PEB', penalty: '500 à 50 000 €', who: 'Propriétaire bailleur' },
-                    { label: "Non-conformité 2030+", penalty: "2,5 €/kWh/an au-dessus de l'objectif", who: 'Copropriétaire + ACP dès 2033' },
+                    { label: 'Vente sans PEB', penalty: '50 à 100 000 € (pénal)', who: 'Copropriétaire vendeur' },
+                    { label: 'Location sans PEB', penalty: '50 à 100 000 € (pénal)', who: 'Propriétaire bailleur' },
+                    { label: "Objectif PEB non atteint", penalty: "2,5 € × m² × écart (kWh/m²/an)", who: 'Copropriétaire + ACP dès 2033' },
                   ].map((item) => (
                     <div key={item.label} className="rounded-xl border border-red-200 bg-red-50 p-5 text-center">
                       <p className="mb-2 font-bold text-gray-900">{item.label}</p>
@@ -283,7 +283,7 @@ export default function BlogPostCopropriete() {
                 <div className="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
                   <p className="text-sm text-gray-700">
-                    <strong>Agir maintenant vous protège :</strong> En anticipant la certification avant 2030, vous évitez les amendes et facilitez toute future vente ou location.{' '}
+                    <strong>Agir maintenant vous protège :</strong> En anticipant la certification avant 2031, vous évitez les amendes et facilitez toute future vente ou location.{' '}
                     <Link to="/tarifs" className="font-semibold text-emerald-700 hover:underline">Voir les tarifs →</Link>
                   </p>
                 </div>
@@ -333,7 +333,7 @@ export default function BlogPostCopropriete() {
                 </p>
                 <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                   <Link
-                    to="/contact"
+                    to="/reserver"
                     className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-bold text-emerald-700 shadow transition hover:bg-emerald-50"
                   >
                     Demander un devis gratuit <ArrowRight className="h-4 w-4" />

@@ -1,133 +1,98 @@
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { CalendarDays, Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useState, FormEvent } from 'react';
-import { supabase } from '../lib/supabase';
-import { insertContactSubmission } from '../lib/contactSubmission';
-import { buildReservationSummary, getReservationPrice, saveReservationSummary } from '../lib/reservation';
-import { markPendingLeadConversion, trackPhoneCallConversion } from '../lib/tracking';
+import { Link } from 'react-router-dom';
+import { trackPhoneCallConversion } from '../lib/tracking';
 import { useLanguage } from '../lib/language';
 
-const SURFACE_OPTIONS = {
-  appartement: ['< 50 m²', '50 - 75 m²', '76 - 100 m²', '> 100 m²'],
-  maison: ['< 100 m²', '101 - 200 m²', '> 200 m²'],
-} as const;
-
+/**
+ * Formulaire de question courte.
+ *
+ * La prise de rendez-vous a sa propre page, `/reserver` : ce formulaire ne sert plus qu'aux
+ * visiteurs qui veulent poser une question sans réserver de visite.
+ */
 export default function Contact() {
-  const { language, isDutch } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    propertyType: 'appartement',
-    surfaceRange: '',
-    address: '',
-    message: '',
-  });
+  const { isDutch } = useLanguage();
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
   const [error, setError] = useState('');
 
   const content = isDutch
     ? {
-        title: 'Contact – EPC-certificaat in Brussel',
-        subtitle:
-          'Reserveer een bezoek of neem rechtstreeks contact met ons op. De prijs verschijnt volgens het type pand en de oppervlakte.',
+        title: 'Contact — EPC-certificaat in Brussel',
+        subtitle: 'Een vraag? Schrijf ons. Wilt u een bezoek vastleggen, reserveer dan rechtstreeks uw tijdslot.',
+        bookTitle: 'Een bezoek reserveren',
+        bookText: 'Kies uw pand en uw tijdslot online. De prijs verschijnt vóór de bevestiging.',
+        bookCta: 'Mijn tijdslot reserveren',
         fullName: 'Volledige naam *',
         email: 'E-mail *',
-        phone: 'Telefoon *',
-        propertyType: 'Type pand *',
-        apartment: 'Appartement',
-        house: 'Woning',
-        building: 'Gebouw',
-        audit: 'Energie-audit',
-        surface: 'Oppervlakte van het pand',
-        surfaceChip: 'Oppervlakte',
-        price: 'Prijs van het bezoek',
-        fixedPrice: 'Prijs zichtbaar vóór de reservering.',
-        pickSurface: 'Selecteer de oppervlakte om de vaste prijs weer te geven.',
-        address: 'Adres van het pand *',
-        message: 'Bericht of bijkomende informatie',
-        privacy:
-          'Uw persoonsgegevens worden verwerkt in overeenstemming met de AVG. Ze worden uitsluitend gebruikt om uw aanvraag te behandelen.',
-        submit: 'Mijn reservering bevestigen',
+        message: 'Uw vraag *',
+        namePlaceholder: 'Uw naam',
+        emailPlaceholder: 'uw@email.be',
+        messagePlaceholder: 'Stel hier uw vraag.',
+        privacy: 'Uw gegevens worden verwerkt conform de AVG en uitsluitend gebruikt om u te antwoorden.',
+        submit: 'Mijn vraag versturen',
         submitting: 'Verzenden...',
+        sent: 'Bedankt, uw vraag is verzonden. Wij antwoorden binnen 12 uur.',
+        sendError: 'Fout bij het verzenden. Probeer opnieuw of bel ons.',
         details: 'Contactgegevens',
+        phone: 'Telefoon',
         interventionZone: 'Interventiezone',
         region: 'Het volledige Brussels Hoofdstedelijk Gewest',
         openingHours: 'Openingstijden',
+        hours: 'Ma - Zo : 8u00 - 20u00',
         urgent: 'Snelle interventie',
         urgentText: 'Heeft u snel een EPC-certificaat nodig? Bel ons voor een versnelde interventie.',
         callNow: 'Bel nu',
-        unavailable: 'Dienst tijdelijk onbeschikbaar. Bel ons op +32 486 98 74 84.',
-        sendError: 'Fout bij het verzenden. Probeer opnieuw.',
-        namePlaceholder: 'Uw naam',
-        emailPlaceholder: 'uw@email.be',
-        phonePlaceholder: '+32 4XX XX XX XX',
-        addressPlaceholder: 'Straat, nummer, postcode, gemeente',
-        messagePlaceholder: 'Beschrijf uw situatie, termijnen of nuttige informatie.',
-        fallbackPrice: 'Op offerte',
       }
     : {
-        title: 'Contact – Certificat PEB à Bruxelles',
-        subtitle:
-          "Réservez une visite ou contactez-nous directement. Le prix s'affiche selon le type de bien et la surface.",
+        title: 'Contact — Certificat PEB à Bruxelles',
+        subtitle: 'Une question ? Écrivez-nous. Pour fixer une visite, réservez directement votre créneau.',
+        bookTitle: 'Réserver une visite',
+        bookText: 'Choisissez votre bien et votre créneau en ligne. Le prix s’affiche avant la confirmation.',
+        bookCta: 'Réserver mon créneau',
         fullName: 'Nom complet *',
         email: 'Email *',
-        phone: 'Téléphone *',
-        propertyType: 'Type de bien *',
-        apartment: 'Appartement',
-        house: 'Maison',
-        building: 'Immeuble',
-        audit: 'Audit énergétique',
-        surface: 'Surface du bien',
-        surfaceChip: 'Surface',
-        price: 'Prix de la visite',
-        fixedPrice: 'Prix affiché avant la réservation.',
-        pickSurface: 'Sélectionnez la surface pour afficher le prix fixe.',
-        address: 'Adresse du bien *',
-        message: 'Message ou informations complémentaires',
-        privacy:
-          'Vos données personnelles sont traitées conformément au RGPD. Elles sont utilisées uniquement pour traiter votre demande.',
-        submit: 'Confirmer ma réservation',
+        message: 'Votre question *',
+        namePlaceholder: 'Votre nom',
+        emailPlaceholder: 'votre@email.be',
+        messagePlaceholder: 'Posez votre question ici.',
+        privacy: 'Vos données sont traitées conformément au RGPD et utilisées uniquement pour vous répondre.',
+        submit: 'Envoyer ma question',
         submitting: 'Envoi en cours...',
+        sent: 'Merci, votre question est bien partie. Nous répondons sous 12 heures.',
+        sendError: "Erreur lors de l'envoi. Réessayez ou appelez-nous.",
         details: 'Coordonnées',
+        phone: 'Téléphone',
         interventionZone: "Zone d'intervention",
         region: 'Toute la Région de Bruxelles-Capitale',
         openingHours: 'Horaires',
+        hours: 'Lun - Dim : 8h00 - 20h00',
         urgent: 'Intervention rapide',
         urgentText: "Besoin urgent d'un certificat PEB ? Contactez-nous par téléphone pour une intervention express.",
         callNow: 'Appeler maintenant',
-        unavailable: 'Service temporairement indisponible. Appelez-nous au +32 486 98 74 84',
-        sendError: "Erreur lors de l'envoi. Veuillez réessayer.",
-        namePlaceholder: 'Votre nom',
-        emailPlaceholder: 'votre@email.be',
-        phonePlaceholder: '+32 4XX XX XX XX',
-        addressPlaceholder: 'Rue, numéro, code postal, commune',
-        messagePlaceholder: 'Précisez vos besoins, vos délais ou toute information utile.',
-        fallbackPrice: 'Sur devis',
       };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (submitEvent: FormEvent) => {
+    submitEvent.preventDefault();
     setIsSubmitting(true);
     setError('');
 
     try {
-      if (!supabase) {
-        setError(content.unavailable);
-        setIsSubmitting(false);
+      const response = await fetch('/.netlify/functions/send-contact-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        setError(payload.error ?? content.sendError);
         return;
       }
 
-      const { error: dbError } = await insertContactSubmission(formData);
-
-      if (dbError) {
-        setError(`${content.sendError} ${dbError.message}`);
-        setIsSubmitting(false);
-        return;
-      }
-
-      saveReservationSummary(formData);
-      markPendingLeadConversion();
-      window.location.href = '/merci';
+      setIsSent(true);
+      setFormData({ name: '', email: '', message: '' });
     } catch {
       setError(content.sendError);
     } finally {
@@ -135,175 +100,113 @@ export default function Contact() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (changeEvent: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [changeEvent.target.name]: changeEvent.target.value });
   };
-
-  const showSurfaceSelect = formData.propertyType === 'appartement' || formData.propertyType === 'maison';
-  const surfaceOptions = showSurfaceSelect
-    ? SURFACE_OPTIONS[formData.propertyType as keyof typeof SURFACE_OPTIONS]
-    : [];
-  const reservationSummary = buildReservationSummary(formData, language);
-  const selectedPrice = getReservationPrice(formData.propertyType, formData.surfaceRange, language);
 
   return (
     <section id="contact" className="bg-gradient-to-br from-emerald-50 to-white py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-16 text-center">
+        <div className="mb-12 text-center">
           <h2 className="mb-4 text-4xl font-bold text-gray-900">{content.title}</h2>
           <p className="mx-auto max-w-3xl text-xl text-gray-600">{content.subtitle}</p>
         </div>
 
         <div className="grid gap-12 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Renvoi vers le parcours de réservation */}
+            <div className="flex flex-col gap-4 rounded-2xl bg-gradient-to-br from-emerald-900 to-emerald-700 p-8 text-white shadow-xl sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="flex items-center gap-2 text-xl font-bold">
+                  <CalendarDays className="h-6 w-6 text-emerald-300" />
+                  {content.bookTitle}
+                </p>
+                <p className="mt-2 text-sm text-emerald-100">{content.bookText}</p>
+              </div>
+              <Link
+                to="/reserver"
+                className="shrink-0 rounded-lg bg-emerald-500 px-6 py-3 text-center font-bold text-white transition hover:bg-emerald-400"
+              >
+                {content.bookCta} →
+              </Link>
+            </div>
+
             <div className="rounded-2xl bg-white p-8 shadow-xl md:p-10">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block font-semibold text-gray-700">{content.fullName}</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                      placeholder={content.namePlaceholder}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-2 block font-semibold text-gray-700">{content.email}</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                      placeholder={content.emailPlaceholder}
-                    />
-                  </div>
+              {isSent ? (
+                <div className="rounded-xl border-2 border-emerald-500 bg-emerald-50 p-6 text-center">
+                  <p className="font-semibold text-emerald-800">{content.sent}</p>
                 </div>
-
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block font-semibold text-gray-700">{content.phone}</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                      placeholder={content.phonePlaceholder}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-2 block font-semibold text-gray-700">{content.propertyType}</label>
-                    <select
-                      name="propertyType"
-                      value={formData.propertyType}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          propertyType: e.target.value,
-                          surfaceRange: '',
-                        })
-                      }
-                      className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                    >
-                      <option value="appartement">{content.apartment}</option>
-                      <option value="maison">{content.house}</option>
-                      <option value="immeuble">{content.building}</option>
-                      <option value="audit">{content.audit}</option>
-                    </select>
-                  </div>
-                </div>
-
-                {showSurfaceSelect && (
-                  <div>
-                    <label className="mb-2 block font-semibold text-gray-700">{content.surface}</label>
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                      {surfaceOptions.map((option) => {
-                        const isActive = formData.surfaceRange === option;
-
-                        return (
-                          <button
-                            key={option}
-                            type="button"
-                            onClick={() =>
-                              setFormData({
-                                ...formData,
-                                surfaceRange: isActive ? '' : option,
-                              })
-                            }
-                            className={`w-full rounded-2xl border px-3 py-3 text-left transition ${
-                              isActive
-                                ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-100'
-                                : 'border-gray-200 bg-gradient-to-b from-white to-emerald-50/40 text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
-                            }`}
-                            aria-pressed={isActive}
-                          >
-                            <span className="block text-[10px] uppercase tracking-[0.16em] opacity-70">{content.surfaceChip}</span>
-                            <span className="mt-1 block text-sm font-bold leading-tight sm:text-base">{option}</span>
-                          </button>
-                        );
-                      })}
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div>
+                      <label htmlFor="name" className="mb-2 block font-semibold text-gray-700">
+                        {content.fullName}
+                      </label>
+                      <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        autoComplete="name"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
+                        placeholder={content.namePlaceholder}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="mb-2 block font-semibold text-gray-700">
+                        {content.email}
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        autoComplete="email"
+                        className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
+                        placeholder={content.emailPlaceholder}
+                      />
                     </div>
                   </div>
-                )}
 
-                <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4">
-                  <p className="text-sm font-semibold text-gray-900">{content.price}</p>
-                  <p className="mt-1 text-2xl font-bold text-emerald-700">{reservationSummary.priceLabel}</p>
-                  <p className="mt-1 text-sm text-gray-600">
-                    {showSurfaceSelect ? (selectedPrice !== content.fallbackPrice ? content.fixedPrice : content.pickSurface) : ''}
-                  </p>
-                </div>
+                  <div>
+                    <label htmlFor="message" className="mb-2 block font-semibold text-gray-700">
+                      {content.message}
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows={5}
+                      className="w-full resize-none rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
+                      placeholder={content.messagePlaceholder}
+                    />
+                  </div>
 
-                <div>
-                  <label className="mb-2 block font-semibold text-gray-700">{content.address}</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                    placeholder={content.addressPlaceholder}
-                  />
-                </div>
+                  <div className="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
+                    <p className="text-sm text-gray-700">{content.privacy}</p>
+                  </div>
 
-                <div>
-                  <label className="mb-2 block font-semibold text-gray-700">{content.message}</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full resize-none rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
-                    placeholder={content.messagePlaceholder}
-                  />
-                </div>
+                  {error && (
+                    <div className="rounded-lg border-2 border-red-500 bg-red-50 p-4 font-semibold text-red-700">{error}</div>
+                  )}
 
-                <div className="rounded border-l-4 border-blue-500 bg-blue-50 p-4">
-                  <p className="text-sm text-gray-700">{content.privacy}</p>
-                </div>
-
-                {error && <div className="rounded-lg border-2 border-red-500 bg-red-50 p-4 font-semibold text-red-700">{error}</div>}
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex w-full items-center justify-center rounded-lg bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-emerald-700 hover:shadow-xl disabled:cursor-not-allowed disabled:bg-gray-400"
-                >
-                  <Send className="mr-2 h-5 w-5" />
-                  {isSubmitting ? content.submitting : content.submit}
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex w-full items-center justify-center rounded-lg bg-emerald-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-emerald-700 hover:shadow-xl disabled:cursor-not-allowed disabled:bg-gray-400"
+                  >
+                    <Send className="mr-2 h-5 w-5" />
+                    {isSubmitting ? content.submitting : content.submit}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 
@@ -314,7 +217,7 @@ export default function Contact() {
                 <div className="flex items-start">
                   <Phone className="mr-4 mt-1 h-6 w-6 flex-shrink-0 text-emerald-600" />
                   <div>
-                    <p className="mb-1 font-semibold text-gray-900">{content.phone.replace(' *', '')}</p>
+                    <p className="mb-1 font-semibold text-gray-900">{content.phone}</p>
                     <a
                       href="tel:+32486987484"
                       onClick={trackPhoneCallConversion}
@@ -344,7 +247,7 @@ export default function Contact() {
                   <Clock className="mr-4 mt-1 h-6 w-6 flex-shrink-0 text-emerald-600" />
                   <div>
                     <p className="mb-1 font-semibold text-gray-900">{content.openingHours}</p>
-                    <p className="text-gray-700">{isDutch ? 'Ma - Zo : 8u00 - 20u00' : 'Lun - Dim : 8h00 - 20h00'}</p>
+                    <p className="text-gray-700">{content.hours}</p>
                   </div>
                 </div>
               </div>

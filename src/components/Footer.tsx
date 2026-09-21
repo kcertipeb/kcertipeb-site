@@ -94,7 +94,7 @@ export default function Footer() {
               <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
               <li><Link to="/certificat-peb-immeuble-bruxelles" className="transition hover:text-emerald-400">{content.building}</Link></li>
               <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
-              <li><Link to="/contact" className="transition hover:text-emerald-400">{content.cta}</Link></li>
+              <li><Link to="/reserver" className="transition hover:text-emerald-400">{content.cta}</Link></li>
             </ul>
           </div>
 

@@ -165,7 +165,7 @@ export default function CommunePage() {
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
-                  to="/contact"
+                  to="/reserver"
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-8 py-4 font-bold text-white shadow-lg hover:bg-emerald-700 transition"
                 >
                   {isDutch ? 'Gratis offerte aanvragen' : 'Demander un devis gratuit'}
@@ -231,9 +231,9 @@ export default function CommunePage() {
                   {isDutch ? 'Sancties zonder EPC :' : 'Sanctions sans certificat PEB :'}
                 </strong>
                 <ul className="mt-2 space-y-1">
-                  <li>— {isDutch ? 'Niet verstrekt : 200 € tot 1 000 €' : 'Non fourni : 200 € à 1 000 €'}</li>
+                  <li>— {isDutch ? 'Niet verstrekt : 50 € tot 100 000 € (strafrechtelijk)' : 'Non fourni : 50 € à 100 000 € (pénal)'}</li>
                   <li>— {isDutch ? 'Verlopen : 300 € tot 3 000 €' : 'Périmé : 300 € à 3 000 €'}</li>
-                  <li>— {isDutch ? 'Doelstellingen 2033 niet gehaald : tot 26 562 €' : 'Objectifs 2033 non respectés : jusqu\'à 26 562 €'}</li>
+                  <li>— {isDutch ? 'Doelstelling 2033 niet gehaald : 2,5 € × m² × afwijking' : 'Objectif 2033 non atteint : 2,5 € × m² × écart'}</li>
                 </ul>
               </div>
             </div>
@@ -424,7 +424,7 @@ export default function CommunePage() {
               : `KCertiPEB, agréé par Bruxelles Environnement. Devis gratuit, résultat sous 48h dans toute la commune de ${name}.`}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 font-bold text-emerald-700 hover:bg-emerald-50 transition">
+            <Link to="/reserver" className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 font-bold text-emerald-700 hover:bg-emerald-50 transition">
               {isDutch ? 'Gratis offerte' : 'Devis gratuit'} <ArrowRight className="h-5 w-5" />
             </Link>
             <Link to="/tarifs" className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white px-8 py-4 font-bold text-white hover:bg-emerald-600 transition">

@@ -5,6 +5,22 @@ import { useLanguage } from '../lib/language';
 
 const blogPosts = [
   {
+    slug: 'louer-vendre-bien-classe-f-g-bruxelles',
+    title: 'Bien classé F ou G à Bruxelles : peut-on encore louer ou vendre en 2026 ?',
+    titleNl: 'Pand met label F of G in Brussel: nog verhuren of verkopen in 2026?',
+    excerpt:
+      "Non, un logement classé F ou G n'est pas interdit à la location à Bruxelles — l'interdiction est française. Calendrier officiel 2031-2033-2046, calcul réel des amendes et impact immédiat sur l'indexation du loyer.",
+    excerptNl:
+      'Nee, een pand met label F of G mag in Brussel nog verhuurd worden — het verbod geldt in Frankrijk. Officiële kalender 2031-2033-2046, echte berekening van de boetes en impact op de huurindexering.',
+    date: '21 septembre 2026',
+    dateNl: '21 september 2026',
+    readTime: '9 min',
+    badge: '📅 Réglementation — Septembre 2026',
+    badgeNl: '📅 Regelgeving — September 2026',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=400&fit=crop',
+    category: 'Réglementation',
+  },
+  {
     slug: 'comment-obtenir-certificat-peb-bruxelles',
     title: 'Comment obtenir un certificat PEB à Bruxelles ? Guide 2026',
     titleNl: 'Hoe een EPC-certificaat verkrijgen in Brussel? Gids 2026',
@@ -22,8 +38,8 @@ const blogPosts = [
     slug: 'amende-sans-certificat-peb-bruxelles',
     title: 'Amende sans certificat PEB à Bruxelles : montants 2026',
     titleNl: 'Boete zonder EPC-certificaat in Brussel: bedragen 2026',
-    excerpt: "Vendre ou louer sans certificat PEB à Bruxelles expose à une amende de 200 à 26 562 €. Montants officiels 2026, situations concernées et comment se régulariser rapidement.",
-    excerptNl: 'Verkopen of verhuren zonder EPC-certificaat in Brussel riskeert een boete van 200 tot 26.562 €. Officiële bedragen 2026 en hoe u zich snel in orde stelt.',
+    excerpt: "Vendre ou louer sans certificat PEB à Bruxelles est une infraction pénale : 50 € à 100 000 €. Montants officiels 2026, calcul de l'amende liée aux objectifs 2033 et comment se régulariser rapidement.",
+    excerptNl: 'Verkopen of verhuren zonder EPC-certificaat in Brussel is een strafbaar feit: 50 tot 100.000 €. Officiële bedragen 2026 en hoe u zich snel in orde stelt.',
     date: '28 mai 2026',
     dateNl: '28 mei 2026',
     readTime: '6 min',

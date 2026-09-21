@@ -172,7 +172,7 @@ export default function BlogPostAmeliorerPEB() {
               <StatBar />
 
               <Warn>
-                <strong className="text-red-700">⚠️ Attention :</strong> Dès 2033, tout logement bruxellois dépassant 275 kWh/m²/an (classes F et G actuelles) sera passible d'amendes automatiques : <strong>2,5 € par kWh/an d'écart</strong>, avec un minimum de 125 €. Mieux vaut anticiper les travaux maintenant, à votre rythme, que d'être contraint dans l'urgence.
+                <strong className="text-red-700">⚠️ Attention :</strong> Dès 2033, tout logement bruxellois dépassant 275 kWh/m²/an (classes F et G actuelles) sera passible d'une amende calculée sur l'écart à l'objectif : <strong>2,5 € par kWh/an d'écart</strong>, multiplié par la surface, l'écart étant plafonné à 125 kWh/m²/an. L'amende n'est réclamée que si son montant total dépasse 125 €. Mieux vaut anticiper les travaux maintenant, à votre rythme, que d'être contraint dans l'urgence.
               </Warn>
 
               {/* TOC */}
@@ -274,7 +274,7 @@ export default function BlogPostAmeliorerPEB() {
               <Cta
                 title="Connaissez-vous la classe PEB actuelle de votre bien ?"
                 body="Avant d'investir dans des travaux, faites établir un certificat PEB par KCertiPEB. Il identifie précisément les travaux qui auront le plus d'impact sur votre logement spécifique."
-                href="/contact"
+                href="/reserver"
                 cta="Demander un certificat PEB"
               />
 
@@ -378,7 +378,7 @@ export default function BlogPostAmeliorerPEB() {
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   Chez KCertiPEB, la recertification après travaux est disponible dès 125 €. Nous intervenons sous 48h dans les 19 communes bruxelloises.{' '}
-                  <Link to="/contact" className="text-emerald-700 underline">Demandez votre devis →</Link>
+                  <Link to="/reserver" className="text-emerald-700 underline">Demandez votre devis →</Link>
                 </p>
                 <Success>
                   <strong className="text-emerald-700">✅ Stratégie maline :</strong> Un certificat PEB établi <strong>aujourd'hui</strong> est valide jusqu'en 2036 — bien après l'échéance 2033. Il fige votre score actuel, sert de base pour planifier vos travaux, et répond à l'obligation légale de vente et de location. C'est le <strong>premier pas</strong> de toute stratégie de rénovation intelligente.
@@ -388,7 +388,7 @@ export default function BlogPostAmeliorerPEB() {
               <Cta
                 title="Prêt à améliorer votre certificat PEB ?"
                 body="Commencez par faire établir votre certificat actuel : il identifie précisément les travaux prioritaires pour votre logement et leur impact estimé sur votre classe énergétique."
-                href="/contact"
+                href="/reserver"
                 cta="Obtenir mon certificat PEB"
               />
 
@@ -441,7 +441,7 @@ export default function BlogPostAmeliorerPEB() {
               <Cta
                 title="Le premier pas : connaître votre classe PEB actuelle"
                 body="KCertiPEB — certificateurs agréés Bruxelles Environnement. Votre certificat PEB sous 48h dans les 19 communes bruxelloises, avec les recommandations de travaux personnalisées pour votre logement."
-                href="/contact"
+                href="/reserver"
                 cta="Demander mon certificat PEB"
               />
 
@@ -451,7 +451,7 @@ export default function BlogPostAmeliorerPEB() {
                 <ul className="list-disc list-inside space-y-2 text-xs text-gray-500">
                   {[
                     ['https://environnement.brussels/citoyen/reglementation-et-inspection/obligations-et-autorisations/objectifs-peb-pour-chaque-logement-et-exigences-peb-en-cas-de-travaux', 'Bruxelles Environnement — Objectifs PEB par logement et exigences en cas de travaux'],
-                    ['https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques', 'Bruxelles Environnement — Fin programmée des passoires énergétiques : objectifs 2033 et 2045'],
+                    ['https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques', 'Bruxelles Environnement — Fin programmée des passoires énergétiques : objectifs 2033 et 2046'],
                     ['https://environnement.brussels/pro/reglementation/obligations-et-autorisations/certificat-peb-habitation-individuelle', 'Bruxelles Environnement — Déperditions thermiques et calcul du certificat PEB'],
                     ['https://renolution.brussels', "Renolution Bruxelles — Programme d'aide à la rénovation énergétique"],
                     ['https://environnement.brussels/citoyen/aides-primes-et-incitants/aides-financieres-pour-la-construction-et-la-renovation', 'Bruxelles Environnement — Aides financières pour la rénovation (EcoReno, prêts)'],

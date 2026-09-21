@@ -235,7 +235,7 @@ export default function UrgentPEB() {
           </div>
           <div className="text-center">
             <Link
-              to="/contact"
+              to="/reserver"
               className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-red-700"
             >
               {content.availCta} <ArrowRight className="h-4 w-4" />

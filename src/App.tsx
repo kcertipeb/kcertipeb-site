@@ -23,6 +23,8 @@ import BlogPostCombienCoute from './pages/BlogPostCombienCoute';
 import BlogPostAmende from './pages/BlogPostAmende';
 import BlogPostDifferencePebAudit from './pages/BlogPostDifferencePebAudit';
 import BlogPostCommentObtenir from './pages/BlogPostCommentObtenir';
+import BlogPostClasseFG from './pages/BlogPostClasseFG';
+import BookingPage from './pages/BookingPage';
 import ImmeubelePEB from './pages/ImmeubelePEB';
 import CommunePage from './pages/CommunePage';
 import UrgentPEB from './pages/UrgentPEB';
@@ -53,6 +55,7 @@ function AppShell() {
         <Route path="/audit-energetique-bruxelles" element={<EnergyAudit />} />
         <Route path="/tarifs" element={<PricingPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/reserver" element={<BookingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
         <Route path="/blog" element={<BlogPage />} />
@@ -63,6 +66,7 @@ function AppShell() {
         <Route path="/blog/amende-sans-certificat-peb-bruxelles" element={<BlogPostAmende />} />
         <Route path="/blog/difference-peb-audit-energetique" element={<BlogPostDifferencePebAudit />} />
         <Route path="/blog/comment-obtenir-certificat-peb-bruxelles" element={<BlogPostCommentObtenir />} />
+        <Route path="/blog/louer-vendre-bien-classe-f-g-bruxelles" element={<BlogPostClasseFG />} />
         <Route path="/certificat-peb-immeuble-bruxelles" element={<ImmeubelePEB />} />
         <Route path="/certificat-peb-urgent-bruxelles" element={<UrgentPEB />} />
         <Route path="/certificat-peb/:slug" element={<CommunePage />} />

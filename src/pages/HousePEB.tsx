@@ -92,7 +92,7 @@ export default function HousePEB() {
               <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{content.title}</h1>
               <p className="mb-8 text-xl text-gray-600">{content.intro}</p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/contact" className="rounded-lg bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-blue-700">
+                <Link to="/reserver" className="rounded-lg bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition hover:bg-blue-700">
                   {content.cta}
                 </Link>
                 <a
@@ -169,7 +169,7 @@ export default function HousePEB() {
                 <h3 className="mb-2 text-xl font-bold text-gray-900">{item.title}</h3>
                 <p className="mb-4 text-gray-600">{item.size}</p>
                 <p className="mb-6 text-4xl font-bold text-blue-600">{item.price}</p>
-                <Link to="/contact" className="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-blue-700">
+                <Link to="/reserver" className="block w-full rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-blue-700">
                   {content.order}
                 </Link>
               </div>
@@ -189,7 +189,7 @@ export default function HousePEB() {
           <h2 className="mb-4 text-3xl font-bold">{content.finalTitle}</h2>
           <p className="mb-8 text-xl text-blue-50">{content.finalText}</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/contact" className="rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 shadow-lg transition hover:bg-blue-50">
+            <Link to="/reserver" className="rounded-lg bg-white px-8 py-4 font-semibold text-blue-600 shadow-lg transition hover:bg-blue-50">
               {content.cta}
             </Link>
             <a

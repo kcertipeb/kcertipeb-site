@@ -243,7 +243,7 @@ export default function PricingPage() {
                     </div>
                     <p className="mb-5 text-xs text-emerald-200">{content.vatLabel}</p>
                     <Link
-                      to="/contact"
+                      to="/reserver"
                       className="mt-auto block rounded-xl bg-white py-3 text-center text-sm font-bold text-emerald-700 transition hover:bg-emerald-50"
                     >
                       {content.order}
@@ -259,7 +259,7 @@ export default function PricingPage() {
                     </div>
                     <p className="mb-5 text-xs text-gray-400">{content.vatLabel}</p>
                     <Link
-                      to="/contact"
+                      to="/reserver"
                       className="mt-auto block rounded-xl border-2 border-emerald-600 py-3 text-center text-sm font-bold text-emerald-700 transition hover:bg-emerald-600 hover:text-white"
                     >
                       {content.order}
@@ -302,7 +302,7 @@ export default function PricingPage() {
                     </div>
                     <p className="mb-5 text-xs text-blue-200">{content.vatLabel}</p>
                     <Link
-                      to="/contact"
+                      to="/reserver"
                       className="mt-auto block rounded-xl bg-white py-3 text-center text-sm font-bold text-blue-700 transition hover:bg-blue-50"
                     >
                       {content.order}
@@ -317,7 +317,7 @@ export default function PricingPage() {
                     </div>
                     <p className="mb-5 text-xs text-gray-400">{content.vatLabel}</p>
                     <Link
-                      to="/contact"
+                      to="/reserver"
                       className="mt-auto block rounded-xl border-2 border-blue-600 py-3 text-center text-sm font-bold text-blue-700 transition hover:bg-blue-600 hover:text-white"
                     >
                       {content.order}
@@ -346,7 +346,7 @@ export default function PricingPage() {
                     <p className="mt-2 text-sm text-gray-400">{content.immeubleSub}</p>
                   </div>
                   <Link
-                    to="/contact"
+                    to="/reserver"
                     className="inline-block rounded-xl bg-emerald-500 px-8 py-3.5 font-bold text-white transition hover:bg-emerald-400"
                   >
                     {content.immeubleCta}
@@ -392,7 +392,7 @@ export default function PricingPage() {
             <h2 className="mb-3 text-2xl font-extrabold">{content.prosTitle}</h2>
             <p className="mx-auto mb-8 max-w-2xl text-emerald-100">{content.prosText}</p>
             <Link
-              to="/contact"
+              to="/reserver"
               className="inline-block rounded-xl bg-white px-10 py-3.5 font-bold text-emerald-700 shadow transition hover:bg-emerald-50"
             >
               {content.cta}

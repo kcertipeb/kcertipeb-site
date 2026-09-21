@@ -106,7 +106,7 @@ export default function BlogPostCommentObtenir() {
                     <div>
                       <h3 className="font-bold text-gray-900 mb-2">Demande de devis et prise de rendez-vous</h3>
                       <p className="text-gray-700 text-sm leading-relaxed">
-                        <Link to="/contact" className="text-emerald-700 hover:underline font-semibold">Contactez KCertiPEB</Link> en ligne ou par téléphone. Indiquez le type de bien (appartement, maison), la superficie approximative et votre commune. Vous recevez votre devis sous 2h et un rendez-vous sous 24 à 48h dans les 19 communes bruxelloises.
+                        <Link to="/reserver" className="text-emerald-700 hover:underline font-semibold">Contactez KCertiPEB</Link> en ligne ou par téléphone. Indiquez le type de bien (appartement, maison), la superficie approximative et votre commune. Vous recevez votre devis sous 2h et un rendez-vous sous 24 à 48h dans les 19 communes bruxelloises.
                       </p>
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function BlogPostCommentObtenir() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Certificat PEB à Bruxelles en 48h</p>
                 <p className="text-emerald-100 text-sm mb-4">Appartement dès 120 €, maison dès 210 € — KCertiPEB, agréé Bruxelles Environnement.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Demander un devis →
                 </Link>
               </div>
@@ -322,7 +322,7 @@ export default function BlogPostCommentObtenir() {
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
                 <p className="font-bold text-lg mb-2">Obtenez votre certificat PEB sous 48h</p>
                 <p className="text-emerald-100 text-sm mb-4">KCertiPEB — Expert PEB agréé Bruxelles Environnement. Actif dans les 19 communes bruxelloises.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
                   Prendre rendez-vous →
                 </Link>
               </div>
@@ -348,7 +348,7 @@ export default function BlogPostCommentObtenir() {
                     ['https://environnement.brussels/citoyen/reglementation-et-inspection/obligations-et-autorisations/le-certificat-peb-dun-logement-en-region-bruxelloise', 'Bruxelles Environnement — Le certificat PEB d\'un logement en Région bruxelloise : procédure et obligations'],
                     ['https://peb.environnement.brussels/', 'Bruxelles Environnement — Registre officiel des certificats PEB et liste des experts agréés'],
                     ['https://environnement.brussels/pro/reglementation-et-inspection/obligations-et-autorisations/les-certificats-peb', 'Bruxelles Environnement — Les certificats PEB : méthodologie de calcul (logiciel officiel)'],
-                    ['https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques', 'Bruxelles Environnement — Objectifs PEB 2033 et 2045 : fin programmée des passoires énergétiques'],
+                    ['https://environnement.brussels/citoyen/news/2024/fin-programmee-des-passoires-energetiques', 'Bruxelles Environnement — Objectifs PEB 2033 et 2046 : fin programmée des passoires énergétiques'],
                     ['https://environnement.brussels/pro/reglementation/textes-de-loi/le-code-bruxellois-de-lair-du-climat-et-de-la-maitrise-de-lenergie-cobrace', 'Bruxelles Environnement — CoBrACE : cadre légal de la certification PEB en Région bruxelloise'],
                   ].map(([href, label]) => (
                     <li key={href}>
