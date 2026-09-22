@@ -10,8 +10,9 @@
  *   2. Places API (New) : note et nombre d'avis uniquement — les textes ne sont pas fournis.
  *      `reviews` est alors vide et la page garde ses avis de secours.
  *
- * La réponse est mise en cache une heure par le CDN de Netlify : un nouvel avis apparaît
- * donc en moins d'une heure, sans appeler Google à chaque visite.
+ * La réponse est mise en cache 6 heures par le CDN de Netlify : environ 4 appels à Google
+ * par jour au lieu d'un par visite. Le quota « Place Details » du projet Google est limité
+ * par jour et sert aussi à l'autocomplétion d'adresse, qui doit rester prioritaire.
  */
 
 import { getBusinessProfileReviews, isBusinessProfileConfigured } from '../shared/google-business.js';
@@ -28,8 +29,8 @@ const json = (statusCode, payload, cacheable = false) => ({
     'Content-Type': 'application/json',
     ...(cacheable
       ? {
-          'Cache-Control': 'public, max-age=300',
-          'Netlify-CDN-Cache-Control': 'public, durable, s-maxage=3600, stale-while-revalidate=86400',
+          'Cache-Control': 'public, max-age=1800',
+          'Netlify-CDN-Cache-Control': 'public, durable, s-maxage=21600, stale-while-revalidate=86400',
         }
       : { 'Cache-Control': 'no-store' }),
   },

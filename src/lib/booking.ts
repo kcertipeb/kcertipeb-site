@@ -222,6 +222,15 @@ export const fetchAvailabilityRange = async (
   return (payload as { days?: AvailabilityResponse[] }).days ?? [];
 };
 
+/**
+ * Réveille la fonction de réservation pendant que le client remplit ses coordonnées, pour
+ * que la confirmation ne subisse pas le démarrage à froid de Netlify. Sans effet sur les
+ * données ; une erreur est sans conséquence.
+ */
+export const warmUpBooking = () => {
+  fetch(`${FUNCTIONS_BASE}/create-booking?warm=1`).catch(() => {});
+};
+
 export const createBooking = async (draft: BookingDraft): Promise<BookingResult> => {
   const response = await fetch(`${FUNCTIONS_BASE}/create-booking`, {
     method: 'POST',

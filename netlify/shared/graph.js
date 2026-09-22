@@ -62,6 +62,16 @@ const getAccessToken = async () => {
   return cachedToken.value;
 };
 
+/**
+ * Obtient le jeton à l'avance (mis en cache pour la durée de vie de l'instance), pour que
+ * la requête suivante n'ait pas à le demander. Voir le mode « réveil » de create-booking.
+ */
+export const warmUpGraph = async () => {
+  if (isGraphConfigured()) {
+    await getAccessToken();
+  }
+};
+
 const graphFetch = async (path, options = {}) => {
   const token = await getAccessToken();
   const response = await fetch(`${GRAPH_BASE}${path}`, {

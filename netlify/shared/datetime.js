@@ -58,7 +58,9 @@ export const getBookingConfig = () => {
     // Un `BOOKING_SCHEDULE` mal formé viderait la grille et rendrait toute réservation
     // impossible : on retombe alors sur les horaires par défaut.
     schedule: schedule.size > 0 ? schedule : parseSchedule(DEFAULT_SCHEDULE),
-    minLeadHours: readInt(process.env.BOOKING_MIN_LEAD_HOURS, 24),
+    // Délai minimum entre la réservation et la visite. 12 h : une demande du soir reste
+    // réservable pour le lendemain après-midi. Surchargeable par `BOOKING_MIN_LEAD_HOURS`.
+    minLeadHours: readInt(process.env.BOOKING_MIN_LEAD_HOURS, 12),
     horizonDays: readInt(process.env.BOOKING_HORIZON_DAYS, 21),
   };
 };

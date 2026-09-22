@@ -20,6 +20,7 @@ import {
   getVisitMinutes,
   isAutoConfirmed,
   isBookableOnline,
+  warmUpBooking,
 } from '../lib/booking';
 
 const SURFACE_OPTIONS = {
@@ -194,6 +195,8 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   const [expandedDays, setExpandedDays] = useState<string[]>([]);
   // Incrémenté à chaque réinitialisation : une réponse arrivée après coup est ignorée.
   const generationRef = useRef(0);
+  /** Le rattrapage automatique d'un chargement raté n'a lieu qu'une fois. */
+  const hasRetriedRef = useRef(false);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -281,6 +284,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   // --- Disponibilités -----------------------------------------------------------
   const resetAvailability = useCallback(() => {
     generationRef.current += 1;
+    hasRetriedRef.current = false;
     setDays([]);
     setScannedDays(0);
     setPage(0);
@@ -298,8 +302,13 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   // Remplit la page courante avec des jours qui ont au moins un créneau. Les jours sont
   // interrogés par lots ; l'effet se relance après chaque lot tant que la page n'est pas
   // pleine et que l'horizon n'est pas épuisé.
+  //
+  // Le chargement démarre dès l'affichage de la page, en arrière-plan : les créneaux ne
+  // dépendent que du type de bien, pas de l'adresse. Le démarrage à froid de la fonction
+  // Netlify (plusieurs secondes) a donc lieu pendant que le client choisit son bien, et
+  // l'étape Créneau s'affiche sans attente.
   useEffect(() => {
-    if (step !== 2 || dates.length === 0 || daysState !== 'idle') {
+    if (!isBookableOnline(propertyType) || dates.length === 0 || daysState !== 'idle') {
       return;
     }
     if (days.length >= (page + 1) * DAYS_PER_PAGE || scannedDays >= dates.length) {
@@ -325,6 +334,24 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         }
       });
   }, [step, dates, days.length, page, scannedDays, daysState, propertyType, units]);
+
+  // Un chargement en arrière-plan qui a échoué est retenté une fois quand le client arrive
+  // à l'étape Créneau : il voit une attente plutôt qu'un message d'erreur. Une seule fois,
+  // sinon une vraie panne d'Outlook provoquerait une boucle de requêtes.
+  useEffect(() => {
+    if (step === 2 && daysState === 'error' && !hasRetriedRef.current) {
+      hasRetriedRef.current = true;
+      setDaysState('idle');
+    }
+  }, [step, daysState]);
+
+  // Dès le choix du créneau, on réveille la fonction de réservation : elle sera prête bien
+  // avant le clic sur « Confirmer ».
+  useEffect(() => {
+    if (step >= 2) {
+      warmUpBooking();
+    }
+  }, [step]);
 
   const pageDays = days.slice(page * DAYS_PER_PAGE, (page + 1) * DAYS_PER_PAGE);
   const hasMoreDays = days.length > (page + 1) * DAYS_PER_PAGE || scannedDays < dates.length;

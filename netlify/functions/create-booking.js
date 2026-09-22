@@ -32,7 +32,7 @@ import {
 } from '../shared/booking-rules.js';
 import { createCertiflowDossier, isCertiflowConfigured } from '../shared/certiflow.js';
 import { brusselsToUtc, generateCandidateSlots, getBookingConfig } from '../shared/datetime.js';
-import { createCalendarEvent, isGraphConfigured, sendGraphMail } from '../shared/graph.js';
+import { createCalendarEvent, isGraphConfigured, sendGraphMail, warmUpGraph } from '../shared/graph.js';
 import { escapeHtml } from '../shared/html.js';
 import { getAdminClient } from '../shared/supabase-admin.js';
 
@@ -171,6 +171,15 @@ const buildEmails = ({ booking, slotLabel, priceLabel, confirmed, certiflowLine 
 
 export async function handler(event) {
   const startedAt = Date.now();
+
+  // Mode « réveil » : appelé par la page dès que le client arrive à l'étape Coordonnées.
+  // Une fonction Netlify inutilisée depuis quelques minutes est mise en veille ; la démarrer
+  // et obtenir le jeton Microsoft pendant que le client tape son nom évite plusieurs
+  // secondes d'attente au moment où il clique sur « Confirmer ». Ne réserve rien.
+  if (event.httpMethod === 'GET' && event.queryStringParameters?.warm) {
+    await warmUpGraph().catch((error) => console.error('Réveil Graph impossible :', error));
+    return json(200, { ready: true });
+  }
 
   if (event.httpMethod !== 'POST') {
     return json(405, { error: 'Méthode non autorisée' });
