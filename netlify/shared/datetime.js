@@ -17,17 +17,51 @@ const readInt = (value, fallback) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
-export const getBookingConfig = () => ({
-  openHour: readInt(process.env.BOOKING_OPEN_HOUR, 8),
-  closeHour: readInt(process.env.BOOKING_CLOSE_HOUR, 20),
-  // 0 = dimanche … 6 = samedi
-  workingDays: (process.env.BOOKING_WORKING_DAYS ?? '1,2,3,4,5,6')
-    .split(',')
-    .map((day) => Number.parseInt(day.trim(), 10))
-    .filter((day) => Number.isInteger(day) && day >= 0 && day <= 6),
-  minLeadHours: readInt(process.env.BOOKING_MIN_LEAD_HOURS, 24),
-  horizonDays: readInt(process.env.BOOKING_HORIZON_DAYS, 21),
-});
+/**
+ * Horaires par jour, au format `jour:ouverture-fermeture`, séparés par des virgules.
+ * Jour : 0 = dimanche, 1 = lundi … 6 = samedi. Un jour absent est un jour non travaillé.
+ *
+ * Valeur par défaut = disponibilités réelles de KCertiPEB :
+ *   mardi, mercredi, vendredi 17h-20h · samedi et dimanche 8h-18h
+ *
+ * Surchargeable par la variable d'environnement `BOOKING_SCHEDULE`, sans redéploiement
+ * du code. Tout créneau affiché engageant le certificateur, cette valeur doit refléter
+ * la disponibilité réelle.
+ */
+const DEFAULT_SCHEDULE = '0:8-18,2:17-20,3:17-20,5:17-20,6:8-18';
+
+const parseSchedule = (raw) => {
+  const schedule = new Map();
+
+  for (const part of String(raw ?? '').split(',')) {
+    const match = part.trim().match(/^([0-6]):(\d{1,2})-(\d{1,2})$/);
+    if (!match) {
+      continue;
+    }
+
+    const day = Number(match[1]);
+    const openHour = Number(match[2]);
+    const closeHour = Number(match[3]);
+
+    if (openHour >= 0 && closeHour <= 24 && closeHour > openHour) {
+      schedule.set(day, { openHour, closeHour });
+    }
+  }
+
+  return schedule;
+};
+
+export const getBookingConfig = () => {
+  const schedule = parseSchedule(process.env.BOOKING_SCHEDULE ?? DEFAULT_SCHEDULE);
+
+  return {
+    // Un `BOOKING_SCHEDULE` mal formé viderait la grille et rendrait toute réservation
+    // impossible : on retombe alors sur les horaires par défaut.
+    schedule: schedule.size > 0 ? schedule : parseSchedule(DEFAULT_SCHEDULE),
+    minLeadHours: readInt(process.env.BOOKING_MIN_LEAD_HOURS, 24),
+    horizonDays: readInt(process.env.BOOKING_HORIZON_DAYS, 21),
+  };
+};
 
 /** Décalage du fuseau par rapport à UTC, à un instant donné, en millisecondes. */
 const getTimeZoneOffsetMs = (date) => {
@@ -147,13 +181,16 @@ export const getBelgianHolidays = (year) => {
   ]);
 };
 
-export const isWorkingDay = (dateStr, config = getBookingConfig()) => {
+/** Horaires applicables à une date, ou `null` si le jour n'est pas travaillé. */
+export const getDayHours = (dateStr, config = getBookingConfig()) => {
   const year = Number(dateStr.slice(0, 4));
   if (getBelgianHolidays(year).has(dateStr)) {
-    return false;
+    return null;
   }
-  return config.workingDays.includes(getBrusselsWeekday(dateStr));
+  return config.schedule.get(getBrusselsWeekday(dateStr)) ?? null;
 };
+
+export const isWorkingDay = (dateStr, config = getBookingConfig()) => getDayHours(dateStr, config) !== null;
 
 /**
  * Créneaux candidats d'une journée, avant filtrage par l'occupation réelle.
@@ -162,12 +199,13 @@ export const isWorkingDay = (dateStr, config = getBookingConfig()) => {
  * fermeture, et qu'il respecte le délai de prévenance.
  */
 export const generateCandidateSlots = (dateStr, blockMinutes, config = getBookingConfig(), now = new Date()) => {
-  if (!isWorkingDay(dateStr, config)) {
+  const hours = getDayHours(dateStr, config);
+  if (!hours) {
     return [];
   }
 
-  const dayStart = brusselsToUtc(dateStr, `${String(config.openHour).padStart(2, '0')}:00`);
-  const dayEnd = brusselsToUtc(dateStr, `${String(config.closeHour).padStart(2, '0')}:00`);
+  const dayStart = brusselsToUtc(dateStr, `${String(hours.openHour).padStart(2, '0')}:00`);
+  const dayEnd = brusselsToUtc(dateStr, `${String(hours.closeHour).padStart(2, '0')}:00`);
   const earliest = new Date(now.getTime() + config.minLeadHours * 3600000);
 
   const slots = [];
