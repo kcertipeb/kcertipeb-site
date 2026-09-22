@@ -77,7 +77,9 @@ const graphFetch = async (path, options = {}) => {
     throw new Error(`Graph ${path} a répondu ${response.status} : ${await response.text()}`);
   }
 
-  return response.status === 204 ? null : response.json();
+  // 204 (suppression) et 202 (sendMail) n'ont pas de corps.
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 };
 
 /** Graph renvoie « 2026-09-23T09:00:00.0000000 » sans suffixe : on le lit comme de l'UTC. */
@@ -143,6 +145,29 @@ export const createCalendarEvent = async ({ subject, bodyHtml, startUtc, endUtc,
   });
 
   return created?.id ?? null;
+};
+
+/**
+ * Envoie un email depuis la boîte `MS_CALENDAR_USER` (permission applicative `Mail.Send`).
+ *
+ * Une seule requête HTTPS, là où SMTP enchaîne une dizaine d'échanges par message : c'est
+ * ce qui rendait la confirmation de réservation lente. Le message est aussi conservé dans
+ * les « Éléments envoyés » de la boîte.
+ */
+export const sendGraphMail = async ({ to, replyTo, subject, html }) => {
+  const user = encodeURIComponent(process.env.MS_CALENDAR_USER);
+  await graphFetch(`/users/${user}/sendMail`, {
+    method: 'POST',
+    body: JSON.stringify({
+      message: {
+        subject,
+        body: { contentType: 'HTML', content: html },
+        toRecipients: [{ emailAddress: { address: to } }],
+        ...(replyTo ? { replyTo: [{ emailAddress: { address: replyTo } }] } : {}),
+      },
+      saveToSentItems: true,
+    }),
+  });
 };
 
 /** Utilisé pour annuler proprement si l'enregistrement échoue après la création. */

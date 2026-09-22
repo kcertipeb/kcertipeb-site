@@ -14,6 +14,10 @@
  * Ordre volontaire : on insère d'abord en base — c'est ce qui verrouille le créneau — et on
  * crée l'événement Outlook ensuite. Si Outlook échoue, le rendez-vous existe quand même et
  * le créneau reste bloqué ; l'inverse laisserait un trou.
+ *
+ * Après l'insertion, l'email au client part en parallèle de l'événement Outlook et du
+ * dossier Certiflow ; seul l'email interne les attend. Les emails passent par Microsoft
+ * Graph (SMTP en secours) : c'est ce qui garde la confirmation rapide pour le client.
  */
 
 import nodemailer from 'nodemailer';
@@ -28,7 +32,7 @@ import {
 } from '../shared/booking-rules.js';
 import { createCertiflowDossier, isCertiflowConfigured } from '../shared/certiflow.js';
 import { brusselsToUtc, generateCandidateSlots, getBookingConfig } from '../shared/datetime.js';
-import { createCalendarEvent } from '../shared/graph.js';
+import { createCalendarEvent, isGraphConfigured, sendGraphMail } from '../shared/graph.js';
 import { escapeHtml } from '../shared/html.js';
 import { getAdminClient } from '../shared/supabase-admin.js';
 
@@ -61,19 +65,43 @@ const formatSlotLabel = (dateStr, timeStr) => {
   }).format(date);
 };
 
-const sendEmails = async ({ booking, slotLabel, priceLabel, confirmed, certiflowLine }) => {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
-    console.warn('SMTP non configuré : aucun email envoyé.');
-    return false;
+/** Boîte d'où partent les emails et qui reçoit l'email interne. */
+const getMailbox = () => process.env.SMTP_USER || process.env.MS_CALENDAR_USER;
+
+const isSmtpConfigured = () => Boolean(process.env.SMTP_USER && process.env.SMTP_PASSWORD);
+
+/**
+ * Envoie un email : par Microsoft Graph (une requête HTTPS), sinon par SMTP.
+ * SMTP reste le secours si Graph échoue — permission `Mail.Send` absente, panne, etc.
+ */
+const deliverEmail = async ({ to, replyTo, subject, html }) => {
+  if (isGraphConfigured()) {
+    try {
+      await sendGraphMail({ to, replyTo, subject, html });
+      return;
+    } catch (error) {
+      if (!isSmtpConfigured()) {
+        throw error;
+      }
+      console.error('Envoi par Graph impossible, repli sur SMTP :', error);
+    }
   }
 
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.office365.com',
-    port: 587,
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
-  });
+  if (!isSmtpConfigured()) {
+    throw new Error('Aucun moyen d’envoi configuré (Graph ou SMTP)');
+  }
 
+  await nodemailer
+    .createTransport({
+      host: 'smtp.office365.com',
+      port: 587,
+      secure: false,
+      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
+    })
+    .sendMail({ from: `"K Certipeb" <${process.env.SMTP_USER}>`, to, replyTo, subject, html });
+};
+
+const buildEmails = ({ booking, slotLabel, priceLabel, confirmed, certiflowLine }) => {
   const propertyLabel = PROPERTY_LABELS[booking.property_type] ?? booking.property_type;
   const safe = {
     name: escapeHtml(booking.name),
@@ -125,26 +153,25 @@ const sendEmails = async ({ booking, slotLabel, priceLabel, confirmed, certiflow
     <p>KCertiPEB — certificateurs PEB agréés Bruxelles Environnement</p>
   `;
 
-  await transporter.sendMail({
-    from: `"K Certipeb" <${process.env.SMTP_USER}>`,
-    to: process.env.SMTP_USER,
-    replyTo: booking.email,
-    subject: `${confirmed ? 'RDV confirmé' : 'Demande RDV'} — ${propertyLabel} — ${slotLabel}`,
-    html: internalHtml,
-  });
-
-  await transporter.sendMail({
-    from: `"K Certipeb" <${process.env.SMTP_USER}>`,
-    to: booking.email,
-    replyTo: process.env.SMTP_USER,
-    subject: confirmed ? 'Votre rendez-vous PEB est confirmé' : 'Votre demande de rendez-vous PEB',
-    html: clientHtml,
-  });
-
-  return true;
+  return {
+    internal: {
+      to: getMailbox(),
+      replyTo: booking.email,
+      subject: `${confirmed ? 'RDV confirmé' : 'Demande RDV'} — ${propertyLabel} — ${slotLabel}`,
+      html: internalHtml,
+    },
+    client: {
+      to: booking.email,
+      replyTo: getMailbox(),
+      subject: confirmed ? 'Votre rendez-vous PEB est confirmé' : 'Votre demande de rendez-vous PEB',
+      html: clientHtml,
+    },
+  };
 };
 
 export async function handler(event) {
+  const startedAt = Date.now();
+
   if (event.httpMethod !== 'POST') {
     return json(405, { error: 'Méthode non autorisée' });
   }
@@ -250,10 +277,33 @@ export async function handler(event) {
   const confirmed = status === 'confirmed';
 
   // À partir d'ici, le créneau est verrouillé : plus rien ne doit faire échouer la requête.
+  // Durée de chaque étape, écrite dans les journaux Netlify pour repérer une lenteur.
+  const timings = { enregistrement: Date.now() - startedAt };
+  const timed = async (label, task) => {
+    const stepStart = Date.now();
+    try {
+      return await task();
+    } finally {
+      timings[label] = Date.now() - stepStart;
+    }
+  };
+
+  // L'email au client ne dépend ni d'Outlook ni de Certiflow : il part tout de suite, en
+  // parallèle des étapes suivantes, au lieu d'attendre la fin de chacune.
+  const clientEmailSent = timed('emailClient', () =>
+    deliverEmail(buildEmails({ booking: row, slotLabel, priceLabel, confirmed }).client)
+  ).then(
+    () => true,
+    (error) => {
+      console.error('Envoi de l’email au client impossible :', error);
+      return false;
+    }
+  );
+
   let eventId = null;
   if (confirmed) {
     try {
-      eventId = await createCalendarEvent({
+      eventId = await timed('outlook', () => createCalendarEvent({
         subject: `Visite PEB — ${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}`,
         bodyHtml: `
           <p><strong>${escapeHtml(name)}</strong> — ${escapeHtml(phone)} — ${escapeHtml(email)}</p>
@@ -264,7 +314,7 @@ export async function handler(event) {
         startUtc: startsAt,
         endUtc: endsAt,
         location: address.trim(),
-      });
+      }));
 
       if (eventId) {
         await supabase.from('bookings').update({ graph_event_id: eventId }).eq('id', inserted.id);
@@ -281,7 +331,7 @@ export async function handler(event) {
   let certiflowLine = null;
   if (isCertiflowConfigured()) {
     try {
-      const dossierId = await createCertiflowDossier(inserted, { eventId, confirmed });
+      const dossierId = await timed('certiflow', () => createCertiflowDossier(inserted, { eventId, confirmed }));
       certiflowLine = `dossier ${dossierId} créé`;
     } catch (error) {
       console.error('Création du dossier Certiflow impossible :', error);
@@ -289,12 +339,19 @@ export async function handler(event) {
     }
   }
 
-  let emailSent = false;
-  try {
-    emailSent = await sendEmails({ booking: row, slotLabel, priceLabel, confirmed, certiflowLine });
-  } catch (error) {
-    console.error('Envoi des emails impossible :', error);
-  }
+  // L'email interne attend Certiflow : il indique si le dossier a bien été créé.
+  const internalEmailSent = await timed('emailInterne', () =>
+    deliverEmail(buildEmails({ booking: row, slotLabel, priceLabel, confirmed, certiflowLine }).internal)
+  ).then(
+    () => true,
+    (error) => {
+      console.error('Envoi de l’email interne impossible :', error);
+      return false;
+    }
+  );
+  const emailSent = (await clientEmailSent) && internalEmailSent;
+
+  console.log(`Réservation ${inserted.id} — durées (ms) :`, JSON.stringify({ ...timings, total: Date.now() - startedAt }));
 
   return json(201, {
     id: inserted.id,
