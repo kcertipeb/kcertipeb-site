@@ -8,7 +8,8 @@
  * qui fait autorité : le serveur recalcule systématiquement le bloc réservé.
  */
 
-import { Language } from './language';
+// Import de type uniquement : rien ne doit être chargé à l'exécution.
+import type { Language } from './language';
 
 /** Trajet systématiquement réservé entre deux visites, en minutes. */
 export const TRAVEL_BUFFER_MINUTES = 30;
