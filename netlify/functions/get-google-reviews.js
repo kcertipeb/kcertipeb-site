@@ -1,68 +1,107 @@
-// netlify/functions/get-google-reviews.js
-// Fetches Google Reviews server-side to keep the API key secret
+/**
+ * Avis Google de KCertiPEB.
+ *
+ *   GET /.netlify/functions/get-google-reviews
+ *   → { "source": "business-profile" | "places", "rating": 5, "total": 18,
+ *       "reviews": [{ "author", "rating", "text", "publishedAt" }], "url": "..." }
+ *
+ * Deux sources, par ordre de préférence :
+ *   1. API Google Business Profile : note, nombre d'avis et textes (voir google-business.js) ;
+ *   2. Places API (New) : note et nombre d'avis uniquement — les textes ne sont pas fournis.
+ *      `reviews` est alors vide et la page garde ses avis de secours.
+ *
+ * La réponse est mise en cache une heure par le CDN de Netlify : un nouvel avis apparaît
+ * donc en moins d'une heure, sans appeler Google à chaque visite.
+ */
 
-// Syntaxe ESM obligatoire : `package.json` déclare `"type": "module"`, donc Node refuse
-// de charger un fichier .js écrit en CommonJS (`exports.handler`).
-export async function handler() {
-  const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-  const GOOGLE_PLACE_ID = process.env.GOOGLE_PLACE_ID;
+import { getBusinessProfileReviews, isBusinessProfileConfigured } from '../shared/google-business.js';
 
-  if (!GOOGLE_PLACES_API_KEY || !GOOGLE_PLACE_ID) {
-    return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Missing API configuration' })
-    };
+/** Fiche « Kcertipeb » (Anderlecht). Identifiant public, surchargeable par l'environnement. */
+const DEFAULT_PLACE_ID = 'ChIJA9-H2urHw0cRYcsExij87Qw';
+
+const MIN_RATING = 4;
+const MAX_REVIEWS = 8;
+
+const json = (statusCode, payload, cacheable = false) => ({
+  statusCode,
+  headers: {
+    'Content-Type': 'application/json',
+    ...(cacheable
+      ? {
+          'Cache-Control': 'public, max-age=300',
+          'Netlify-CDN-Cache-Control': 'public, durable, s-maxage=3600, stale-while-revalidate=86400',
+        }
+      : { 'Cache-Control': 'no-store' }),
+  },
+  body: JSON.stringify(payload),
+});
+
+const getPlacesSummary = async () => {
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY ?? process.env.GOOGLE_PLACES_API_KEY;
+  if (!apiKey) {
+    throw new Error('GOOGLE_MAPS_API_KEY manquante');
+  }
+
+  const placeId = process.env.GOOGLE_PLACE_ID ?? DEFAULT_PLACE_ID;
+  const response = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, {
+    headers: {
+      'X-Goog-Api-Key': apiKey,
+      'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsUri',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Places a répondu ${response.status} : ${await response.text()}`);
+  }
+
+  const payload = await response.json();
+  return {
+    rating: payload.rating ?? null,
+    total: payload.userRatingCount ?? null,
+    url: payload.googleMapsUri ?? null,
+  };
+};
+
+export async function handler(event) {
+  if (event.httpMethod !== 'GET') {
+    return json(405, { error: 'Méthode non autorisée' });
   }
 
   try {
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${GOOGLE_PLACE_ID}&fields=name,rating,user_ratings_total,reviews&language=fr&key=${GOOGLE_PLACES_API_KEY}`;
-    
-    const response = await fetch(url);
-    const data = await response.json();
+    const places = await getPlacesSummary().catch((error) => {
+      console.error('Résumé Places indisponible :', error);
+      return { rating: null, total: null, url: null };
+    });
 
-    if (data.status !== 'OK') {
-      return {
-        statusCode: 400,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: `Places API error: ${data.status}` })
-      };
+    if (isBusinessProfileConfigured()) {
+      try {
+        const profile = await getBusinessProfileReviews();
+        return json(
+          200,
+          {
+            source: 'business-profile',
+            rating: profile.rating ?? places.rating,
+            total: profile.total ?? places.total,
+            url: places.url,
+            reviews: profile.reviews
+              .filter((review) => review.rating >= MIN_RATING && review.text)
+              .slice(0, MAX_REVIEWS),
+          },
+          true
+        );
+      } catch (error) {
+        // On retombe sur la note Places : la section reste affichée avec ses avis de secours.
+        console.error('Avis Business Profile indisponibles :', error);
+      }
     }
 
-    const result = data.result;
+    if (places.rating === null) {
+      return json(503, { error: 'Avis Google temporairement indisponibles' });
+    }
 
-    // Filter to 4 and 5 star reviews only, sorted by most recent
-    const reviews = (result.reviews || [])
-      .filter(r => r.rating >= 4)
-      .sort((a, b) => b.time - a.time)
-      .slice(0, 5)
-      .map(r => ({
-        author_name: r.author_name,
-        rating: r.rating,
-        text: r.text,
-        relative_time: r.relative_time_description,
-        time: r.time,
-        profile_photo_url: r.profile_photo_url
-      }));
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 'public, max-age=3600' // Cache 1 hour
-      },
-      body: JSON.stringify({
-        name: result.name,
-        rating: result.rating,
-        total: result.user_ratings_total,
-        reviews
-      })
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: err.message })
-    };
+    return json(200, { source: 'places', ...places, reviews: [] }, true);
+  } catch (error) {
+    console.error('Avis Google indisponibles :', error);
+    return json(503, { error: 'Avis Google temporairement indisponibles' });
   }
 }

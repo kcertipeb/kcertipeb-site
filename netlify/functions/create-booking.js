@@ -26,6 +26,7 @@ import {
   isBookableOnline,
   MAX_UNITS,
 } from '../shared/booking-rules.js';
+import { createCertiflowDossier, isCertiflowConfigured } from '../shared/certiflow.js';
 import { brusselsToUtc, generateCandidateSlots, getBookingConfig } from '../shared/datetime.js';
 import { createCalendarEvent } from '../shared/graph.js';
 import { escapeHtml } from '../shared/html.js';
@@ -60,7 +61,7 @@ const formatSlotLabel = (dateStr, timeStr) => {
   }).format(date);
 };
 
-const sendEmails = async ({ booking, slotLabel, priceLabel, confirmed }) => {
+const sendEmails = async ({ booking, slotLabel, priceLabel, confirmed, certiflowLine }) => {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
     console.warn('SMTP non configuré : aucun email envoyé.');
     return false;
@@ -94,6 +95,7 @@ const sendEmails = async ({ booking, slotLabel, priceLabel, confirmed }) => {
     <p><strong>Surface :</strong> ${safe.surface}</p>
     <p><strong>Adresse :</strong> ${safe.address}</p>
     <p><strong>Prix :</strong> ${safe.price}</p>
+    ${certiflowLine ? `<p><strong>Certiflow :</strong> ${escapeHtml(certiflowLine)}</p>` : ''}
     <hr/>
     <p><strong>Nom :</strong> ${safe.name}</p>
     <p><strong>Email :</strong> ${safe.email}</p>
@@ -248,9 +250,10 @@ export async function handler(event) {
   const confirmed = status === 'confirmed';
 
   // À partir d'ici, le créneau est verrouillé : plus rien ne doit faire échouer la requête.
+  let eventId = null;
   if (confirmed) {
     try {
-      const eventId = await createCalendarEvent({
+      eventId = await createCalendarEvent({
         subject: `Visite PEB — ${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}`,
         bodyHtml: `
           <p><strong>${escapeHtml(name)}</strong> — ${escapeHtml(phone)} — ${escapeHtml(email)}</p>
@@ -273,9 +276,22 @@ export async function handler(event) {
     }
   }
 
+  // Dossier dans Certiflow : écrit directement en base, sans événement ni email côté
+  // Certiflow. Un échec est signalé dans l'email interne pour encoder le dossier à la main.
+  let certiflowLine = null;
+  if (isCertiflowConfigured()) {
+    try {
+      const dossierId = await createCertiflowDossier(inserted, { eventId, confirmed });
+      certiflowLine = `dossier ${dossierId} créé`;
+    } catch (error) {
+      console.error('Création du dossier Certiflow impossible :', error);
+      certiflowLine = 'dossier NON créé — à encoder manuellement';
+    }
+  }
+
   let emailSent = false;
   try {
-    emailSent = await sendEmails({ booking: row, slotLabel, priceLabel, confirmed });
+    emailSent = await sendEmails({ booking: row, slotLabel, priceLabel, confirmed, certiflowLine });
   } catch (error) {
     console.error('Envoi des emails impossible :', error);
   }
