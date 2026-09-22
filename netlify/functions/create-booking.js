@@ -2,8 +2,10 @@
  * Enregistre un rendez-vous de visite.
  *
  *   POST /.netlify/functions/create-booking
- *   { propertyType, surfaceRange, units, address, postalCode,
+ *   { propertyType, surfaceRange, units, street, houseNumber, postalCode,
  *     date: "2026-09-23", time: "09:00", name, email, phone, message }
+ *
+ * Seuls les biens situés en Région de Bruxelles-Capitale sont acceptés (code postal).
  *
  * Rien de ce qu'envoie le navigateur n'est pris pour argent comptant : la durée du bloc,
  * le prix et la légalité du créneau sont recalculés ici. Le garde-fou contre la double
@@ -16,7 +18,14 @@
 
 import nodemailer from 'nodemailer';
 
-import { getBlockMinutes, getBookingStatus, getPriceValue, isBookableOnline, MAX_UNITS } from '../shared/booking-rules.js';
+import {
+  getBlockMinutes,
+  getBookingStatus,
+  getBrusselsCommune,
+  getPriceValue,
+  isBookableOnline,
+  MAX_UNITS,
+} from '../shared/booking-rules.js';
 import { brusselsToUtc, generateCandidateSlots, getBookingConfig } from '../shared/datetime.js';
 import { createCalendarEvent } from '../shared/graph.js';
 import { escapeHtml } from '../shared/html.js';
@@ -145,7 +154,8 @@ export async function handler(event) {
     return json(400, { error: 'Corps de requête illisible' });
   }
 
-  const { propertyType, surfaceRange, units, address, postalCode, date, time, name, email, phone, message } = payload;
+  const { propertyType, surfaceRange, units, street, houseNumber, postalCode, date, time, name, email, phone, message } =
+    payload;
 
   if (!isBookableOnline(propertyType)) {
     return json(400, { error: 'Ce type de bien ne se réserve pas en ligne' });
@@ -153,9 +163,25 @@ export async function handler(event) {
   if (!DATE_PATTERN.test(date ?? '') || !TIME_PATTERN.test(time ?? '')) {
     return json(400, { error: 'Créneau invalide' });
   }
-  if (!name?.trim() || !phone?.trim() || !address?.trim()) {
-    return json(400, { error: 'Nom, téléphone et adresse sont obligatoires' });
+  if (!name?.trim() || !phone?.trim()) {
+    return json(400, { error: 'Nom et téléphone sont obligatoires' });
   }
+
+  const streetValue = String(street ?? '').trim();
+  const numberValue = String(houseNumber ?? '').trim();
+  const postalValue = String(postalCode ?? '').trim();
+  if (!streetValue || !numberValue || !postalValue || streetValue.length > 150 || numberValue.length > 20) {
+    return json(400, { error: 'Adresse incomplète : rue, numéro et code postal sont obligatoires' });
+  }
+
+  const commune = getBrusselsCommune(postalValue);
+  if (!commune) {
+    return json(400, {
+      error: 'Nous effectuons uniquement des certificats PEB en Région de Bruxelles-Capitale.',
+    });
+  }
+
+  const address = `${streetValue} ${numberValue}, ${postalValue} ${commune}`;
   if (!EMAIL_PATTERN.test(email ?? '')) {
     return json(400, { error: 'Adresse email invalide' });
   }
@@ -196,8 +222,8 @@ export async function handler(event) {
     property_type: propertyType,
     surface_range: surfaceRange || null,
     units: unitCount,
-    address: address.trim(),
-    postal_code: postalCode || null,
+    address,
+    postal_code: postalValue,
     name: name.trim(),
     email: email.trim(),
     phone: phone.trim(),

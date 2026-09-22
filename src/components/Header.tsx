@@ -21,7 +21,7 @@ export default function Header() {
         pricing: 'Tarieven',
         faq: 'FAQ',
         blog: 'Blog',
-        cta: 'Bekijk mijn prijs',
+        cta: 'Mijn bezoek reserveren',
       }
     : {
         topLabel: 'Intervention rapide à Bruxelles',
@@ -33,7 +33,7 @@ export default function Header() {
         pricing: 'Tarifs',
         faq: 'FAQ',
         blog: 'Blog',
-        cta: 'Voir mon prix',
+        cta: 'Réserver ma visite',
       };
 
   return (

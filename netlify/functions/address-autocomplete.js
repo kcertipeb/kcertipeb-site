@@ -1,5 +1,5 @@
 /**
- * Suggestions d'adresses, limitées à la Belgique.
+ * Suggestions d'adresses, limitées à la zone de Bruxelles.
  *
  *   GET /.netlify/functions/address-autocomplete?q=rue de la loi&session=<uuid>
  *   → { "suggestions": [{ "placeId": "...", "label": "Rue de la Loi 16, Bruxelles" }] }
@@ -44,6 +44,14 @@ export async function handler(event) {
       body: JSON.stringify({
         input: query,
         includedRegionCodes: ['be'],
+        // Rectangle englobant la Région bruxelloise : seules les adresses de cette zone
+        // sont suggérées. Le code postal reste vérifié ensuite (communes limitrophes).
+        locationRestriction: {
+          rectangle: {
+            low: { latitude: 50.76, longitude: 4.24 },
+            high: { latitude: 50.92, longitude: 4.49 },
+          },
+        },
         includedPrimaryTypes: ['street_address', 'premise', 'subpremise', 'route'],
         languageCode: 'fr',
         ...(sessionToken ? { sessionToken } : {}),

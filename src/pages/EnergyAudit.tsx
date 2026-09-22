@@ -40,7 +40,7 @@ export default function EnergyAudit() {
                   to="/contact"
                   className="bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-amber-700 transition-all transform hover:scale-105 shadow-lg"
                 >
-                  Voir mon prix
+                  Demander un devis
                 </Link>
                 <a
                   href="tel:+32486987484"
@@ -285,7 +285,7 @@ export default function EnergyAudit() {
               to="/contact"
               className="bg-white text-amber-600 px-8 py-4 rounded-xl font-semibold hover:bg-amber-50 transition-all transform hover:scale-105 shadow-lg"
             >
-              Voir mon prix
+              Demander un devis
             </Link>
             <a
               href="tel:+32486987484"

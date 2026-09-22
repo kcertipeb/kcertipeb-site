@@ -69,6 +69,37 @@ export const getBlockMinutes = (propertyType: string, units?: number | null): nu
 };
 
 /**
+ * Codes postaux de la Région de Bruxelles-Capitale (19 communes), avec le nom affiché.
+ * Le serveur (`netlify/shared/booking-rules.js`) applique la même liste et fait autorité.
+ */
+export const BRUSSELS_COMMUNES: Record<string, string> = {
+  '1000': 'Bruxelles',
+  '1020': 'Laeken',
+  '1030': 'Schaerbeek',
+  '1040': 'Etterbeek',
+  '1050': 'Ixelles',
+  '1060': 'Saint-Gilles',
+  '1070': 'Anderlecht',
+  '1080': 'Molenbeek-Saint-Jean',
+  '1081': 'Koekelberg',
+  '1082': 'Berchem-Sainte-Agathe',
+  '1083': 'Ganshoren',
+  '1090': 'Jette',
+  '1120': 'Neder-Over-Heembeek',
+  '1130': 'Haren',
+  '1140': 'Evere',
+  '1150': 'Woluwe-Saint-Pierre',
+  '1160': 'Auderghem',
+  '1170': 'Watermael-Boitsfort',
+  '1180': 'Uccle',
+  '1190': 'Forest',
+  '1200': 'Woluwe-Saint-Lambert',
+  '1210': 'Saint-Josse-ten-Noode',
+};
+
+export const getBrusselsCommune = (postalCode: string): string | null => BRUSSELS_COMMUNES[postalCode.trim()] ?? null;
+
+/**
  * Extrait un code postal belge d'une adresse saisie librement.
  *
  * Filet de sécurité uniquement : quand l'adresse vient de Google Places, le code postal
@@ -100,8 +131,9 @@ export interface BookingDraft {
   propertyType: string;
   surfaceRange: string;
   units: number | null;
-  address: string;
-  postalCode: string | null;
+  street: string;
+  houseNumber: string;
+  postalCode: string;
   /** Date ISO locale, `YYYY-MM-DD`. */
   date: string;
   /** Heure de début locale, `HH:mm`. */
@@ -164,6 +196,32 @@ export const fetchAvailability = async (
   return (payload as AvailabilityResponse).slots ?? [];
 };
 
+/**
+ * Disponibilités de plusieurs jours consécutifs, en une seule requête — donc une seule
+ * lecture de l'agenda Outlook, qui refuse au-delà de 4 lectures simultanées.
+ */
+export const fetchAvailabilityRange = async (
+  from: string,
+  days: number,
+  propertyType: string,
+  units: number | null,
+  signal?: AbortSignal
+): Promise<AvailabilityResponse[]> => {
+  const params = new URLSearchParams({ from, days: String(days), propertyType });
+  if (units) {
+    params.set('units', String(units));
+  }
+
+  const response = await fetch(`${FUNCTIONS_BASE}/get-availability?${params}`, { signal });
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new BookingError(payload.error ?? 'Disponibilités indisponibles', response.status);
+  }
+
+  return (payload as { days?: AvailabilityResponse[] }).days ?? [];
+};
+
 export const createBooking = async (draft: BookingDraft): Promise<BookingResult> => {
   const response = await fetch(`${FUNCTIONS_BASE}/create-booking`, {
     method: 'POST',
@@ -206,6 +264,8 @@ export const fetchPlaceDetails = async (placeId: string, sessionToken: string) =
 
   return (await response.json().catch(() => null)) as {
     address: string | null;
+    street?: string | null;
+    streetNumber?: string | null;
     postalCode: string | null;
     locality: string | null;
   } | null;

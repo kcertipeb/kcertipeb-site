@@ -2,8 +2,8 @@
  * Adresse complète et code postal d'une suggestion retenue.
  *
  *   GET /.netlify/functions/place-details?placeId=...&session=<uuid>
- *   → { "address": "Rue de la Loi 16, 1000 Bruxelles, Belgique",
- *       "postalCode": "1000", "locality": "Bruxelles" }
+ *   → { "address": "Rue de la Loi 16, 1000 Bruxelles, Belgique", "street": "Rue de la Loi",
+ *       "streetNumber": "16", "postalCode": "1000", "locality": "Bruxelles" }
  *
  * Le code postal obtenu ici est structuré et fiable, contrairement à celui que
  * `extractPostalCode` devine dans une adresse tapée à la main.
@@ -58,6 +58,8 @@ export async function handler(event) {
 
     return json(200, {
       address: payload.formattedAddress ?? null,
+      street: findComponent(payload.addressComponents, 'route'),
+      streetNumber: findComponent(payload.addressComponents, 'street_number'),
       postalCode: findComponent(payload.addressComponents, 'postal_code'),
       locality: findComponent(payload.addressComponents, 'locality'),
     });

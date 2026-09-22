@@ -1,30 +1,11 @@
-import { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, Star, Phone, Send, CalendarDays } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { insertContactSubmission } from '../lib/contactSubmission';
-import { buildReservationSummary, getReservationPrice, saveReservationSummary } from '../lib/reservation';
-import { markPendingLeadConversion, trackPhoneCallConversion } from '../lib/tracking';
+import { Shield, Clock, Star, Phone } from 'lucide-react';
+import BookingWizard from './BookingWizard';
+import { trackPhoneCallConversion } from '../lib/tracking';
 import { useLanguage } from '../lib/language';
 
-const SURFACE_OPTIONS = {
-  appartement: ['< 50 m²', '50 - 75 m²', '76 - 100 m²', '> 100 m²'],
-  maison: ['< 100 m²', '101 - 200 m²', '> 200 m²'],
-} as const;
-
 export default function Hero() {
-  const { language, isDutch } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    propertyType: 'appartement',
-    surfaceRange: '',
-    address: '',
-    message: '',
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const { isDutch } = useLanguage();
 
   const quickPrices = isDutch
     ? [
@@ -55,37 +36,11 @@ export default function Hero() {
         pricesNote:
           'Het tarief hangt af van het type pand en de oppervlakte. Neem contact met ons op voor een groter pand of een specifieke situatie.',
         formLabel: 'Bezoek reserveren',
-        formTitle: 'Kies uw pand en bevestig het bezoek',
+        formTitle: 'Kies uw tijdslot en bevestig het bezoek',
         formIntro:
-          'De prijs wordt onmiddellijk weergegeven volgens het type pand en de oppervlakte. Daarna nemen wij contact op om het bezoek te plannen.',
+          'Prijs en echte beschikbaarheden worden meteen weergegeven. Voor een appartement of woning is de reservering onmiddellijk bevestigd.',
         urgentHelp: 'Onmiddellijk antwoord nodig?',
         urgentLink: 'Spoedservice bekijken — interventie binnen 48u',
-        name: 'Naam',
-        phone: 'Telefoon',
-        email: 'E-mail',
-        propertyType: 'Type pand',
-        apartment: 'Appartement',
-        house: 'Woning',
-        building: 'Gebouw',
-        audit: 'Energie-audit',
-        surface: 'Oppervlakte van het pand',
-        surfaceChip: 'Oppervlakte',
-        visitPrice: 'Prijs van het bezoek',
-        priceShown: 'Prijs zichtbaar vóór de reservering.',
-        pickSurface: 'Selecteer de oppervlakte om de vaste prijs weer te geven.',
-        address: 'Adres van het pand',
-        message: 'Bericht',
-        messagePlaceholder: 'Beschikbaarheid, urgentie, nuttige informatie...',
-        namePlaceholder: 'Uw naam',
-        phonePlaceholder: '+32 4xx xx xx xx',
-        emailPlaceholder: 'uw@email.be',
-        addressPlaceholder: 'Straat, nummer, gemeente',
-        submit: 'Mijn reservering bevestigen',
-        submitting: 'Verzenden...',
-        successNote: 'Daarna ontvangt u het bezoekoverzicht en de gids van de certificateur.',
-        unavailable: 'Dienst tijdelijk onbeschikbaar. Bel ons op +32 486 98 74 84.',
-        sendError: 'Fout bij het verzenden. Probeer opnieuw.',
-        fallbackPrice: 'Op offerte',
       }
     : {
         title: 'Certificat PEB à Bruxelles avec des tarifs clairs dès',
@@ -103,37 +58,11 @@ export default function Hero() {
         pricesNote:
           'Le tarif dépend du type de bien et de sa surface. Pour un bien plus grand ou un cas particulier, contactez-nous.',
         formLabel: 'Réserver une visite',
-        formTitle: 'Choisissez votre bien et confirmez la visite',
+        formTitle: 'Choisissez votre créneau et confirmez la visite',
         formIntro:
-          'Le prix est indiqué directement selon le type de bien et la surface. Nous vous recontactons ensuite pour organiser la visite.',
+          'Le prix et les disponibilités réelles s’affichent directement. Pour un appartement ou une maison, la réservation est confirmée immédiatement.',
         urgentHelp: "Besoin d'une réponse immédiate ?",
         urgentLink: 'Service urgent — intervention sous 48h',
-        name: 'Nom',
-        phone: 'Téléphone',
-        email: 'Email',
-        propertyType: 'Type de bien',
-        apartment: 'Appartement',
-        house: 'Maison',
-        building: 'Immeuble',
-        audit: 'Audit énergétique',
-        surface: 'Surface du bien',
-        surfaceChip: 'Surface',
-        visitPrice: 'Prix de la visite',
-        priceShown: 'Prix affiché avant la réservation.',
-        pickSurface: 'Sélectionnez la surface pour afficher le prix fixe.',
-        address: 'Adresse du bien',
-        message: 'Message',
-        messagePlaceholder: 'Disponibilités, urgence, informations utiles...',
-        namePlaceholder: 'Votre nom',
-        phonePlaceholder: '+32 4xx xx xx xx',
-        emailPlaceholder: 'votre@email.be',
-        addressPlaceholder: 'Rue, numéro, commune',
-        submit: 'Confirmer ma réservation',
-        submitting: 'Envoi en cours...',
-        successNote: 'Vous recevez ensuite le récapitulatif de visite et le document du certificateur.',
-        unavailable: 'Service temporairement indisponible. Appelez-nous au +32 486 98 74 84.',
-        sendError: "Erreur lors de l'envoi. Veuillez réessayer.",
-        fallbackPrice: 'Sur devis',
       };
 
   const scrollToReservationForm = () => {
@@ -142,43 +71,6 @@ export default function Hero() {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
-
-    try {
-      if (!supabase) {
-        setError(content.unavailable);
-        setIsSubmitting(false);
-        return;
-      }
-
-      const { error: dbError } = await insertContactSubmission(formData);
-
-      if (dbError) {
-        setError(`${content.sendError} ${dbError.message}`);
-        setIsSubmitting(false);
-        return;
-      }
-
-      saveReservationSummary(formData);
-      markPendingLeadConversion();
-      window.location.href = '/merci';
-    } catch {
-      setError(content.sendError);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const showSurfaceSelect = formData.propertyType === 'appartement' || formData.propertyType === 'maison';
-  const surfaceOptions = showSurfaceSelect
-    ? SURFACE_OPTIONS[formData.propertyType as keyof typeof SURFACE_OPTIONS]
-    : [];
-  const reservationSummary = buildReservationSummary(formData, language);
-  const selectedPrice = getReservationPrice(formData.propertyType, formData.surfaceRange, language);
 
   return (
     <section id="accueil" className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50/40 pb-14 pt-32">
@@ -267,7 +159,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div id="contact">
+          <div id="contact" className="min-w-0">
             <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-2xl shadow-slate-300/20">
               <div className="bg-slate-950 px-6 py-6 text-white">
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-300">{content.formLabel}</p>
@@ -275,7 +167,7 @@ export default function Hero() {
                 <p className="mt-2 text-sm leading-6 text-slate-300">{content.formIntro}</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4 p-6">
+              <div className="space-y-6 p-6">
                 <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-4">
                   <div className="flex items-center gap-3">
                     <Phone className="h-5 w-5 text-emerald-700" />
@@ -298,138 +190,8 @@ export default function Hero() {
                   </Link>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">{content.name}</label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                      placeholder={content.namePlaceholder}
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">{content.phone}</label>
-                    <input
-                      type="tel"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                      placeholder={content.phonePlaceholder}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">{content.email}</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                    placeholder={content.emailPlaceholder}
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">{content.propertyType}</label>
-                  <select
-                    value={formData.propertyType}
-                    onChange={(e) => setFormData({ ...formData, propertyType: e.target.value, surfaceRange: '' })}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                  >
-                    <option value="appartement">{content.apartment}</option>
-                    <option value="maison">{content.house}</option>
-                    <option value="immeuble">{content.building}</option>
-                    <option value="audit">{content.audit}</option>
-                  </select>
-                </div>
-
-                {showSurfaceSelect && (
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">{content.surface}</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {surfaceOptions.map((option) => {
-                        const isActive = formData.surfaceRange === option;
-
-                        return (
-                          <button
-                            key={option}
-                            type="button"
-                            onClick={() =>
-                              setFormData({
-                                ...formData,
-                                surfaceRange: isActive ? '' : option,
-                              })
-                            }
-                            className={`w-full rounded-2xl border px-3 py-3 text-left transition ${
-                              isActive
-                                ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-100'
-                                : 'border-slate-200 bg-gradient-to-b from-white to-emerald-50/40 text-slate-700 hover:border-emerald-400 hover:bg-emerald-50'
-                            }`}
-                            aria-pressed={isActive}
-                          >
-                            <span className="block text-[10px] uppercase tracking-[0.16em] opacity-70">{content.surfaceChip}</span>
-                            <span className="mt-1 block text-sm font-bold leading-tight">{option}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                <div className="rounded-2xl border border-emerald-100 bg-white px-4 py-4">
-                  <div className="flex items-center gap-3">
-                    <CalendarDays className="h-5 w-5 text-emerald-700" />
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{content.visitPrice}</p>
-                      <p className="text-lg font-bold text-emerald-700">{reservationSummary.priceLabel}</p>
-                      <p className="text-xs text-slate-500">
-                        {showSurfaceSelect ? (selectedPrice !== content.fallbackPrice ? content.priceShown : content.pickSurface) : ''}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">{content.address}</label>
-                  <input
-                    type="text"
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                    placeholder={content.addressPlaceholder}
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700">{content.message}</label>
-                  <textarea
-                    rows={3}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-200"
-                    placeholder={content.messagePlaceholder}
-                  />
-                </div>
-
-                {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 py-4 text-base font-bold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <Send className="h-4 w-4" />
-                  {isSubmitting ? content.submitting : content.submit}
-                </button>
-
-                <p className="text-center text-sm text-slate-500">{content.successNote}</p>
-              </form>
+                <BookingWizard compact />
+              </div>
             </div>
           </div>
         </div>
