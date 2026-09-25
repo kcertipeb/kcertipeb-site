@@ -16,14 +16,17 @@ export default function ImmeubelePEB() {
         intro: 'Gespecialiseerd in residentiële gebouwen en mede-eigendom in Brussel. Gecoördineerde aanpak, één aanspreekpunt, officieel certificaat per eenheid.',
         cta: 'Offerte aanvragen',
         call: 'Bel nu',
-        price: 'Op offerte',
+        price: 'Degressief tarief',
         priceNote: 'Prijs op maat volgens het aantal eenheden',
         strengthsTitle: 'Specialist in gebouwen en mede-eigendom in Brussel',
         strengthsText: 'Wij coördineren de EPC-certificering van alle wooneenheden in één aanpak. Eén afspraakplanning, één aanspreekpunt voor de syndicus.',
         cards: [
           { title: 'Gecoördineerde aanpak', text: 'Planning aangepast aan alle bewoners, in overleg met de syndicus.' },
           { title: 'Erkend certificateur', text: 'Erkend door Leefmilieu Brussel, ervaren in mede-eigendom.' },
-          { title: 'Prijs op offerte', text: 'Groepstarief op maat van uw gebouw en het aantal eenheden.' },
+          {
+            title: 'Degressief tarief',
+            text: 'De prijs volgt het appartementstarief van de grootste eenheid × het aantal eenheden: 5 % korting vanaf 4 eenheden, 10 % vanaf 6. Vanaf 7 eenheden: offerte op maat.',
+          },
         ],
         includedTitle: 'Wat is inbegrepen',
         included: [
@@ -55,14 +58,17 @@ export default function ImmeubelePEB() {
         intro: 'Spécialisé dans les immeubles résidentiels et copropriétés à Bruxelles. Démarche coordonnée, un seul interlocuteur, certificat officiel par unité.',
         cta: 'Demander un devis',
         call: 'Appeler maintenant',
-        price: 'Sur devis',
-        priceNote: "Tarif adapté au nombre d'unités",
+        price: 'Tarif dégressif',
+        priceNote: "Prix par unité, −5 % dès 4 unités et −10 % dès 6",
         strengthsTitle: 'Spécialiste des immeubles et copropriétés à Bruxelles',
         strengthsText: 'Nous coordonnons la certification PEB de toutes les unités résidentielles en une seule démarche. Un planning, un interlocuteur pour le syndic.',
         cards: [
           { title: 'Démarche coordonnée', text: 'Planning adapté à tous les occupants, en concertation avec le syndic.' },
           { title: 'Expert agréé', text: 'Agréé Bruxelles Environnement, expérimenté en copropriété.' },
-          { title: 'Prix sur devis', text: "Tarif groupé adapté à votre immeuble et au nombre d'unités." },
+          {
+            title: 'Tarif dégressif',
+            text: "Le prix suit le tarif appartement de l'unité la plus grande, multiplié par le nombre d'unités : 5 % de remise dès 4 unités, 10 % dès 6. Au-delà de 6 unités, devis sur mesure.",
+          },
         ],
         includedTitle: 'Ce qui est inclus',
         included: [

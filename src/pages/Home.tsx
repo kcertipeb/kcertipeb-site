@@ -74,7 +74,9 @@ export default function Home() {
               <h3 className="mb-1 text-xl font-bold text-gray-900">
                 {isDutch ? 'EPC-certificaat appartementsgebouw' : 'Certificat PEB immeuble'}
               </h3>
-              <p className="mb-4 text-gray-500">{isDutch ? 'Prijs op offerte' : 'Sur devis'}</p>
+              <p className="mb-4 text-gray-500">
+                {isDutch ? 'Degressief tarief per eenheid' : 'Tarif dégressif par unité'}
+              </p>
               <span className="font-semibold text-emerald-600 group-hover:underline">
                 {isDutch ? 'Meer info →' : 'En savoir plus →'}
               </span>

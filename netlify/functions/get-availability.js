@@ -49,7 +49,7 @@ export async function handler(event) {
     return json(405, { error: 'Méthode non autorisée' });
   }
 
-  const { date, from, days, propertyType, units } = event.queryStringParameters ?? {};
+  const { date, from, days, propertyType, units, auditType } = event.queryStringParameters ?? {};
   const isRange = Boolean(from);
   const firstDate = isRange ? from : date;
 
@@ -71,7 +71,7 @@ export async function handler(event) {
     return json(400, { error: `Nombre d'unités invalide (1 à ${MAX_UNITS})` });
   }
 
-  const blockMinutes = getBlockMinutes(propertyType, unitCount);
+  const blockMinutes = getBlockMinutes(propertyType, unitCount, auditType);
   if (blockMinutes === null) {
     return json(400, { error: 'Durée de visite indéterminable pour ce type de bien' });
   }

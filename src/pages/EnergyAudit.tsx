@@ -37,10 +37,10 @@ export default function EnergyAudit() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  to="/contact"
+                  to="/reserver"
                   className="bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-amber-700 transition-all transform hover:scale-105 shadow-lg"
                 >
-                  Demander un devis
+                  Réserver mon audit
                 </Link>
                 <a
                   href="tel:+32486987484"
@@ -282,10 +282,10 @@ export default function EnergyAudit() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
-              to="/contact"
+              to="/reserver"
               className="bg-white text-amber-600 px-8 py-4 rounded-xl font-semibold hover:bg-amber-50 transition-all transform hover:scale-105 shadow-lg"
             >
-              Demander un devis
+              Réserver mon audit
             </Link>
             <a
               href="tel:+32486987484"

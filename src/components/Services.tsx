@@ -18,7 +18,7 @@ export default function Services() {
         {
           icon: <Building2 className="h-12 w-12 text-emerald-600" />,
           title: 'EPC Gebouw & Mede-eigendom',
-          description: 'Gecoördineerde EPC-certificering voor residentiële gebouwen en mede-eigendom. Prijs op offerte, één aanspreekpunt voor de syndicus.',
+          description: 'Gecoördineerde EPC-certificering voor residentiële gebouwen en mede-eigendom. Degressief tarief per eenheid, één aanspreekpunt voor de syndicus.',
           features: ['Alle eenheden in één aanpak', 'Erkend door Leefmilieu Brussel', 'VME-aansprakelijkheid 2033', 'Overzicht per gebouw'],
           link: '/certificat-peb-immeuble-bruxelles',
           linkLabel: 'Offerte aanvragen',
@@ -44,7 +44,7 @@ export default function Services() {
         {
           icon: <Building2 className="h-12 w-12 text-emerald-600" />,
           title: 'PEB Immeuble & Copropriété',
-          description: 'Certification PEB coordonnée pour immeubles résidentiels et copropriétés. Prix sur devis, un seul interlocuteur pour le syndic.',
+          description: "Certification PEB coordonnée pour immeubles résidentiels et copropriétés. Tarif dégressif par unité, un seul interlocuteur pour le syndic.",
           features: ['Toutes les unités en une démarche', 'Agréé Bruxelles Environnement', 'Co-responsabilité ACP 2033', 'Récapitulatif global pour le syndic'],
           link: '/certificat-peb-immeuble-bruxelles',
           linkLabel: 'Demander un devis',

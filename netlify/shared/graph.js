@@ -136,7 +136,16 @@ export const getBusyIntervals = async (startUtc, endUtc) => {
  * Le client n'est volontairement pas ajouté en participant : il reçoit son propre email de
  * confirmation, et une invitation Outlook depuis la boîte professionnelle ferait doublon.
  */
-export const createCalendarEvent = async ({ subject, bodyHtml, startUtc, endUtc, location }) => {
+export const createCalendarEvent = async ({
+  subject,
+  bodyHtml,
+  startUtc,
+  endUtc,
+  location,
+  locationAddress,
+  /** `busy` (rendez-vous ferme) ou `tentative` (demande à confirmer). */
+  showAs = 'busy',
+}) => {
   if (!isGraphConfigured()) {
     return null;
   }
@@ -149,8 +158,24 @@ export const createCalendarEvent = async ({ subject, bodyHtml, startUtc, endUtc,
       body: { contentType: 'HTML', content: bodyHtml },
       start: { dateTime: startUtc.toISOString().slice(0, 19), timeZone: 'UTC' },
       end: { dateTime: endUtc.toISOString().slice(0, 19), timeZone: 'UTC' },
-      location: { displayName: location },
+      // L'adresse structurée permet à Outlook d'afficher le plan et l'itinéraire ;
+      // `displayName` seul n'est qu'un texte libre.
+      location: {
+        displayName: location,
+        ...(locationAddress
+          ? {
+              locationType: 'default',
+              address: {
+                street: locationAddress.street,
+                postalCode: locationAddress.postalCode,
+                city: locationAddress.city,
+                countryOrRegion: 'Belgique',
+              },
+            }
+          : {}),
+      },
       reminderMinutesBeforeStart: 60,
+      showAs,
     }),
   });
 
@@ -164,7 +189,7 @@ export const createCalendarEvent = async ({ subject, bodyHtml, startUtc, endUtc,
  * ce qui rendait la confirmation de réservation lente. Le message est aussi conservé dans
  * les « Éléments envoyés » de la boîte.
  */
-export const sendGraphMail = async ({ to, replyTo, subject, html }) => {
+export const sendGraphMail = async ({ to, replyTo, subject, html, attachments = [] }) => {
   const user = encodeURIComponent(process.env.MS_CALENDAR_USER);
   await graphFetch(`/users/${user}/sendMail`, {
     method: 'POST',
@@ -174,6 +199,17 @@ export const sendGraphMail = async ({ to, replyTo, subject, html }) => {
         body: { contentType: 'HTML', content: html },
         toRecipients: [{ emailAddress: { address: to } }],
         ...(replyTo ? { replyTo: [{ emailAddress: { address: replyTo } }] } : {}),
+        ...(attachments.length
+          ? {
+              // Pièces jointes transmises dans le message : valable jusqu'à 3 Mo au total.
+              attachments: attachments.map((file) => ({
+                '@odata.type': '#microsoft.graph.fileAttachment',
+                name: file.filename,
+                contentType: file.contentType,
+                contentBytes: Buffer.from(file.content).toString('base64'),
+              })),
+            }
+          : {}),
       },
       saveToSentItems: true,
     }),

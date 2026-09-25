@@ -63,8 +63,15 @@ const surfaceFromRange = (range) => {
 const buildNotes = (booking, confirmed) =>
   [
     'Réservé via kcertipeb.be',
-    booking.surface_range ? `Surface déclarée : ${booking.surface_range}` : null,
-    confirmed ? null : 'Sur devis : créneau proposé par le client, à confirmer avec le tarif.',
+    booking.surface_range
+      ? `Surface déclarée : ${booking.surface_range}${booking.property_type === 'immeuble' ? ' (unité la plus grande)' : ''}`
+      : null,
+    booking.property_type === 'immeuble'
+      ? booking.price_value
+        ? 'Tarif estimé sur les surfaces communiquées : à confirmer avec le client sous 12 h.'
+        : 'Plus de 6 unités : devis sur mesure à établir et à envoyer sous 12 h.'
+      : null,
+    confirmed ? null : 'Créneau proposé par le client, à confirmer.',
     booking.message ? `Message du client : ${booking.message}` : null,
   ]
     .filter(Boolean)

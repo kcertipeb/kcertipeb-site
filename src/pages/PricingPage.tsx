@@ -28,7 +28,7 @@ export default function PricingPage() {
         subtitle: 'Vaste prijzen · Geen verborgen kosten · Btw inbegrepen',
         jumpAppt: 'Appartement — vanaf 120 €',
         jumpMaison: 'Woning — vanaf 210 €',
-        jumpImmeuble: 'Gebouw — op offerte',
+        jumpImmeuble: 'Gebouw — degressief tarief',
         popular: 'Populair',
         order: 'Bestellen',
         apptTitle: 'Prijs EPC appartement Brussel',
@@ -40,8 +40,9 @@ export default function PricingPage() {
         immeubleTitle: 'Tarief EPC gebouw Brussel',
         immeubleIntro:
           'Voor appartementsgebouwen hangt het tarief af van het aantal eenheden en de totale oppervlakte.',
-        immeubleNote: 'Offerte op maat — gratis binnen 24u',
-        immeubleSub: 'Elk gebouw is anders. Wij analyseren uw situatie en sturen u een gedetailleerde offerte.',
+        immeubleNote: 'Degressief tarief per eenheid',
+        immeubleSub:
+          'De prijs volgt het appartementstarief van de grootste eenheid, vermenigvuldigd met het aantal eenheden: 5 % korting vanaf 4 eenheden en 10 % vanaf 6. Vanaf 7 eenheden maken wij een offerte op maat, gratis binnen 24 u.',
         immeubleCta: 'Vraag een gratis offerte aan',
         immeubleLink: 'Meer info over EPC voor gebouwen →',
         included: 'Alles inbegrepen in de prijs',
@@ -74,7 +75,7 @@ export default function PricingPage() {
         subtitle: 'Prix fixes · Sans frais cachés · TVAC incluse',
         jumpAppt: 'Appartement — dès 120 €',
         jumpMaison: 'Maison — dès 210 €',
-        jumpImmeuble: 'Immeuble — sur devis',
+        jumpImmeuble: 'Immeuble — tarif dégressif',
         popular: 'Populaire',
         order: 'Commander',
         apptTitle: 'Prix PEB appartement Bruxelles',
@@ -86,8 +87,9 @@ export default function PricingPage() {
         immeubleTitle: 'Tarif PEB immeuble Bruxelles',
         immeubleIntro:
           "Pour les immeubles à appartements, le tarif dépend du nombre d'unités et de la superficie totale.",
-        immeubleNote: 'Devis sur mesure — gratuit en 24h',
-        immeubleSub: "Chaque immeuble est unique. Nous analysons votre situation et vous envoyons une offre détaillée.",
+        immeubleNote: 'Tarif dégressif par unité',
+        immeubleSub:
+          "Le prix se calcule au tarif appartement de l'unité la plus grande, multiplié par le nombre d'unités : 5 % de remise dès 4 unités et 10 % dès 6. Au-delà de 6 unités, nous établissons un devis sur mesure, gratuit en 24 h.",
         immeubleCta: 'Demander un devis gratuit',
         immeubleLink: 'En savoir plus sur le PEB immeuble →',
         included: 'Tout inclus dans le prix',

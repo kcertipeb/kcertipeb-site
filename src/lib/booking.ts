@@ -26,10 +26,84 @@ const BUILDING_BASE_UNITS = 4;
 const BUILDING_MINUTES_PER_EXTRA_UNIT = 20;
 
 /** Types de biens réservables en ligne. Les autres passent par un devis. */
-export const BOOKABLE_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble'] as const;
+export const BOOKABLE_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble', 'audit'] as const;
 
-/** Réservation ferme immédiate. Les autres types partent en `pending`. */
-export const AUTO_CONFIRMED_PROPERTY_TYPES = ['appartement', 'maison'] as const;
+/** Types de biens acceptés pour un audit énergétique en ligne. Un immeuble passe par un devis. */
+export const AUDIT_PROPERTY_TYPES = ['appartement', 'maison'] as const;
+
+/** Un audit demande une visite une fois et demie plus longue qu'un certificat PEB. */
+const AUDIT_VISIT_MINUTES: Record<string, number> = { appartement: 45, maison: 70 };
+
+/** Toutes les réservations en ligne sont fermes ; seul le tarif d'un immeuble reste à confirmer. */
+export const AUTO_CONFIRMED_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble'] as const;
+
+/** Tarifs d'appartement, base de calcul du prix d'un immeuble. Doit suivre `PRICE_TABLE`. */
+const APARTMENT_PRICES: Record<string, number> = {
+  '< 50 m²': 120,
+  '50 - 75 m²': 165,
+  '76 - 100 m²': 185,
+  '> 100 m²': 205,
+};
+
+/** Au-delà de ce nombre d'unités, le tarif ne se calcule plus en ligne : devis sur mesure. */
+export const MAX_PRICED_UNITS = 6;
+
+export const getSurfaceRange = (squareMeters: number): string | null => {
+  if (!Number.isFinite(squareMeters) || squareMeters <= 0) {
+    return null;
+  }
+  if (squareMeters < 50) return '< 50 m²';
+  if (squareMeters <= 75) return '50 - 75 m²';
+  if (squareMeters <= 100) return '76 - 100 m²';
+  return '> 100 m²';
+};
+
+/** Tarifs des maisons, pour le calcul d'un audit. Doit suivre `PRICE_TABLE`. */
+const HOUSE_PRICES: Record<string, number> = {
+  '< 100 m²': 210,
+  '101 - 200 m²': 240,
+  '> 200 m²': 275,
+};
+
+/**
+ * Tarif d'un audit énergétique : 1,5 fois le tarif PEB du même bien, arrondi à la dizaine
+ * la plus proche. Maison de plus de 200 m² : 275 × 1,5 = 412,50 → 410 €.
+ */
+export const getAuditPrice = (auditPropertyType: string, surfaceRange: string): number | null => {
+  const base = (auditPropertyType === 'maison' ? HOUSE_PRICES : APARTMENT_PRICES)[surfaceRange];
+  return base ? Math.round((base * 1.5) / 10) * 10 : null;
+};
+
+export interface BuildingPrice {
+  total: number;
+  unitPrice: number;
+  largestRange: string;
+  discountRate: number;
+}
+
+/**
+ * Prix d'un immeuble : tarif d'appartement de l'unité la plus grande × nombre d'unités,
+ * puis 5 % de remise à partir de 4 unités et 10 % à partir de 6. Au-delà de 6 unités, ou
+ * sans surface renseignée, le tarif passe sur devis (`null`).
+ *
+ * Le serveur (`netlify/shared/booking-rules.js`) applique la même règle et fait autorité.
+ */
+export const getBuildingPrice = (units: number | null, unitSurfaces: (number | null)[]): BuildingPrice | null => {
+  const surfaces = unitSurfaces.filter((value): value is number => Number.isFinite(value) && (value as number) > 0);
+
+  if (!units || units < 1 || units > MAX_PRICED_UNITS || surfaces.length === 0) {
+    return null;
+  }
+
+  const largestRange = getSurfaceRange(Math.max(...surfaces));
+  const unitPrice = largestRange ? APARTMENT_PRICES[largestRange] : undefined;
+  if (!unitPrice || !largestRange) {
+    return null;
+  }
+
+  const discountRate = units >= 6 ? 0.1 : units >= 4 ? 0.05 : 0;
+  return { total: Math.round(unitPrice * units * (1 - discountRate)), unitPrice, largestRange, discountRate };
+};
 
 export type BookingStatus = 'confirmed' | 'pending' | 'cancelled';
 
@@ -48,7 +122,15 @@ export const getBookingStatus = (propertyType: string): BookingStatus =>
  * Immeuble : 60 min jusqu'à 4 unités, puis +20 min par unité supplémentaire.
  * Un nombre d'unités absent ou invalide retombe sur le tarif de base.
  */
-export const getVisitMinutes = (propertyType: string, units?: number | null): number | null => {
+export const getVisitMinutes = (
+  propertyType: string,
+  units?: number | null,
+  auditPropertyType?: string
+): number | null => {
+  if (propertyType === 'audit') {
+    return AUDIT_VISIT_MINUTES[auditPropertyType ?? ''] ?? null;
+  }
+
   if (propertyType === 'immeuble') {
     const unitCount = Number.isFinite(units) && (units as number) > 0 ? Math.floor(units as number) : BUILDING_BASE_UNITS;
     const extraUnits = Math.max(0, unitCount - BUILDING_BASE_UNITS);
@@ -63,8 +145,12 @@ export const getVisitMinutes = (propertyType: string, units?: number | null): nu
  * Bloc réellement occupé dans l'agenda : visite + trajet.
  * C'est cette valeur qui est stockée entre `starts_at` et `ends_at`.
  */
-export const getBlockMinutes = (propertyType: string, units?: number | null): number | null => {
-  const visitMinutes = getVisitMinutes(propertyType, units);
+export const getBlockMinutes = (
+  propertyType: string,
+  units?: number | null,
+  auditPropertyType?: string
+): number | null => {
+  const visitMinutes = getVisitMinutes(propertyType, units, auditPropertyType);
   return visitMinutes === null ? null : visitMinutes + TRAVEL_BUFFER_MINUTES;
 };
 
@@ -131,6 +217,10 @@ export interface BookingDraft {
   propertyType: string;
   surfaceRange: string;
   units: number | null;
+  /** Surfaces déclarées des unités d'un immeuble, en m². La première est obligatoire. */
+  unitSurfaces: (number | null)[];
+  /** Pour un audit : type de bien audité (`appartement` ou `maison`). */
+  auditPropertyType: string;
   street: string;
   houseNumber: string;
   postalCode: string;
@@ -205,11 +295,15 @@ export const fetchAvailabilityRange = async (
   days: number,
   propertyType: string,
   units: number | null,
+  auditPropertyType: string,
   signal?: AbortSignal
 ): Promise<AvailabilityResponse[]> => {
   const params = new URLSearchParams({ from, days: String(days), propertyType });
   if (units) {
     params.set('units', String(units));
+  }
+  if (propertyType === 'audit' && auditPropertyType) {
+    params.set('auditType', auditPropertyType);
   }
 
   const response = await fetch(`${FUNCTIONS_BASE}/get-availability?${params}`, { signal });

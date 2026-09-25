@@ -3,6 +3,10 @@
   publish = "dist"
   functions = "./netlify/functions"
 
+# Le guide joint aux emails de réservation doit être embarqué avec les fonctions.
+[functions]
+  included_files = ["public/visite-du-certificateur.pdf"]
+
 # Strip trailing slashes — prevents Netlify from redirecting /blog → /blog/
 # Google sees /blog directly from prerendered HTML without any redirect
 [[redirects]]

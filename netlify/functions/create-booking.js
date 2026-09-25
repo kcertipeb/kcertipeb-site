@@ -20,16 +20,24 @@
  * Graph (SMTP en secours) : c'est ce qui garde la confirmation rapide pour le client.
  */
 
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+
 import nodemailer from 'nodemailer';
 
 import {
   getBlockMinutes,
   getBookingStatus,
   getBrusselsCommune,
+  AUDIT_PROPERTY_TYPES,
   getPriceValue,
+  getSurfaceRange,
   isBookableOnline,
+  MAX_PRICED_UNITS,
   MAX_UNITS,
+  TRAVEL_BUFFER_MINUTES,
 } from '../shared/booking-rules.js';
+import { buildBookingEmails } from '../shared/booking-emails.js';
 import { createCertiflowDossier, isCertiflowConfigured } from '../shared/certiflow.js';
 import { brusselsToUtc, generateCandidateSlots, getBookingConfig } from '../shared/datetime.js';
 import { createCalendarEvent, isGraphConfigured, sendGraphMail, warmUpGraph } from '../shared/graph.js';
@@ -46,10 +54,103 @@ const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Guide joint à l'email du client. Le PDF est un fichier public du site : la fonction le
+ * récupère par HTTP et le garde en mémoire pour les réservations suivantes, ce qui évite
+ * de l'embarquer dans le paquet de la fonction.
+ */
+const GUIDE_PATH = '/visite-du-certificateur.pdf';
+const GUIDE_FILENAME = 'Visite du certificateur — KCertiPEB.pdf';
+let cachedGuide = null;
+
+/**
+ * Le PDF est lu sur le disque (il est embarqué avec la fonction par `included_files` du
+ * `netlify.toml`) et, à défaut, téléchargé depuis le site. Il est gardé en mémoire pour
+ * les réservations suivantes traitées par la même instance.
+ */
+const getGuideAttachment = async (origin) => {
+  if (cachedGuide !== null) {
+    return cachedGuide;
+  }
+
+  const toAttachment = (content) => ({ filename: GUIDE_FILENAME, contentType: 'application/pdf', content });
+
+  for (const candidate of ['public/visite-du-certificateur.pdf', 'visite-du-certificateur.pdf']) {
+    try {
+      cachedGuide = toAttachment(await readFile(resolve(process.cwd(), candidate)));
+      return cachedGuide;
+    } catch {
+      // Fichier absent à cet emplacement : on essaie le suivant.
+    }
+  }
+
+  try {
+    const response = await fetch(`${origin}${GUIDE_PATH}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    cachedGuide = toAttachment(Buffer.from(await response.arrayBuffer()));
+  } catch (error) {
+    // Sans le guide, l'email part quand même : mieux vaut un email incomplet qu'aucun.
+    console.error('Guide client introuvable, email envoyé sans pièce jointe :', error);
+    cachedGuide = undefined;
+  }
+
+  return cachedGuide;
+};
+
+/**
+ * Contenu de l'événement Outlook : coordonnées du bien et du client, avec des boutons
+ * pour appeler, écrire ou ouvrir l'itinéraire directement depuis l'agenda, y compris
+ * depuis le téléphone.
+ */
+const buildEventBody = ({
+  name,
+  phone,
+  email,
+  address,
+  surfaceRange,
+  priceLabel,
+  message,
+  priceToConfirm,
+  hasPrice,
+  units,
+}) => {
+  const dialable = String(phone ?? '').replace(/[^\d+]/g, '');
+  const button = (href, label) =>
+    `<a href="${href}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 18px;border-radius:8px;background:#047857;color:#ffffff;font-family:Segoe UI,Arial,sans-serif;font-size:14px;font-weight:600;text-decoration:none;">${label}</a>`;
+
+  return `
+    <div style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#111827;">
+      ${
+        priceToConfirm
+          ? `<p style="color:#b45309;"><strong>${
+              hasPrice
+                ? 'Tarif estimé : à confirmer avec le client sous 12 h.'
+                : 'Plus de 6 unités : devis sur mesure à envoyer sous 12 h.'
+            }</strong></p>`
+          : ''
+      }
+      <p style="margin:0 0 10px;">
+        ${button(`tel:${dialable}`, `📞 Appeler ${escapeHtml(name)}`)}
+        ${button(`https://wa.me/${dialable.replace('+', '')}`, '💬 WhatsApp')}
+        ${button(`mailto:${escapeHtml(email)}`, '✉️ Email')}
+        ${button(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`, '🗺️ Itinéraire')}
+      </p>
+      <p style="margin:0 0 4px;"><strong>${escapeHtml(name)}</strong> — ${escapeHtml(phone)} — ${escapeHtml(email)}</p>
+      <p style="margin:0 0 4px;">${escapeHtml(address)}</p>
+      <p style="margin:0 0 4px;">Surface : ${escapeHtml(surfaceRange || '—')}${
+        units ? ` · ${units} unités` : ''
+      } · Tarif : ${escapeHtml(priceLabel)}</p>
+      ${message ? `<p style="margin:10px 0 0;"><strong>Message du client :</strong><br/>${escapeHtml(message)}</p>` : ''}
+    </div>`;
+};
+
 const PROPERTY_LABELS = {
   appartement: 'Appartement',
   maison: 'Maison',
   immeuble: 'Immeuble',
+  audit: 'Audit énergétique',
 };
 
 const formatSlotLabel = (dateStr, timeStr) => {
@@ -74,10 +175,10 @@ const isSmtpConfigured = () => Boolean(process.env.SMTP_USER && process.env.SMTP
  * Envoie un email : par Microsoft Graph (une requête HTTPS), sinon par SMTP.
  * SMTP reste le secours si Graph échoue — permission `Mail.Send` absente, panne, etc.
  */
-const deliverEmail = async ({ to, replyTo, subject, html }) => {
+const deliverEmail = async ({ to, replyTo, subject, html, attachments = [] }) => {
   if (isGraphConfigured()) {
     try {
-      await sendGraphMail({ to, replyTo, subject, html });
+      await sendGraphMail({ to, replyTo, subject, html, attachments });
       return;
     } catch (error) {
       if (!isSmtpConfigured()) {
@@ -98,76 +199,20 @@ const deliverEmail = async ({ to, replyTo, subject, html }) => {
       secure: false,
       auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
     })
-    .sendMail({ from: `"K Certipeb" <${process.env.SMTP_USER}>`, to, replyTo, subject, html });
+    .sendMail({
+      from: `"K Certipeb" <${process.env.SMTP_USER}>`,
+      to,
+      replyTo,
+      subject,
+      html,
+      attachments: attachments.map((file) => ({
+        filename: file.filename,
+        content: file.content,
+        contentType: file.contentType,
+      })),
+    });
 };
 
-const buildEmails = ({ booking, slotLabel, priceLabel, confirmed, certiflowLine }) => {
-  const propertyLabel = PROPERTY_LABELS[booking.property_type] ?? booking.property_type;
-  const safe = {
-    name: escapeHtml(booking.name),
-    email: escapeHtml(booking.email),
-    phone: escapeHtml(booking.phone),
-    address: escapeHtml(booking.address),
-    message: escapeHtml(booking.message) || '-',
-    property: escapeHtml(propertyLabel),
-    surface: escapeHtml(booking.surface_range ?? '-'),
-    units: booking.units ? String(booking.units) : '-',
-    slot: escapeHtml(slotLabel),
-    price: escapeHtml(priceLabel),
-  };
-
-  const internalHtml = `
-    <h2>${confirmed ? 'Nouveau rendez-vous confirmé' : 'Demande de rendez-vous à valider'}</h2>
-    <p><strong>Créneau :</strong> ${safe.slot}</p>
-    <p><strong>Type :</strong> ${safe.property}${booking.units ? ` (${safe.units} unités)` : ''}</p>
-    <p><strong>Surface :</strong> ${safe.surface}</p>
-    <p><strong>Adresse :</strong> ${safe.address}</p>
-    <p><strong>Prix :</strong> ${safe.price}</p>
-    ${certiflowLine ? `<p><strong>Certiflow :</strong> ${escapeHtml(certiflowLine)}</p>` : ''}
-    <hr/>
-    <p><strong>Nom :</strong> ${safe.name}</p>
-    <p><strong>Email :</strong> ${safe.email}</p>
-    <p><strong>Téléphone :</strong> ${safe.phone}</p>
-    <p><strong>Message :</strong><br/>${safe.message}</p>
-  `;
-
-  const clientHtml = `
-    <h2>${confirmed ? 'Votre rendez-vous est confirmé' : 'Votre demande a bien été reçue'}</h2>
-    <p>Bonjour ${safe.name},</p>
-    ${
-      confirmed
-        ? `<p>Votre visite est fixée au <strong>${safe.slot}</strong>, à l'adresse suivante :<br/>${safe.address}</p>
-           <p>Tarif annoncé : <strong>${safe.price}</strong></p>`
-        : `<p>Nous avons bien reçu votre demande pour le <strong>${safe.slot}</strong> à l'adresse suivante :<br/>${safe.address}</p>
-           <p>Ce type de bien nécessite un devis : nous revenons vers vous sous 12 heures pour confirmer le rendez-vous et le tarif.</p>`
-    }
-    <h3>Documents à préparer</h3>
-    <ul>
-      <li>Factures de travaux (isolation, châssis, toiture, chauffage)</li>
-      <li>Documentation technique du chauffage et de l'eau chaude sanitaire</li>
-      <li>Pour un appartement : accès au local de chaufferie et documents de la copropriété</li>
-      <li>Plan du bien, si vous le possédez</li>
-    </ul>
-    <p>Sans justificatif, le certificateur doit appliquer des valeurs par défaut pénalisantes : chaque document retrouvé peut améliorer votre classe.</p>
-    <p>Une question ? Répondez simplement à cet email ou appelez le +32 486 98 74 84.</p>
-    <p>KCertiPEB — certificateurs PEB agréés Bruxelles Environnement</p>
-  `;
-
-  return {
-    internal: {
-      to: getMailbox(),
-      replyTo: booking.email,
-      subject: `${confirmed ? 'RDV confirmé' : 'Demande RDV'} — ${propertyLabel} — ${slotLabel}`,
-      html: internalHtml,
-    },
-    client: {
-      to: booking.email,
-      replyTo: getMailbox(),
-      subject: confirmed ? 'Votre rendez-vous PEB est confirmé' : 'Votre demande de rendez-vous PEB',
-      html: clientHtml,
-    },
-  };
-};
 
 export async function handler(event) {
   const startedAt = Date.now();
@@ -192,8 +237,22 @@ export async function handler(event) {
     return json(400, { error: 'Corps de requête illisible' });
   }
 
-  const { propertyType, surfaceRange, units, street, houseNumber, postalCode, date, time, name, email, phone, message } =
-    payload;
+  const {
+    propertyType,
+    surfaceRange,
+    units,
+    unitSurfaces,
+    auditPropertyType,
+    street,
+    houseNumber,
+    postalCode,
+    date,
+    time,
+    name,
+    email,
+    phone,
+    message,
+  } = payload;
 
   if (!isBookableOnline(propertyType)) {
     return json(400, { error: 'Ce type de bien ne se réserve pas en ligne' });
@@ -229,7 +288,23 @@ export async function handler(event) {
     return json(400, { error: `Nombre d'unités invalide (1 à ${MAX_UNITS})` });
   }
 
-  const blockMinutes = getBlockMinutes(propertyType, unitCount);
+  // Immeuble : surfaces déclarées unité par unité, la première étant obligatoire. Elles ne
+  // servent qu'au calcul du tarif, toujours refait ici.
+  const surfaces = (Array.isArray(unitSurfaces) ? unitSurfaces : [])
+    .map(Number)
+    .filter((value) => Number.isFinite(value) && value > 0 && value <= 2000);
+
+  // Au-delà de 6 unités, le tarif est établi sur devis : les surfaces ne sont plus demandées.
+  if (propertyType === 'immeuble' && surfaces.length === 0 && unitCount !== null && unitCount <= MAX_PRICED_UNITS) {
+    return json(400, { error: "Indiquez au moins la surface de la première unité" });
+  }
+
+  // Audit : il porte sur un appartement ou une maison ; l'audit d'immeuble passe par un devis.
+  if (propertyType === 'audit' && !AUDIT_PROPERTY_TYPES.includes(auditPropertyType)) {
+    return json(400, { error: 'Précisez si l’audit porte sur un appartement ou une maison' });
+  }
+
+  const blockMinutes = getBlockMinutes(propertyType, unitCount, auditPropertyType);
   if (blockMinutes === null) {
     return json(400, { error: 'Durée de visite indéterminable' });
   }
@@ -251,21 +326,41 @@ export async function handler(event) {
   const startsAt = brusselsToUtc(date, time);
   const endsAt = new Date(startsAt.getTime() + blockMinutes * 60000);
   const status = getBookingStatus(propertyType);
-  const priceValue = getPriceValue(propertyType, surfaceRange);
+  const priceValue = getPriceValue(propertyType, surfaceRange, {
+    units: unitCount,
+    unitSurfaces: surfaces,
+    auditPropertyType,
+  });
+
+  // Pour un immeuble, la tranche retenue est celle de l'unité la plus grande : c'est elle
+  // qui sert de base au tarif. Le détail des surfaces est conservé dans le message.
+  const storedSurfaceRange =
+    propertyType === 'immeuble'
+      ? surfaces.length > 0
+        ? getSurfaceRange(Math.max(...surfaces))
+        : null
+      : surfaceRange || null;
+  const surfacesNote =
+    propertyType === 'immeuble' && surfaces.length > 0
+      ? `Surfaces déclarées : ${surfaces.join(', ')} m² (${surfaces.length}/${unitCount} unités)`
+      : '';
+  const auditNote =
+    propertyType === 'audit' ? `Audit énergétique d'${auditPropertyType === 'maison' ? 'une maison' : 'un appartement'}` : '';
+  const clientMessage = [message?.trim(), auditNote, surfacesNote].filter(Boolean).join('\n');
 
   const row = {
     starts_at: startsAt.toISOString(),
     ends_at: endsAt.toISOString(),
     status,
     property_type: propertyType,
-    surface_range: surfaceRange || null,
+    surface_range: storedSurfaceRange,
     units: unitCount,
     address,
     postal_code: postalValue,
     name: name.trim(),
     email: email.trim(),
     phone: phone.trim(),
-    message: message?.trim() || '',
+    message: clientMessage,
     price_value: priceValue,
   };
 
@@ -297,11 +392,25 @@ export async function handler(event) {
     }
   };
 
+  const visitMinutes = blockMinutes - TRAVEL_BUFFER_MINUTES;
+  const booking = { ...inserted, ...row };
+  const origin = process.env.URL ?? `https://${event.headers?.host ?? 'kcertipeb.be'}`;
+
   // L'email au client ne dépend ni d'Outlook ni de Certiflow : il part tout de suite, en
   // parallèle des étapes suivantes, au lieu d'attendre la fin de chacune.
-  const clientEmailSent = timed('emailClient', () =>
-    deliverEmail(buildEmails({ booking: row, slotLabel, priceLabel, confirmed }).client)
-  ).then(
+  const clientEmailSent = timed('emailClient', async () => {
+    const guide = await getGuideAttachment(origin);
+    const { client } = buildBookingEmails({
+      booking,
+      slotLabel,
+      priceLabel,
+      confirmed,
+      visitMinutes,
+      priceToConfirm: propertyType === 'immeuble',
+      attachments: guide ? [guide] : [],
+    });
+    await deliverEmail({ ...client, replyTo: getMailbox() });
+  }).then(
     () => true,
     (error) => {
       console.error('Envoi de l’email au client impossible :', error);
@@ -309,56 +418,81 @@ export async function handler(event) {
     }
   );
 
+  // L'événement est créé dans les deux cas. Une demande sur devis apparaît comme
+  // « À CONFIRMER » et en disponibilité provisoire, pour la distinguer d'un rendez-vous
+  // ferme tout en gardant le créneau visible dans l'agenda.
   let eventId = null;
-  if (confirmed) {
-    try {
-      eventId = await timed('outlook', () => createCalendarEvent({
-        subject: `Visite PEB — ${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}`,
-        bodyHtml: `
-          <p><strong>${escapeHtml(name)}</strong> — ${escapeHtml(phone)} — ${escapeHtml(email)}</p>
-          <p>${escapeHtml(address)}</p>
-          <p>Surface : ${escapeHtml(surfaceRange ?? '-')} · Tarif : ${escapeHtml(priceLabel)}</p>
-          <p>${escapeHtml(message ?? '')}</p>
-        `,
+  try {
+    eventId = await timed('outlook', () =>
+      createCalendarEvent({
+        subject: `Visite PEB — ${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}${
+          propertyType === 'immeuble' ? ' (tarif à confirmer)' : ''
+        }`,
+        bodyHtml: buildEventBody({
+          name,
+          phone,
+          email,
+          address,
+          surfaceRange,
+          priceLabel,
+          message: clientMessage,
+          priceToConfirm: propertyType === 'immeuble',
+          hasPrice: Boolean(priceValue),
+          units: unitCount,
+        }),
         startUtc: startsAt,
         endUtc: endsAt,
-        location: address.trim(),
-      }));
+        location: address,
+        locationAddress: { street: `${streetValue} ${numberValue}`, postalCode: postalValue, city: commune },
+        showAs: confirmed ? 'busy' : 'tentative',
+      })
+    );
 
-      if (eventId) {
-        await supabase.from('bookings').update({ graph_event_id: eventId }).eq('id', inserted.id);
-      }
-    } catch (error) {
-      // La réservation reste valide et le créneau bloqué ; seul l'agenda n'a pas été mis à
-      // jour. L'email interne fait foi pour encoder le rendez-vous manuellement.
-      console.error('Création de l’événement Outlook impossible :', error);
+    if (eventId) {
+      await supabase.from('bookings').update({ graph_event_id: eventId }).eq('id', inserted.id);
     }
+  } catch (error) {
+    // La réservation reste valide et le créneau bloqué ; seul l'agenda n'a pas été mis à
+    // jour. L'email interne fait foi pour encoder le rendez-vous manuellement.
+    console.error('Création de l’événement Outlook impossible :', error);
   }
 
   // Dossier dans Certiflow : écrit directement en base, sans événement ni email côté
   // Certiflow. Un échec est signalé dans l'email interne pour encoder le dossier à la main.
-  let certiflowLine = null;
+  let certiflowDossier = null;
   if (isCertiflowConfigured()) {
     try {
-      const dossierId = await timed('certiflow', () => createCertiflowDossier(inserted, { eventId, confirmed }));
-      certiflowLine = `dossier ${dossierId} créé`;
+      certiflowDossier = await timed('certiflow', () => createCertiflowDossier(inserted, { eventId, confirmed }));
     } catch (error) {
       console.error('Création du dossier Certiflow impossible :', error);
-      certiflowLine = 'dossier NON créé — à encoder manuellement';
     }
   }
 
-  // L'email interne attend Certiflow : il indique si le dossier a bien été créé.
-  const internalEmailSent = await timed('emailInterne', () =>
-    deliverEmail(buildEmails({ booking: row, slotLabel, priceLabel, confirmed, certiflowLine }).internal)
-  ).then(
+  // L'email interne part en dernier : il récapitule ce qui a réussi ou échoué.
+  const clientEmailResult = await clientEmailSent;
+  const internalEmailSent = await timed('emailInterne', () => {
+    const { internal } = buildBookingEmails({
+      booking,
+      slotLabel,
+      priceLabel,
+      confirmed,
+      visitMinutes,
+      priceToConfirm: propertyType === 'immeuble',
+      sync: {
+        outlook: Boolean(eventId),
+        certiflow: certiflowDossier,
+        clientEmail: clientEmailResult,
+      },
+    });
+    return deliverEmail({ ...internal, to: getMailbox() });
+  }).then(
     () => true,
     (error) => {
       console.error('Envoi de l’email interne impossible :', error);
       return false;
     }
   );
-  const emailSent = (await clientEmailSent) && internalEmailSent;
+  const emailSent = clientEmailResult && internalEmailSent;
 
   console.log(`Réservation ${inserted.id} — durées (ms) :`, JSON.stringify({ ...timings, total: Date.now() - startedAt }));
 

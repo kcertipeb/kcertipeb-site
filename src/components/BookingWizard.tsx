@@ -7,6 +7,7 @@ import { trackPhoneCallConversion, markPendingLeadConversion } from '../lib/trac
 import { getReservationPrice, saveReservationSummary } from '../lib/reservation';
 import {
   AddressSuggestion,
+  AUDIT_PROPERTY_TYPES,
   BookingError,
   createBooking,
   createSessionToken,
@@ -16,7 +17,10 @@ import {
   formatDateChip,
   formatSlotLabel,
   getBrusselsCommune,
+  getAuditPrice,
+  getBuildingPrice,
   getIsoDate,
+  MAX_PRICED_UNITS,
   getVisitMinutes,
   isAutoConfirmed,
   isBookableOnline,
@@ -32,6 +36,9 @@ const PROPERTY_TYPES = ['appartement', 'maison', 'immeuble', 'audit'] as const;
 
 /** Horizon de réservation, en jours. */
 const DATE_RANGE_DAYS = 21;
+
+/** Nombre maximal de cases de surface affichées, aligné sur le seuil du tarif en ligne. */
+const MAX_SURFACE_INPUTS = 6;
 
 /** Jours disponibles affichés à la fois. */
 const DAYS_PER_PAGE = 4;
@@ -73,7 +80,15 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         building: 'Gebouw',
         audit: 'Energie-audit',
         units: 'Aantal eenheden',
-        unitsHelp: 'Bepaalt de duur van het bezoek.',
+        unitsHelp: 'Bepaalt de duur van het bezoek en het tarief.',
+        unitSurfaces: 'Oppervlakte van elke eenheid (m²)',
+        unitSurfacesHelp: 'De eerste is verplicht, de andere optioneel. Het tarief volgt de grootste eenheid.',
+        unitLabel: 'Eenheid',
+        optional: 'optioneel',
+        priceEstimate: 'Raming',
+        priceToConfirm: 'Tarief binnen 12 u bevestigd na controle.',
+        buildingDiscount: 'korting',
+        buildingQuote: 'Vanaf 7 eenheden stellen wij een offerte op maat op. Uw tijdslot blijft gereserveerd.',
         surface: 'Oppervlakte',
         address: 'Adres van het pand',
         street: 'Straat',
@@ -88,8 +103,8 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         quoteOnly: 'Op offerte',
         quoteNotice:
           'Dit type aanvraag vereist een offerte. Kies een tijdslot: wij bevestigen het samen met het tarief binnen 12 uur.',
-        auditNotice:
-          'Een energie-audit wordt niet online gereserveerd. Neem contact met ons op voor een offerte op maat.',
+        auditPropertyType: 'Te auditeren pand',
+        auditNotice: 'Voor een audit van een gebouw maken wij een offerte op maat:',
         contactUs: 'Contacteer ons',
         chooseSlot: 'Kies een tijdslot',
         noSlots: 'Geen tijdslot beschikbaar in de komende 3 weken. Bel ons, wij zoeken samen een oplossing.',
@@ -127,7 +142,15 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         building: 'Immeuble',
         audit: 'Audit énergétique',
         units: 'Nombre d’unités',
-        unitsHelp: 'Détermine la durée de la visite.',
+        unitsHelp: 'Détermine la durée de la visite et le tarif.',
+        unitSurfaces: 'Surface de chaque unité (m²)',
+        unitSurfacesHelp: 'La première est obligatoire, les autres facultatives. Le tarif se base sur la plus grande.',
+        unitLabel: 'Unité',
+        optional: 'facultatif',
+        priceEstimate: 'Estimation',
+        priceToConfirm: 'Tarif confirmé sous 12 h après vérification.',
+        buildingDiscount: 'remise',
+        buildingQuote: 'Au-delà de 6 unités, le tarif est établi sur devis. Votre créneau reste réservé.',
         surface: 'Surface',
         address: 'Adresse du bien',
         street: 'Rue',
@@ -142,8 +165,8 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         quoteOnly: 'Sur devis',
         quoteNotice:
           'Ce type de demande nécessite un devis. Choisissez un créneau : nous le confirmons avec le tarif sous 12 heures.',
-        auditNotice:
-          'Un audit énergétique ne se réserve pas en ligne. Contactez-nous pour un devis sur mesure.',
+        auditPropertyType: 'Bien à auditer',
+        auditNotice: 'Pour un audit d’immeuble, le tarif est établi sur devis :',
         contactUs: 'Nous contacter',
         chooseSlot: 'Choisissez un créneau',
         noSlots: 'Aucun créneau disponible dans les 3 prochaines semaines. Appelez-nous, nous trouverons une solution.',
@@ -178,6 +201,10 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   const [propertyType, setPropertyType] = useState('appartement');
   const [surfaceRange, setSurfaceRange] = useState('');
   const [units, setUnits] = useState<number | null>(null);
+  /** Surfaces déclarées, une case par unité ; seule la première est obligatoire. */
+  const [unitSurfaces, setUnitSurfaces] = useState<(number | null)[]>([]);
+  /** Pour un audit : bien audité, appartement ou maison. */
+  const [auditPropertyType, setAuditPropertyType] = useState('');
   const [street, setStreet] = useState('');
   const [houseNumber, setHouseNumber] = useState('');
   const [postalCode, setPostalCode] = useState('');
@@ -208,9 +235,21 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
 
   const isAudit = propertyType === 'audit';
   const isBuilding = propertyType === 'immeuble';
-  const showSurface = propertyType === 'appartement' || propertyType === 'maison';
-  const visitMinutes = getVisitMinutes(propertyType, units);
-  const priceLabel = getReservationPrice(propertyType, surfaceRange, language);
+  const showSurface = propertyType === 'appartement' || propertyType === 'maison' || (isAudit && auditPropertyType !== '');
+  const visitMinutes = getVisitMinutes(propertyType, units, auditPropertyType);
+  const buildingPrice = isBuilding ? getBuildingPrice(units, unitSurfaces) : null;
+  const auditPrice = isAudit && auditPropertyType ? getAuditPrice(auditPropertyType, surfaceRange) : null;
+  /** Type de bien dont les tranches de surface sont proposées. */
+  const surfaceType = isAudit ? auditPropertyType : propertyType;
+  const priceLabel = isBuilding
+    ? buildingPrice
+      ? `${buildingPrice.total} € TVAC`
+      : t.quoteOnly
+    : isAudit
+      ? auditPrice
+        ? `${auditPrice} € TVAC`
+        : t.quoteOnly
+      : getReservationPrice(propertyType, surfaceRange, language);
 
   // Les dates ne sont calculées qu'au montage : au prérendu react-snap, `new Date()`
   // renverrait la date du build et figerait le sélecteur dans le HTML statique.
@@ -229,14 +268,32 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
     if (!isBookableOnline(propertyType) || !street.trim() || !houseNumber.trim() || !commune) {
       return false;
     }
+    // Audit : il faut d'abord savoir s'il porte sur un appartement ou une maison.
+    if (isAudit && !auditPropertyType) {
+      return false;
+    }
     if (showSurface && !surfaceRange) {
       return false;
     }
-    if (isBuilding && (!units || units < 1)) {
+    // Immeuble : la surface de la première unité est indispensable au calcul du tarif,
+    // sauf au-delà de 6 unités où le tarif passe de toute façon sur devis.
+    if (isBuilding && (!units || units < 1 || (units <= MAX_PRICED_UNITS && !unitSurfaces[0]))) {
       return false;
     }
     return true;
-  }, [propertyType, street, houseNumber, commune, showSurface, surfaceRange, isBuilding, units]);
+  }, [
+    propertyType,
+    street,
+    houseNumber,
+    commune,
+    showSurface,
+    surfaceRange,
+    isBuilding,
+    isAudit,
+    auditPropertyType,
+    units,
+    unitSurfaces,
+  ]);
 
   const canSubmit = Boolean(date && time && name.trim() && email.trim() && phone.trim());
 
@@ -297,7 +354,9 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   // La durée du bloc dépend du bien : toute modification invalide les créneaux connus.
   useEffect(() => {
     resetAvailability();
-  }, [propertyType, units, resetAvailability]);
+  }, [propertyType, units, auditPropertyType, resetAvailability]);
+
+  // Les surfaces ne changent pas la durée de la visite : inutile de recharger les créneaux.
 
   // Remplit la page courante avec des jours qui ont au moins un créneau. Les jours sont
   // interrogés par lots ; l'effet se relance après chaque lot tant que la page n'est pas
@@ -308,7 +367,11 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
   // Netlify (plusieurs secondes) a donc lieu pendant que le client choisit son bien, et
   // l'étape Créneau s'affiche sans attente.
   useEffect(() => {
-    if (!isBookableOnline(propertyType) || dates.length === 0 || daysState !== 'idle') {
+    // Un audit n'a de durée connue qu'une fois le bien audité choisi.
+    if (!isBookableOnline(propertyType) || (propertyType === 'audit' && !auditPropertyType)) {
+      return;
+    }
+    if (dates.length === 0 || daysState !== 'idle') {
       return;
     }
     if (days.length >= (page + 1) * DAYS_PER_PAGE || scannedDays >= dates.length) {
@@ -319,7 +382,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
     const batch = dates.slice(scannedDays, scannedDays + SCAN_BATCH_DAYS);
     setDaysState('loading');
 
-    fetchAvailabilityRange(batch[0], batch.length, propertyType, units)
+    fetchAvailabilityRange(batch[0], batch.length, propertyType, units, auditPropertyType)
       .then((results) => {
         if (generation !== generationRef.current) {
           return;
@@ -333,7 +396,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
           setDaysState('error');
         }
       });
-  }, [step, dates, days.length, page, scannedDays, daysState, propertyType, units]);
+  }, [step, dates, days.length, page, scannedDays, daysState, propertyType, units, auditPropertyType]);
 
   // Un chargement en arrière-plan qui a échoué est retenté une fois quand le client arrive
   // à l'étape Créneau : il voit une attente plutôt qu'un message d'erreur. Une seule fois,
@@ -370,6 +433,8 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         propertyType,
         surfaceRange,
         units,
+        unitSurfaces,
+        auditPropertyType,
         street: street.trim(),
         houseNumber: houseNumber.trim(),
         postalCode,
@@ -454,7 +519,9 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
                     onClick={() => {
                       setPropertyType(type);
                       setSurfaceRange('');
-                      setUnits(type === 'immeuble' ? 4 : null);
+                      setUnits(type === 'immeuble' ? 2 : null);
+                      setUnitSurfaces(type === 'immeuble' ? [null, null] : []);
+                      setAuditPropertyType('');
                       setTime('');
                     }}
                     aria-pressed={isActive}
@@ -472,11 +539,38 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
           </div>
 
           {isAudit && (
-            <div className="rounded-xl border-l-4 border-blue-500 bg-blue-50 p-4 text-sm text-gray-700">
-              <p>{t.auditNotice}</p>
-              <Link to="/contact" className="mt-3 inline-block font-semibold text-blue-700 underline">
-                {t.contactUs} →
-              </Link>
+            <div>
+              <label className="mb-2 block font-semibold text-gray-700">{t.auditPropertyType}</label>
+              <div className={choiceGrid}>
+                {AUDIT_PROPERTY_TYPES.map((type) => {
+                  const isActive = auditPropertyType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => {
+                        setAuditPropertyType(isActive ? '' : type);
+                        setSurfaceRange('');
+                        setTime('');
+                      }}
+                      aria-pressed={isActive}
+                      className={`rounded-xl border px-3 py-3 text-sm font-semibold transition ${
+                        isActive
+                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-100'
+                          : 'border-gray-200 bg-white text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {type === 'maison' ? t.house : t.apartment}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-xs text-gray-500">
+                {t.auditNotice}{' '}
+                <Link to="/contact" className="font-semibold text-emerald-700 underline">
+                  {t.contactUs}
+                </Link>
+              </p>
             </div>
           )}
 
@@ -491,10 +585,52 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
                 min={1}
                 max={50}
                 value={units ?? ''}
-                onChange={(changeEvent) => setUnits(Number(changeEvent.target.value) || null)}
+                onChange={(changeEvent) => {
+                  const count = Number(changeEvent.target.value) || null;
+                  setUnits(count);
+                  // Une case de surface par unité, en conservant ce qui est déjà saisi.
+                  // Au-delà de 6 unités le tarif est sur devis : les surfaces ne servent plus.
+                  setUnitSurfaces((previous) =>
+                    !count || count > MAX_PRICED_UNITS
+                      ? []
+                      : Array.from({ length: Math.min(count, MAX_SURFACE_INPUTS) }, (_, index) => previous[index] ?? null)
+                  );
+                }}
                 className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
               />
               <p className="mt-1 text-xs text-gray-500">{t.unitsHelp}</p>
+            </div>
+          )}
+
+          {isBuilding && unitSurfaces.length > 0 && (
+            <div>
+              <label className="mb-2 block font-semibold text-gray-700">{t.unitSurfaces}</label>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {unitSurfaces.map((surface, index) => (
+                  <div key={index}>
+                    <label htmlFor={fieldId(`unit-${index}`)} className="mb-1 block text-xs font-medium text-gray-600">
+                      {t.unitLabel} {index + 1}
+                      {index > 0 && <span className="text-gray-400"> ({t.optional})</span>}
+                    </label>
+                    <input
+                      id={fieldId(`unit-${index}`)}
+                      type="number"
+                      min={5}
+                      max={2000}
+                      inputMode="numeric"
+                      required={index === 0}
+                      value={surface ?? ''}
+                      onChange={(changeEvent) => {
+                        const value = Number(changeEvent.target.value) || null;
+                        setUnitSurfaces((previous) => previous.map((item, position) => (position === index ? value : item)));
+                      }}
+                      placeholder="m²"
+                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 transition focus:border-emerald-500 focus:outline-none"
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="mt-1 text-xs text-gray-500">{t.unitSurfacesHelp}</p>
             </div>
           )}
 
@@ -502,7 +638,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
             <div>
               <label className="mb-2 block font-semibold text-gray-700">{t.surface}</label>
               <div className={choiceGrid}>
-                {SURFACE_OPTIONS[propertyType as keyof typeof SURFACE_OPTIONS].map((option) => {
+                {SURFACE_OPTIONS[surfaceType as keyof typeof SURFACE_OPTIONS].map((option) => {
                   const isActive = surfaceRange === option;
                   return (
                     <button
@@ -524,7 +660,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
             </div>
           )}
 
-          {!isAudit && (
+          {(
             <fieldset className="space-y-3">
               <legend className="mb-2 block font-semibold text-gray-700">{t.address}</legend>
 
@@ -624,7 +760,7 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
             </fieldset>
           )}
 
-          {!isAudit && (
+          {(
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -641,7 +777,15 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
                   </div>
                 )}
               </div>
-              {isBuilding && <p className="mt-3 text-sm text-gray-600">{t.quoteNotice}</p>}
+              {isBuilding && (
+                <p className="mt-3 text-sm text-gray-600">
+                  {buildingPrice
+                    ? `${buildingPrice.unitPrice} € × ${units}${
+                        buildingPrice.discountRate ? ` − ${Math.round(buildingPrice.discountRate * 100)} % ${t.buildingDiscount}` : ''
+                      } · ${t.priceToConfirm}`
+                    : t.buildingQuote}
+                </p>
+              )}
             </div>
           )}
 
