@@ -25,6 +25,7 @@ import BlogPostDifferencePebAudit from './pages/BlogPostDifferencePebAudit';
 import BlogPostCommentObtenir from './pages/BlogPostCommentObtenir';
 import BlogPostClasseFG from './pages/BlogPostClasseFG';
 import BookingPage from './pages/BookingPage';
+import PhoneBookingPage from './pages/PhoneBookingPage';
 import ImmeubelePEB from './pages/ImmeubelePEB';
 import CommunePage from './pages/CommunePage';
 import UrgentPEB from './pages/UrgentPEB';
@@ -56,6 +57,7 @@ function AppShell() {
         <Route path="/tarifs" element={<PricingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/reserver" element={<BookingPage />} />
+        <Route path="/rendez-vous" element={<PhoneBookingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
         <Route path="/blog" element={<BlogPage />} />

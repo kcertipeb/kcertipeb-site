@@ -132,6 +132,7 @@ export const buildIcsFile = ({ uid, startsAt, endsAt, summary, description, loca
  * @param priceLabel     tarif affiché
  * @param confirmed      rendez-vous ferme (appartement, maison) ou demande de devis
  * @param visitMinutes   durée de la visite seule
+ * @param hidePrice      prix convenu au téléphone : aucun montant dans l'email client
  * @param sync           { outlook, certiflow } pour l'email interne
  * @param attachments    pièces jointes supplémentaires de l'email client
  */
@@ -142,6 +143,7 @@ export const buildBookingEmails = ({
   confirmed,
   visitMinutes,
   priceToConfirm = false,
+  hidePrice = false,
   sync = {},
   attachments = [],
 }) => {
@@ -173,10 +175,17 @@ export const buildBookingEmails = ({
         }`
       )}
       ${row('Durée sur place', `environ ${visitMinutes} minutes`)}
-      ${row('Tarif', priceToConfirm ? `${safe.price} <span style="font-weight:400;color:${MUTED};">(estimation)</span>` : safe.price)}
+      ${row(
+        'Tarif',
+        hidePrice
+          ? 'Tel que convenu par téléphone'
+          : priceToConfirm
+            ? `${safe.price} <span style="font-weight:400;color:${MUTED};">(estimation)</span>`
+            : safe.price
+      )}
     </table>
     ${
-      priceToConfirm
+      priceToConfirm && !hidePrice
         ? callout(
             booking.price_value
               ? `<strong>Tarif à confirmer.</strong> Le montant ci-dessus est calculé sur les surfaces que vous avez indiquées. Je vérifie le dossier et vous confirme le tarif définitif <strong>sous 12 heures</strong>. Votre créneau, lui, est déjà réservé.`
@@ -190,7 +199,7 @@ export const buildBookingEmails = ({
     ${
       confirmed
         ? `<p style="margin:0 0 14px;">Votre visite est <strong>confirmée</strong>. Voici le récapitulatif :</p>`
-        : `<p style="margin:0 0 14px;">Nous avons bien reçu votre demande. Le créneau ci-dessous est <strong>réservé à titre provisoire</strong> : nous revenons vers vous sous 12 heures avec le tarif et la confirmation définitive.</p>`
+        : `<p style="margin:0 0 14px;">Nous avons bien reçu votre demande. Le créneau ci-dessous est <strong>réservé à titre provisoire</strong> : nous revenons vers vous sous 12 heures avec ${hidePrice ? 'la' : 'le tarif et la'} confirmation définitive.</p>`
     }
     ${clientRecap}
     ${
@@ -289,7 +298,7 @@ export const buildBookingEmails = ({
     },
     internal: {
       replyTo: booking.email,
-      subject: `${confirmed ? 'RDV confirmé' : 'Demande RDV'} — ${propertyLabel} — ${slotLabel} — ${booking.postal_code ?? ''}`.trim(),
+      subject: `${hidePrice ? '📞 ' : ''}${confirmed ? 'RDV confirmé' : 'Demande RDV'} —${propertyLabel} — ${slotLabel} — ${booking.postal_code ?? ''}`.trim(),
       html: layout({
         title: confirmed ? 'Nouveau rendez-vous confirmé' : 'Demande de rendez-vous à valider',
         subtitle: `${propertyLabel} · ${slotLabel}`,

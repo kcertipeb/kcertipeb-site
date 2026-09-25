@@ -25,6 +25,8 @@ export interface ReservationPayload {
   address: string;
   /** Libellé du créneau retenu, présent uniquement via le parcours `/reserver`. */
   slotLabel?: string;
+  /** Réservation via `/rendez-vous` : prix convenu au téléphone, jamais affiché. */
+  hidePrice?: boolean;
 }
 
 interface StoredReservationSummary {
@@ -32,6 +34,7 @@ interface StoredReservationSummary {
   surfaceRange: string;
   address: string;
   slotLabel?: string;
+  hidePrice?: boolean;
 }
 
 export interface ReservationSummary extends StoredReservationSummary {
@@ -115,6 +118,7 @@ export const buildReservationSummary = (payload: ReservationPayload, language: L
     surfaceRange: payload.surfaceRange || FALLBACK_LABELS[language].surface,
     address: payload.address.trim() || FALLBACK_LABELS[language].address,
     slotLabel: payload.slotLabel,
+    hidePrice: payload.hidePrice,
     propertyTypeLabel:
       PROPERTY_TYPE_LABELS[language][payload.propertyType] || FALLBACK_LABELS[language].property,
     priceLabel: formatReservationPrice(priceValue, language),
@@ -128,6 +132,7 @@ export const saveReservationSummary = (payload: ReservationPayload) => {
     surfaceRange: payload.surfaceRange,
     address: payload.address.trim(),
     slotLabel: payload.slotLabel,
+    hidePrice: payload.hidePrice,
   };
 
   sessionStorage.setItem(RESERVATION_SUMMARY_KEY, JSON.stringify(summary));

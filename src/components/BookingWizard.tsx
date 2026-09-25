@@ -57,13 +57,18 @@ interface BookingWizardProps {
    * colonnes, pas de carte englobante, moins de créneaux affichés d'emblée.
    */
   compact?: boolean;
+  /**
+   * Lien envoyé après un appel (`/rendez-vous`) : le prix a été convenu au téléphone, il
+   * n'est affiché nulle part et la réservation n'est pas comptée comme conversion publicitaire.
+   */
+  hidePrice?: boolean;
 }
 
 /**
  * Tunnel de réservation en 3 étapes (bien → créneau → coordonnées).
- * Utilisé sur la page `/reserver` et dans le bandeau de la page d'accueil.
+ * Utilisé sur les pages `/reserver` et `/rendez-vous`, et dans le bandeau de la page d'accueil.
  */
-export default function BookingWizard({ compact = false }: BookingWizardProps) {
+export default function BookingWizard({ compact = false, hidePrice = false }: BookingWizardProps) {
   const { language, isDutch } = useLanguage();
   const idPrefix = useId();
   const fieldId = (name: string) => `${idPrefix}-${name}`;
@@ -444,10 +449,14 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
         email: email.trim(),
         phone: phone.trim(),
         message: message.trim(),
+        phoneAgreed: hidePrice,
       });
 
-      saveReservationSummary({ propertyType, surfaceRange, address: fullAddress, slotLabel: result.slotLabel });
-      markPendingLeadConversion();
+      saveReservationSummary({ propertyType, surfaceRange, address: fullAddress, slotLabel: result.slotLabel, hidePrice });
+      // Un client qui a déjà appelé est compté par le suivi des appels : pas de deuxième conversion.
+      if (!hidePrice) {
+        markPendingLeadConversion();
+      }
       window.location.href = '/merci';
     } catch (cause) {
       if (cause instanceof BookingError && cause.status === 409) {
@@ -760,24 +769,28 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
             </fieldset>
           )}
 
-          {(
+          {(!hidePrice || visitMinutes !== null) && (
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4">
               <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">{t.price}</p>
-                  <p className="mt-1 text-2xl font-bold text-emerald-700">{priceLabel}</p>
-                </div>
+                {!hidePrice && (
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{t.price}</p>
+                    <p className="mt-1 text-2xl font-bold text-emerald-700">{priceLabel}</p>
+                  </div>
+                )}
                 {visitMinutes !== null && (
-                  <div className="text-right">
+                  <div className={hidePrice ? '' : 'text-right'}>
                     <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">{t.visitDuration}</p>
-                    <p className="mt-1 flex items-center justify-end gap-1 text-lg font-bold text-gray-900">
+                    <p
+                      className={`mt-1 flex items-center gap-1 text-lg font-bold text-gray-900 ${hidePrice ? '' : 'justify-end'}`}
+                    >
                       <Clock className="h-4 w-4 text-emerald-600" />
                       {visitMinutes} {t.minutes}
                     </p>
                   </div>
                 )}
               </div>
-              {isBuilding && (
+              {isBuilding && !hidePrice && (
                 <p className="mt-3 text-sm text-gray-600">
                   {buildingPrice
                     ? `${buildingPrice.unitPrice} € × ${units}${
@@ -965,12 +978,14 @@ export default function BookingWizard({ compact = false }: BookingWizardProps) {
                 <dt>{t.chooseSlot}</dt>
                 <dd className="text-right font-semibold">{formatSlotLabel(date, time, language)}</dd>
               </div>
-              <div className="flex justify-between gap-4 border-t border-emerald-200 pt-2">
-                <dt className="font-semibold">{t.price}</dt>
-                <dd className="text-lg font-bold text-emerald-700">{priceLabel}</dd>
-              </div>
+              {!hidePrice && (
+                <div className="flex justify-between gap-4 border-t border-emerald-200 pt-2">
+                  <dt className="font-semibold">{t.price}</dt>
+                  <dd className="text-lg font-bold text-emerald-700">{priceLabel}</dd>
+                </div>
+              )}
             </dl>
-            {!isAutoConfirmed(propertyType) && (
+            {!isAutoConfirmed(propertyType) && !hidePrice && (
               <p className="mt-3 border-t border-emerald-200 pt-3 text-sm text-gray-600">{t.quoteNotice}</p>
             )}
           </div>

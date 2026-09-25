@@ -42,15 +42,20 @@ export default function ThankYou() {
         "Si vous avez réalisé certains travaux vous-même : photos du chantier, justificatifs et preuves d'achat des matériaux",
       ];
 
+  // Prix convenu au téléphone (lien `/rendez-vous`) : il n'est ni affiché ni évoqué.
+  const hidePrice = Boolean(reservationSummary?.hidePrice);
+
   const nextSteps = isDutch
     ? [
         'Snelle controle van uw aanvraag',
-        'Bevestiging van het tarief en de praktische modaliteiten van het bezoek',
+        hidePrice
+          ? 'Bevestiging van de praktische modaliteiten van het bezoek'
+          : 'Bevestiging van het tarief en de praktische modaliteiten van het bezoek',
         'Afsprakenslot volgens uw beschikbaarheid',
       ]
     : [
         'Vérification rapide de votre demande',
-        'Confirmation du tarif et des modalités de visite',
+        hidePrice ? 'Confirmation des modalités de visite' : 'Confirmation du tarif et des modalités de visite',
         'Prise de rendez-vous selon vos disponibilités',
       ];
 
@@ -202,10 +207,12 @@ export default function ThankYou() {
                       <p className="mt-1 text-xl font-bold capitalize text-white">{reservationSummary.slotLabel}</p>
                     </div>
                   )}
-                  <div className="rounded-3xl border border-emerald-400/30 bg-emerald-500/10 px-5 py-5 sm:col-span-2">
-                    <p className="text-sm font-medium text-emerald-200">{content.price}</p>
-                    <p className="mt-1 text-3xl font-bold text-white">{reservationSummary.priceLabel}</p>
-                  </div>
+                  {!hidePrice && (
+                    <div className="rounded-3xl border border-emerald-400/30 bg-emerald-500/10 px-5 py-5 sm:col-span-2">
+                      <p className="text-sm font-medium text-emerald-200">{content.price}</p>
+                      <p className="mt-1 text-3xl font-bold text-white">{reservationSummary.priceLabel}</p>
+                    </div>
+                  )}
                   <div className="rounded-3xl border border-slate-800 bg-white/5 px-5 py-5 sm:col-span-2">
                     <p className="text-sm text-slate-400">{content.address}</p>
                     <p className="mt-1 text-lg font-semibold text-white">{reservationSummary.address}</p>

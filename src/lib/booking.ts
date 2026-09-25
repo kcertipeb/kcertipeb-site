@@ -232,6 +232,8 @@ export interface BookingDraft {
   email: string;
   phone: string;
   message: string;
+  /** Réservation via `/rendez-vous` : le prix a été convenu au téléphone, il n'est pas montré au client. */
+  phoneAgreed?: boolean;
 }
 
 export interface AvailabilityResponse {
@@ -249,7 +251,8 @@ export interface BookingResult {
   status: BookingStatus;
   confirmed: boolean;
   slotLabel: string;
-  priceLabel: string;
+  /** Absent pour une réservation dont le prix a été convenu au téléphone. */
+  priceLabel?: string;
 }
 
 const FUNCTIONS_BASE = '/.netlify/functions';

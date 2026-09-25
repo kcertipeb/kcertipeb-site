@@ -253,6 +253,8 @@ export async function handler(event) {
     phone,
     message,
   } = payload;
+  // Lien `/rendez-vous` : prix convenu au téléphone, jamais montré au client.
+  const phoneAgreed = payload.phoneAgreed === true;
 
   if (!isBookableOnline(propertyType)) {
     return json(400, { error: 'Ce type de bien ne se réserve pas en ligne' });
@@ -346,7 +348,11 @@ export async function handler(event) {
       : '';
   const auditNote =
     propertyType === 'audit' ? `Audit énergétique d'${auditPropertyType === 'maison' ? 'une maison' : 'un appartement'}` : '';
-  const clientMessage = [message?.trim(), auditNote, surfacesNote].filter(Boolean).join('\n');
+  // La mention figure dans le message pour apparaître partout côté interne : email, Outlook, Certiflow.
+  const phoneNote = phoneAgreed
+    ? `📞 Réservation via lien téléphone : prix convenu oralement (grille : ${priceValue ? `${priceValue} € TVAC` : 'sur devis'})`
+    : '';
+  const clientMessage = [phoneNote, message?.trim(), auditNote, surfacesNote].filter(Boolean).join('\n');
 
   const row = {
     starts_at: startsAt.toISOString(),
@@ -407,6 +413,7 @@ export async function handler(event) {
       confirmed,
       visitMinutes,
       priceToConfirm: propertyType === 'immeuble',
+      hidePrice: phoneAgreed,
       attachments: guide ? [guide] : [],
     });
     await deliverEmail({ ...client, replyTo: getMailbox() });
@@ -425,7 +432,7 @@ export async function handler(event) {
   try {
     eventId = await timed('outlook', () =>
       createCalendarEvent({
-        subject: `Visite PEB — ${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}${
+        subject: `${phoneAgreed ? '📞 ' : ''}Visite PEB —${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}${
           propertyType === 'immeuble' ? ' (tarif à confirmer)' : ''
         }`,
         bodyHtml: buildEventBody({
@@ -478,6 +485,7 @@ export async function handler(event) {
       confirmed,
       visitMinutes,
       priceToConfirm: propertyType === 'immeuble',
+      hidePrice: phoneAgreed,
       sync: {
         outlook: Boolean(eventId),
         certiflow: certiflowDossier,
@@ -501,7 +509,7 @@ export async function handler(event) {
     status,
     confirmed,
     slotLabel,
-    priceLabel,
+    ...(phoneAgreed ? {} : { priceLabel }),
     emailSent,
   });
 }
