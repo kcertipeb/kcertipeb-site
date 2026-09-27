@@ -15,6 +15,14 @@
   status = 301
   force = true
 
+# L'audit énergétique n'est plus proposé : son ancienne page renvoie vers l'option qui le
+# remplace, pour conserver le référencement acquis.
+[[redirects]]
+  from = "/audit-energetique-bruxelles"
+  to = "/conseil-renovation-peb-bruxelles"
+  status = 301
+  force = true
+
 # SPA fallback — serves index.html for any route not found as a static file
 [[redirects]]
   from = "/*"

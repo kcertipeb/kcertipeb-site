@@ -1,6 +1,7 @@
 import { Home, Building2, ClipboardCheck, CheckCircle2, Star, Zap, Shield, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { RENOVATION_ADVICE_PRICES } from '../lib/booking';
 import { useLanguage } from '../lib/language';
 
 const appartementOptions = [
@@ -373,6 +374,44 @@ export default function PricingPage() {
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+
+          {/* ── Option Conseil rénovation PEB ── */}
+          <section id="conseil-renovation" className="mb-20 scroll-mt-24">
+            <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-8 md:p-10">
+              <span className="text-sm font-semibold uppercase tracking-widest text-emerald-700">
+                {isDutch ? 'Optie' : 'Option'}
+              </span>
+              <h2 className="mb-3 mt-1 text-3xl font-extrabold text-gray-900">
+                {isDutch ? 'EPC-renovatieadvies' : 'Conseil rénovation PEB'}
+              </h2>
+              <p className="mb-6 max-w-3xl text-gray-700">
+                {isDutch
+                  ? 'Tijdens hetzelfde bezoek: de posten die uw EPC het zwaarst belasten, de volgorde om ze te verbeteren en de beoogde klasse. Rapport per e-mail binnen 72 u. Geen energie-audit.'
+                  : 'Pendant la même visite : les postes qui pèsent le plus sur votre PEB, l’ordre pour les améliorer et la classe visée. Rapport par email sous 72 h. Ce n’est pas un audit énergétique.'}
+              </p>
+              <div className="mb-6 grid gap-3 sm:grid-cols-3">
+                {[
+                  { label: isDutch ? 'Appartement' : 'Appartement', price: `+${RENOVATION_ADVICE_PRICES.appartement} €` },
+                  { label: isDutch ? 'Woning' : 'Maison', price: `+${RENOVATION_ADVICE_PRICES.maison} €` },
+                  {
+                    label: isDutch ? 'Gebouw' : 'Immeuble',
+                    price: `+${RENOVATION_ADVICE_PRICES.immeuble} € ${isDutch ? '/ eenheid' : '/ unité'}`,
+                  },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-xl bg-white p-5 text-center shadow-sm">
+                    <p className="font-semibold text-gray-700">{item.label}</p>
+                    <p className="mt-1 text-2xl font-extrabold text-emerald-700">{item.price}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600">
+                {isDutch ? 'Incl. btw, bovenop het EPC-certificaat. ' : 'TVAC, en supplément du certificat PEB. '}
+                <Link to="/conseil-renovation-peb-bruxelles" className="font-semibold text-emerald-700 hover:underline">
+                  {isDutch ? 'Meer info →' : 'En savoir plus →'}
+                </Link>
+              </p>
             </div>
           </section>
 

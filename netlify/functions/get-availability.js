@@ -15,13 +15,14 @@
  * navigateur, alors même que le calcul croise l'agenda Outlook et les réservations en base.
  */
 
-import { getBlockMinutes, isBookableOnline, MAX_UNITS } from '../shared/booking-rules.js';
+import { getBlockMinutes, isBookableOnline, MAX_UNITS, TRAVEL_BUFFER_MINUTES } from '../shared/booking-rules.js';
 import {
   brusselsToUtc,
   generateCandidateSlots,
   getBookingConfig,
   overlaps,
 } from '../shared/datetime.js';
+import { getGoogleBusyIntervals } from '../shared/google-calendar.js';
 import { getBusyIntervals } from '../shared/graph.js';
 import { getAdminClient } from '../shared/supabase-admin.js';
 
@@ -49,7 +50,7 @@ export async function handler(event) {
     return json(405, { error: 'Méthode non autorisée' });
   }
 
-  const { date, from, days, propertyType, units, auditType } = event.queryStringParameters ?? {};
+  const { date, from, days, propertyType, units } = event.queryStringParameters ?? {};
   const isRange = Boolean(from);
   const firstDate = isRange ? from : date;
 
@@ -71,7 +72,7 @@ export async function handler(event) {
     return json(400, { error: `Nombre d'unités invalide (1 à ${MAX_UNITS})` });
   }
 
-  const blockMinutes = getBlockMinutes(propertyType, unitCount, auditType);
+  const blockMinutes = getBlockMinutes(propertyType, unitCount);
   if (blockMinutes === null) {
     return json(400, { error: 'Durée de visite indéterminable pour ce type de bien' });
   }
@@ -101,13 +102,28 @@ export async function handler(event) {
   const rangeEndUtc = brusselsToUtc(addDays(workingDays[workingDays.length - 1].date, 1), '00:00');
   const busy = [];
 
+  // Outlook et Google (rendez-vous envoyés par les certificateurs partenaires) sont lus en
+  // parallèle. Si l'un des deux est injoignable, on ne peut pas garantir la disponibilité :
+  // on ne propose rien plutôt que de risquer un double rendez-vous.
   try {
-    const outlookBusy = await getBusyIntervals(rangeStartUtc, rangeEndUtc);
-    busy.push(...outlookBusy);
-  } catch (error) {
-    // Agenda injoignable : on ne peut pas garantir la disponibilité, donc on ne propose
-    // rien plutôt que de risquer un double rendez-vous.
-    console.error('Lecture de l’agenda Outlook impossible :', error);
+    const [outlookBusy, googleBusy] = await Promise.all([
+      getBusyIntervals(rangeStartUtc, rangeEndUtc).catch((error) => {
+        console.error('Lecture de l’agenda Outlook impossible :', error);
+        throw error;
+      }),
+      getGoogleBusyIntervals(rangeStartUtc, rangeEndUtc).catch((error) => {
+        console.error('Lecture de l’agenda Google impossible :', error);
+        throw error;
+      }),
+    ]);
+    // Un rendez-vous du partenaire ne compte que la visite : on y ajoute le trajet vers la
+    // visite suivante, comme pour les réservations du site.
+    const travelMs = TRAVEL_BUFFER_MINUTES * 60000;
+    busy.push(
+      ...outlookBusy,
+      ...googleBusy.map((interval) => ({ start: interval.start, end: new Date(interval.end.getTime() + travelMs) }))
+    );
+  } catch {
     return json(503, { error: 'Agenda temporairement indisponible', slots: [] });
   }
 

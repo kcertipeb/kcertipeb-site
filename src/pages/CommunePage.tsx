@@ -343,12 +343,12 @@ export default function CommunePage() {
                 link: '/certificat-peb-maison-bruxelles',
               },
               {
-                title: isDutch ? 'Energie-audit' : 'Audit énergétique',
-                price: isDutch ? 'Op aanvraag' : 'Sur devis',
+                title: isDutch ? 'EPC-renovatieadvies' : 'Conseil rénovation PEB',
+                price: isDutch ? 'Vanaf 50 €' : 'Dès 50 €',
                 desc: isDutch
-                  ? `Volledige energie-audit voor uw woning in ${name}. Prioritaire werken en persoonlijk renovatieplan.`
-                  : `Audit énergétique complet pour votre bien à ${name}. Travaux prioritaires et plan de rénovation sur mesure.`,
-                link: '/audit-energetique-bruxelles',
+                  ? `Optie bij uw EPC-certificaat in ${name}: de posten die u eerst verbetert, in de juiste volgorde, en de beoogde klasse.`
+                  : `Option de votre certificat PEB à ${name} : les postes à améliorer en priorité, dans le bon ordre, et la classe visée.`,
+                link: '/conseil-renovation-peb-bruxelles',
               },
             ].map(({ title, price, desc, link }) => (
               <Link
@@ -399,8 +399,8 @@ export default function CommunePage() {
                   ? `Mijn woning in ${name} is klasse ${commune.classeDominante.split('–')[1]?.trim() || 'F'} — wat moet ik doen ?`
                   : `Mon bien à ${name} est en classe ${commune.classeDominante.split('–')[1]?.trim() || 'F'} — que faire ?`,
                 a: isDutch
-                  ? `Een woning in klasse ${commune.classeDominante} heeft renovatiepotentieel. Prioriteiten: 1) dakisolatie (15-20 €/m²), 2) vervanging enkel glas, 3) modernisering verwarming. Vraag een energie-audit aan bij KCertiPEB om de prioritaire werken te identificeren.`
-                  : `Un bien en classe ${commune.classeDominante} a un fort potentiel de rénovation. Priorités : 1) Isolation des combles (15-20 €/m²), 2) Remplacement des vitrages simple, 3) Modernisation du chauffage. Demandez un audit énergétique à KCertiPEB pour identifier les travaux prioritaires.`,
+                  ? `Een woning in klasse ${commune.classeDominante} heeft renovatiepotentieel. Prioriteiten: 1) dakisolatie (15-20 €/m²), 2) vervanging enkel glas, 3) modernisering verwarming. Voeg het EPC-renovatieadvies toe aan uw certificaat om de prioritaire werken te identificeren.`
+                  : `Un bien en classe ${commune.classeDominante} a un fort potentiel de rénovation. Priorités : 1) Isolation des combles (15-20 €/m²), 2) Remplacement des vitrages simple, 3) Modernisation du chauffage. Ajoutez le Conseil rénovation PEB à votre certificat pour identifier les travaux prioritaires.`,
               },
             ].map(({ q, a }) => (
               <div key={q} className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">

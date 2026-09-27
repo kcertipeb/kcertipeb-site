@@ -16,8 +16,8 @@ export default function ContactPage() {
         }
         keywords={
           isDutch
-            ? 'contact EPC Brussel, EPC offerte Brussel, energie-audit Brussel contact'
-            : 'contact certificat PEB bruxelles, devis certificat PEB, audit énergétique bruxelles contact'
+            ? 'contact EPC Brussel, EPC offerte Brussel, EPC-renovatieadvies Brussel contact'
+            : 'contact certificat PEB bruxelles, devis certificat PEB, conseil rénovation PEB bruxelles contact'
         }
         canonical="https://kcertipeb.be/contact"
       />

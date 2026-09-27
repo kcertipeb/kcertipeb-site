@@ -25,7 +25,6 @@ const PROPERTY_LABELS = {
   appartement: 'Appartement',
   maison: 'Maison',
   immeuble: 'Immeuble',
-  audit: 'Audit énergétique',
 };
 
 /** Ligne « intitulé / valeur » du récapitulatif. */
@@ -133,6 +132,8 @@ export const buildIcsFile = ({ uid, startsAt, endsAt, summary, description, loca
  * @param confirmed      rendez-vous ferme (appartement, maison) ou demande de devis
  * @param visitMinutes   durée de la visite seule
  * @param hidePrice      prix convenu au téléphone : aucun montant dans l'email client
+ * @param heating        `collectif`, `individuel` ou null (question non posée)
+ * @param renovationAdvice { price, delayHours } si l'option Conseil rénovation PEB est prise, sinon null
  * @param sync           { outlook, certiflow } pour l'email interne
  * @param attachments    pièces jointes supplémentaires de l'email client
  */
@@ -144,6 +145,8 @@ export const buildBookingEmails = ({
   visitMinutes,
   priceToConfirm = false,
   hidePrice = false,
+  heating = null,
+  renovationAdvice = null,
   sync = {},
   attachments = [],
 }) => {
@@ -174,6 +177,15 @@ export const buildBookingEmails = ({
           booking.surface_range ? ` · ${safe.surface}${booking.units ? ' (unité la plus grande)' : ''}` : ''
         }`
       )}
+      ${heating ? row('Chauffage', heating === 'collectif' ? 'Collectif' : 'Individuel') : ''}
+      ${
+        renovationAdvice
+          ? row(
+              'Conseil rénovation PEB',
+              `Inclus${!hidePrice && renovationAdvice.price ? ` (+${renovationAdvice.price} €)` : ''}<br><span style="font-weight:400;color:${MUTED};">Rapport envoyé par email sous ${renovationAdvice.delayHours} h après la visite</span>`
+            )
+          : ''
+      }
       ${row('Durée sur place', `environ ${visitMinutes} minutes`)}
       ${row(
         'Tarif',
@@ -220,11 +232,17 @@ export const buildBookingEmails = ({
       <li style="margin-bottom:6px;">Plans du bien.</li>
       <li style="margin-bottom:6px;">Votre ancien certificat PEB, s'il en existe un.</li>
     </ul>
-    ${callout(
-      `<strong>Chauffage collectif : prévenez votre syndic.</strong> Si l'immeuble est géré par un syndic et dispose d'un chauffage collectif, je dois pouvoir entrer dans la salle de chaufferie. Elle est souvent fermée à clé : contactez le syndic à l'avance pour organiser l'accès.`,
-      { color: '#f59e0b', background: '#fffbeb' }
-    )}
-    <p style="margin:0 0 14px;">Ces documents et l'accès à la chaufferie <strong>augmentent vos chances d'obtenir un meilleur certificat PEB</strong> : sans justificatif, la réglementation m'impose des valeurs par défaut pénalisantes.</p>
+    ${
+      heating === 'individuel'
+        ? ''
+        : callout(
+            heating === 'collectif'
+              ? `<strong>Chauffage collectif : contactez votre syndic dès maintenant.</strong> Vous avez indiqué un chauffage collectif : je dois pouvoir entrer dans la salle de chaufferie le jour de la visite. Elle est souvent fermée à clé : demandez au syndic d'organiser l'accès (clé, badge ou présence du concierge).`
+              : `<strong>Chauffage collectif : prévenez votre syndic.</strong> Si l'immeuble est géré par un syndic et dispose d'un chauffage collectif, je dois pouvoir entrer dans la salle de chaufferie. Elle est souvent fermée à clé : contactez le syndic à l'avance pour organiser l'accès.`,
+            { color: '#f59e0b', background: '#fffbeb' }
+          )
+    }
+    <p style="margin:0 0 14px;">Ces documents${heating === 'individuel' ? '' : " et l'accès à la chaufferie"} <strong>augmentent vos chances d'obtenir un meilleur certificat PEB</strong> : sans justificatif, la réglementation m'impose des valeurs par défaut pénalisantes.</p>
     <p style="margin:0 0 6px;">Vous pouvez me les envoyer dès maintenant, par email ou par WhatsApp :</p>
     <p style="margin:0 0 6px;">
       ${button('mailto:info@kcertipeb.be', 'Envoyer par email', { outlined: true })}

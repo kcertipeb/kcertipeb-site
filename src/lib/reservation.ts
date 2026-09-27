@@ -1,3 +1,4 @@
+import { getRenovationAdvicePrice } from './booking';
 import { Language } from './language';
 
 export const VISIT_GUIDE_PDF_PATH =
@@ -27,6 +28,8 @@ export interface ReservationPayload {
   slotLabel?: string;
   /** Réservation via `/rendez-vous` : prix convenu au téléphone, jamais affiché. */
   hidePrice?: boolean;
+  /** Option « Conseil rénovation PEB » ajoutée au certificat. */
+  renovationAdvice?: boolean;
 }
 
 interface StoredReservationSummary {
@@ -35,6 +38,7 @@ interface StoredReservationSummary {
   address: string;
   slotLabel?: string;
   hidePrice?: boolean;
+  renovationAdvice?: boolean;
 }
 
 export interface ReservationSummary extends StoredReservationSummary {
@@ -48,16 +52,19 @@ const PROPERTY_TYPE_LABELS: Record<Language, Record<string, string>> = {
     appartement: 'Appartement',
     maison: 'Maison',
     immeuble: 'Immeuble',
-    audit: 'Audit énergétique',
     autre: 'Autre demande',
   },
   nl: {
     appartement: 'Appartement',
     maison: 'Woning',
     immeuble: 'Gebouw',
-    audit: 'Energie-audit',
     autre: 'Andere aanvraag',
   },
+};
+
+const RENOVATION_ADVICE_LABELS: Record<Language, string> = {
+  fr: 'Conseil rénovation PEB',
+  nl: 'EPC-renovatieadvies',
 };
 
 const FALLBACK_LABELS: Record<
@@ -111,7 +118,12 @@ export const getReservationPrice = (propertyType: string, surfaceRange: string, 
   formatReservationPrice(getReservationPriceValue(propertyType, surfaceRange), language);
 
 export const buildReservationSummary = (payload: ReservationPayload, language: Language): ReservationSummary => {
-  const priceValue = getReservationPriceValue(payload.propertyType, payload.surfaceRange);
+  const certificatePrice = getReservationPriceValue(payload.propertyType, payload.surfaceRange);
+  // Seuls l'appartement et la maison ont un prix fixe ici ; un immeuble reste « sur devis ».
+  const advicePrice = payload.renovationAdvice ? getRenovationAdvicePrice(payload.propertyType, null) : 0;
+  const priceValue = certificatePrice && advicePrice !== null ? certificatePrice + advicePrice : null;
+  const propertyTypeLabel =
+    PROPERTY_TYPE_LABELS[language][payload.propertyType] || FALLBACK_LABELS[language].property;
 
   return {
     propertyType: payload.propertyType,
@@ -119,8 +131,10 @@ export const buildReservationSummary = (payload: ReservationPayload, language: L
     address: payload.address.trim() || FALLBACK_LABELS[language].address,
     slotLabel: payload.slotLabel,
     hidePrice: payload.hidePrice,
-    propertyTypeLabel:
-      PROPERTY_TYPE_LABELS[language][payload.propertyType] || FALLBACK_LABELS[language].property,
+    renovationAdvice: payload.renovationAdvice,
+    propertyTypeLabel: payload.renovationAdvice
+      ? `${propertyTypeLabel} + ${RENOVATION_ADVICE_LABELS[language]}`
+      : propertyTypeLabel,
     priceLabel: formatReservationPrice(priceValue, language),
     hasFixedPrice: Boolean(priceValue),
   };
@@ -133,6 +147,7 @@ export const saveReservationSummary = (payload: ReservationPayload) => {
     address: payload.address.trim(),
     slotLabel: payload.slotLabel,
     hidePrice: payload.hidePrice,
+    renovationAdvice: payload.renovationAdvice,
   };
 
   sessionStorage.setItem(RESERVATION_SUMMARY_KEY, JSON.stringify(summary));

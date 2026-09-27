@@ -8,7 +8,7 @@ import FacebookButton from './components/FacebookButton';
 import Home from './pages/Home';
 import ApartmentPEB from './pages/ApartmentPEB';
 import HousePEB from './pages/HousePEB';
-import EnergyAudit from './pages/EnergyAudit';
+import RenovationAdvice from './pages/RenovationAdvice';
 import ContactPage from './pages/ContactPage';
 import FAQPage from './pages/FAQPage';
 import PricingPage from './pages/PricingPage';
@@ -53,7 +53,7 @@ function AppShell() {
         <Route path="/" element={<Home />} />
         <Route path="/certificat-peb-appartement-bruxelles" element={<ApartmentPEB />} />
         <Route path="/certificat-peb-maison-bruxelles" element={<HousePEB />} />
-        <Route path="/audit-energetique-bruxelles" element={<EnergyAudit />} />
+        <Route path="/conseil-renovation-peb-bruxelles" element={<RenovationAdvice />} />
         <Route path="/tarifs" element={<PricingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/reserver" element={<BookingPage />} />

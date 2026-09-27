@@ -21,8 +21,8 @@ export default function Home() {
         }
         keywords={
           isDutch
-            ? 'energieprestatiecertificaat, EPC certificaat Brussel, EPC Brussel, EPC appartement, EPC woning, energie-audit Brussel, prijs EPC certificaat'
-            : 'certificat PEB bruxelles, PEB bruxelles, certificat PEB appartement, certificat PEB maison, audit énergétique bruxelles, prix certificat PEB'
+            ? 'energieprestatiecertificaat, EPC certificaat Brussel, EPC Brussel, EPC appartement, EPC woning, EPC-renovatieadvies Brussel, prijs EPC certificaat'
+            : 'certificat PEB bruxelles, PEB bruxelles, certificat PEB appartement, certificat PEB maison, conseil rénovation PEB bruxelles, prix certificat PEB'
         }
         canonical="https://kcertipeb.be"
       />

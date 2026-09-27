@@ -20,30 +20,21 @@ const BUILDING_BASE_MINUTES = 60;
 const BUILDING_BASE_UNITS = 4;
 const BUILDING_MINUTES_PER_EXTRA_UNIT = 20;
 
-const BOOKABLE_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble', 'audit'];
+const BOOKABLE_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble'];
 
 /** Toutes les réservations en ligne sont fermes ; seul le tarif d'un immeuble reste à confirmer. */
-const AUTO_CONFIRMED_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble', 'audit'];
-
-/** Types de biens acceptés pour un audit énergétique en ligne. Un immeuble passe par un devis. */
-export const AUDIT_PROPERTY_TYPES = ['appartement', 'maison'];
-
-/** Un audit demande une visite une fois et demie plus longue qu'un certificat PEB. */
-const AUDIT_VISIT_MINUTES = { appartement: 45, maison: 70 };
-
-/** Multiplicateur du tarif PEB pour un audit énergétique. */
-const AUDIT_PRICE_FACTOR = 1.5;
+const AUTO_CONFIRMED_PROPERTY_TYPES = ['appartement', 'maison', 'immeuble'];
 
 export const isBookableOnline = (propertyType) => BOOKABLE_PROPERTY_TYPES.includes(propertyType);
 
 export const getBookingStatus = (propertyType) =>
   AUTO_CONFIRMED_PROPERTY_TYPES.includes(propertyType) ? 'confirmed' : 'pending';
 
-export const getVisitMinutes = (propertyType, units, auditPropertyType) => {
-  if (propertyType === 'audit') {
-    return AUDIT_VISIT_MINUTES[auditPropertyType] ?? null;
-  }
-
+/**
+ * Durée de la visite seule. L'option « Conseil rénovation PEB » ne l'allonge pas : elle
+ * repose sur les données relevées pendant la visite du certificat.
+ */
+export const getVisitMinutes = (propertyType, units) => {
   if (propertyType === 'immeuble') {
     const parsed = Number(units);
     const unitCount = Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : BUILDING_BASE_UNITS;
@@ -54,8 +45,8 @@ export const getVisitMinutes = (propertyType, units, auditPropertyType) => {
   return VISIT_MINUTES[propertyType] ?? null;
 };
 
-export const getBlockMinutes = (propertyType, units, auditPropertyType) => {
-  const visitMinutes = getVisitMinutes(propertyType, units, auditPropertyType);
+export const getBlockMinutes = (propertyType, units) => {
+  const visitMinutes = getVisitMinutes(propertyType, units);
   return visitMinutes === null ? null : visitMinutes + TRAVEL_BUFFER_MINUTES;
 };
 
@@ -115,7 +106,17 @@ const PRICE_TABLE = {
   },
 };
 
-/** Tranche de surface d'appartement correspondant à une surface en m². */
+/** Tranches de surface proposées pour chaque unité d'un immeuble, de la plus petite à la plus grande. */
+export const UNIT_SURFACE_RANGES = Object.keys(PRICE_TABLE.appartement);
+
+/** Tranche la plus grande parmi celles reçues ; les valeurs inconnues sont ignorées. */
+export const getLargestRange = (unitRanges = []) =>
+  UNIT_SURFACE_RANGES.filter((range) => Array.isArray(unitRanges) && unitRanges.includes(range)).pop() ?? null;
+
+/**
+ * Tranche de surface d'appartement correspondant à une surface en m². Sert encore à lire une
+ * réservation envoyée par une ancienne version de la page, qui transmettait des m².
+ */
 export const getSurfaceRange = (squareMeters) => {
   const value = Number(squareMeters);
   if (!Number.isFinite(value) || value <= 0) {
@@ -143,21 +144,18 @@ export const getBuildingDiscountRate = (units) =>
  * Prix d'un immeuble : tarif d'appartement de l'unité la plus grande, multiplié par le
  * nombre d'unités, puis remise de 5 % à partir de 4 unités et de 10 % à partir de 6.
  *
- * Le client n'est tenu d'indiquer que la surface de la première unité ; les autres sont
- * facultatives. Le montant obtenu est une estimation, confirmée sous 12 h.
+ * Le client n'est tenu d'indiquer que la tranche de surface de la première unité ; les autres
+ * sont facultatives. Le montant obtenu est une estimation, confirmée sous 12 h.
  */
-export const getBuildingPrice = (units, unitSurfaces = []) => {
+export const getBuildingPrice = (units, unitRanges = []) => {
   const unitCount = Number(units);
-  const surfaces = (Array.isArray(unitSurfaces) ? unitSurfaces : [])
-    .map(Number)
-    .filter((value) => Number.isFinite(value) && value > 0);
 
   // Plus de 6 unités : devis sur mesure, aucun montant annoncé automatiquement.
-  if (!Number.isFinite(unitCount) || unitCount < 1 || unitCount > MAX_PRICED_UNITS || surfaces.length === 0) {
+  if (!Number.isFinite(unitCount) || unitCount < 1 || unitCount > MAX_PRICED_UNITS) {
     return null;
   }
 
-  const largestRange = getSurfaceRange(Math.max(...surfaces));
+  const largestRange = getLargestRange(unitRanges);
   const unitPrice = PRICE_TABLE.appartement[largestRange];
   if (!unitPrice) {
     return null;
@@ -173,27 +171,50 @@ export const getBuildingPrice = (units, unitSurfaces = []) => {
 };
 
 /**
- * Tarif d'un audit énergétique : une fois et demie le tarif PEB du même bien, arrondi à la
- * dizaine la plus proche. Maison de plus de 200 m² : 275 × 1,5 = 412,50 → 410 €.
+ * Option « Conseil rénovation PEB » : rapport de recommandations de travaux, établi à partir
+ * de la visite du certificat. Prix fixe par bien ; pour un immeuble, par unité et sans remise.
+ * Doit rester aligné sur `RENOVATION_ADVICE_PRICES` de `src/lib/booking.ts`.
  */
-export const getAuditPrice = (auditPropertyType, surfaceRange) => {
-  const base = PRICE_TABLE[auditPropertyType]?.[surfaceRange];
-  return base ? Math.round((base * AUDIT_PRICE_FACTOR) / 10) * 10 : null;
+export const RENOVATION_ADVICE_PRICES = { appartement: 50, maison: 100, immeuble: 50 };
+
+/** Délai d'envoi du rapport après la visite, annoncé au client. */
+export const RENOVATION_ADVICE_DELAY_HOURS = 72;
+
+/** Prix de l'option, `null` quand il ne se calcule pas en ligne (immeuble sur devis). */
+export const getRenovationAdvicePrice = (propertyType, units) => {
+  const price = RENOVATION_ADVICE_PRICES[propertyType];
+  if (!price) {
+    return null;
+  }
+  if (propertyType !== 'immeuble') {
+    return price;
+  }
+
+  const unitCount = Number(units);
+  return Number.isFinite(unitCount) && unitCount >= 1 && unitCount <= MAX_PRICED_UNITS ? price * unitCount : null;
 };
 
-/** `null` quand le tarif ne peut pas être calculé (surface non renseignée, immeuble sur devis). */
-export const getPriceValue = (propertyType, surfaceRange, { units, unitSurfaces, auditPropertyType } = {}) => {
-  if (propertyType === 'audit') {
-    return getAuditPrice(auditPropertyType, surfaceRange);
-  }
-
+/** Tarif du seul certificat PEB, `null` s'il ne se calcule pas (surface absente, immeuble sur devis). */
+const getCertificatePrice = (propertyType, surfaceRange, units, unitRanges) => {
   if (propertyType === 'immeuble') {
-    return getBuildingPrice(units, unitSurfaces)?.total ?? null;
+    return getBuildingPrice(units, unitRanges)?.total ?? null;
   }
-
   if (!surfaceRange) {
     return null;
   }
-
   return PRICE_TABLE[propertyType]?.[surfaceRange] ?? null;
+};
+
+/**
+ * Tarif total de la réservation : certificat PEB, plus l'option Conseil rénovation PEB si elle
+ * est demandée. `null` dès qu'une des deux parties ne peut pas être chiffrée.
+ */
+export const getPriceValue = (propertyType, surfaceRange, { units, unitRanges, renovationAdvice = false } = {}) => {
+  const certificatePrice = getCertificatePrice(propertyType, surfaceRange, units, unitRanges);
+  if (certificatePrice === null || !renovationAdvice) {
+    return certificatePrice;
+  }
+
+  const advicePrice = getRenovationAdvicePrice(propertyType, units);
+  return advicePrice === null ? null : certificatePrice + advicePrice;
 };

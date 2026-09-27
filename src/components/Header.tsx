@@ -17,7 +17,7 @@ export default function Header() {
         apartment: 'EPC-certificaat appartement',
         house: 'EPC-certificaat woning',
         building: 'EPC-certificaat gebouw',
-        audit: 'Energie-audit',
+        advice: 'EPC-renovatieadvies',
         pricing: 'Tarieven',
         faq: 'FAQ',
         blog: 'Blog',
@@ -29,7 +29,7 @@ export default function Header() {
         apartment: 'Certificat PEB Appartement',
         house: 'Certificat PEB Maison',
         building: 'Certificat PEB Immeuble',
-        audit: 'Audit énergétique',
+        advice: 'Conseil rénovation PEB',
         pricing: 'Tarifs',
         faq: 'FAQ',
         blog: 'Blog',
@@ -106,10 +106,10 @@ export default function Header() {
                       {content.building}
                     </Link>
                     <Link
-                      to="/audit-energetique-bruxelles"
+                      to="/conseil-renovation-peb-bruxelles"
                       className="block px-4 py-3 text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
                     >
-                      {content.audit}
+                      {content.advice}
                     </Link>
                   </div>
                 </div>
@@ -166,11 +166,11 @@ export default function Header() {
                 {content.building}
               </Link>
               <Link
-                to="/audit-energetique-bruxelles"
+                to="/conseil-renovation-peb-bruxelles"
                 className="text-left text-gray-700 transition hover:text-emerald-700"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {content.audit}
+                {content.advice}
               </Link>
               <Link
                 to="/tarifs"

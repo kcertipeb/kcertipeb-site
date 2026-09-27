@@ -2,7 +2,8 @@
  * Enregistre un rendez-vous de visite.
  *
  *   POST /.netlify/functions/create-booking
- *   { propertyType, surfaceRange, units, street, houseNumber, postalCode,
+ *   { propertyType, surfaceRange, units, unitRanges, heatingType, renovationAdvice,
+ *     street, houseNumber, postalCode,
  *     date: "2026-09-23", time: "09:00", name, email, phone, message }
  *
  * Seuls les biens situés en Région de Bruxelles-Capitale sont acceptés (code postal).
@@ -29,13 +30,16 @@ import {
   getBlockMinutes,
   getBookingStatus,
   getBrusselsCommune,
-  AUDIT_PROPERTY_TYPES,
+  getLargestRange,
   getPriceValue,
+  getRenovationAdvicePrice,
   getSurfaceRange,
   isBookableOnline,
   MAX_PRICED_UNITS,
   MAX_UNITS,
+  RENOVATION_ADVICE_DELAY_HOURS,
   TRAVEL_BUFFER_MINUTES,
+  UNIT_SURFACE_RANGES,
 } from '../shared/booking-rules.js';
 import { buildBookingEmails } from '../shared/booking-emails.js';
 import { createCertiflowDossier, isCertiflowConfigured } from '../shared/certiflow.js';
@@ -150,7 +154,6 @@ const PROPERTY_LABELS = {
   appartement: 'Appartement',
   maison: 'Maison',
   immeuble: 'Immeuble',
-  audit: 'Audit énergétique',
 };
 
 const formatSlotLabel = (dateStr, timeStr) => {
@@ -241,8 +244,9 @@ export async function handler(event) {
     propertyType,
     surfaceRange,
     units,
+    unitRanges,
     unitSurfaces,
-    auditPropertyType,
+    heatingType,
     street,
     houseNumber,
     postalCode,
@@ -290,23 +294,30 @@ export async function handler(event) {
     return json(400, { error: `Nombre d'unités invalide (1 à ${MAX_UNITS})` });
   }
 
-  // Immeuble : surfaces déclarées unité par unité, la première étant obligatoire. Elles ne
-  // servent qu'au calcul du tarif, toujours refait ici.
-  const surfaces = (Array.isArray(unitSurfaces) ? unitSurfaces : [])
-    .map(Number)
-    .filter((value) => Number.isFinite(value) && value > 0 && value <= 2000);
+  // Immeuble : tranche de surface déclarée unité par unité, la première étant obligatoire.
+  // Elles ne servent qu'au calcul du tarif, toujours refait ici. Une ancienne version de la
+  // page, encore en cache chez un visiteur, envoie des m² (`unitSurfaces`) : ils sont convertis.
+  const rawRanges = Array.isArray(unitRanges)
+    ? unitRanges
+    : Array.isArray(unitSurfaces)
+      ? unitSurfaces.map(getSurfaceRange)
+      : [];
+  const declaredRanges = rawRanges
+    .slice(0, MAX_PRICED_UNITS)
+    .map((range) => (UNIT_SURFACE_RANGES.includes(range) ? range : null));
+  const chosenRanges = declaredRanges.filter(Boolean);
 
   // Au-delà de 6 unités, le tarif est établi sur devis : les surfaces ne sont plus demandées.
-  if (propertyType === 'immeuble' && surfaces.length === 0 && unitCount !== null && unitCount <= MAX_PRICED_UNITS) {
-    return json(400, { error: "Indiquez au moins la surface de la première unité" });
+  if (propertyType === 'immeuble' && chosenRanges.length === 0 && unitCount !== null && unitCount <= MAX_PRICED_UNITS) {
+    return json(400, { error: 'Indiquez au moins la surface de la première unité' });
   }
 
-  // Audit : il porte sur un appartement ou une maison ; l'audit d'immeuble passe par un devis.
-  if (propertyType === 'audit' && !AUDIT_PROPERTY_TYPES.includes(auditPropertyType)) {
-    return json(400, { error: 'Précisez si l’audit porte sur un appartement ou une maison' });
-  }
+  // Option « Conseil rénovation PEB » : réalisée pendant la même visite, elle ne change que le
+  // prix et la note transmise en interne.
+  const renovationAdvice = payload.renovationAdvice === true;
+  const advicePrice = renovationAdvice ? getRenovationAdvicePrice(propertyType, unitCount) : null;
 
-  const blockMinutes = getBlockMinutes(propertyType, unitCount, auditPropertyType);
+  const blockMinutes = getBlockMinutes(propertyType, unitCount);
   if (blockMinutes === null) {
     return json(400, { error: 'Durée de visite indéterminable' });
   }
@@ -330,29 +341,36 @@ export async function handler(event) {
   const status = getBookingStatus(propertyType);
   const priceValue = getPriceValue(propertyType, surfaceRange, {
     units: unitCount,
-    unitSurfaces: surfaces,
-    auditPropertyType,
+    unitRanges: chosenRanges,
+    renovationAdvice,
   });
 
   // Pour un immeuble, la tranche retenue est celle de l'unité la plus grande : c'est elle
   // qui sert de base au tarif. Le détail des surfaces est conservé dans le message.
-  const storedSurfaceRange =
-    propertyType === 'immeuble'
-      ? surfaces.length > 0
-        ? getSurfaceRange(Math.max(...surfaces))
-        : null
-      : surfaceRange || null;
+  const storedSurfaceRange = propertyType === 'immeuble' ? getLargestRange(chosenRanges) : surfaceRange || null;
   const surfacesNote =
-    propertyType === 'immeuble' && surfaces.length > 0
-      ? `Surfaces déclarées : ${surfaces.join(', ')} m² (${surfaces.length}/${unitCount} unités)`
+    propertyType === 'immeuble' && chosenRanges.length > 0
+      ? `Surfaces déclarées : ${declaredRanges
+          .map((range, index) => (range ? `unité ${index + 1} ${range}` : null))
+          .filter(Boolean)
+          .join(' · ')} (${chosenRanges.length}/${unitCount} unités)`
       : '';
-  const auditNote =
-    propertyType === 'audit' ? `Audit énergétique d'${auditPropertyType === 'maison' ? 'une maison' : 'un appartement'}` : '';
+  const adviceNote = renovationAdvice
+    ? `➕ Conseil rénovation PEB (${advicePrice ? `+${advicePrice} €` : 'sur devis'}) — rapport à envoyer sous ${RENOVATION_ADVICE_DELAY_HOURS} h après la visite`
+    : '';
   // La mention figure dans le message pour apparaître partout côté interne : email, Outlook, Certiflow.
   const phoneNote = phoneAgreed
     ? `📞 Réservation via lien téléphone : prix convenu oralement (grille : ${priceValue ? `${priceValue} € TVAC` : 'sur devis'})`
     : '';
-  const clientMessage = [phoneNote, message?.trim(), auditNote, surfacesNote].filter(Boolean).join('\n');
+  // Chauffage : n'est pas stocké dans une colonne, il suit le message comme les autres mentions.
+  const heating = ['collectif', 'individuel'].includes(heatingType) ? heatingType : null;
+  const heatingNote =
+    heating === 'collectif'
+      ? '🔥 Chauffage collectif — accès à la chaufferie à organiser avec le syndic'
+      : heating === 'individuel'
+        ? 'Chauffage individuel'
+        : '';
+  const clientMessage = [phoneNote, adviceNote, heatingNote, message?.trim(), surfacesNote].filter(Boolean).join('\n');
 
   const row = {
     starts_at: startsAt.toISOString(),
@@ -414,6 +432,8 @@ export async function handler(event) {
       visitMinutes,
       priceToConfirm: propertyType === 'immeuble',
       hidePrice: phoneAgreed,
+      heating,
+      renovationAdvice: renovationAdvice ? { price: advicePrice, delayHours: RENOVATION_ADVICE_DELAY_HOURS } : null,
       attachments: guide ? [guide] : [],
     });
     await deliverEmail({ ...client, replyTo: getMailbox() });
@@ -432,9 +452,9 @@ export async function handler(event) {
   try {
     eventId = await timed('outlook', () =>
       createCalendarEvent({
-        subject: `${phoneAgreed ? '📞 ' : ''}Visite PEB —${PROPERTY_LABELS[propertyType] ?? propertyType} — ${name.trim()}${
-          propertyType === 'immeuble' ? ' (tarif à confirmer)' : ''
-        }`,
+        subject: `${phoneAgreed ? '📞 ' : ''}Visite PEB —${PROPERTY_LABELS[propertyType] ?? propertyType}${
+          renovationAdvice ? ' + Conseil réno' : ''
+        } — ${name.trim()}${propertyType === 'immeuble' ? ' (tarif à confirmer)' : ''}`,
         bodyHtml: buildEventBody({
           name,
           phone,

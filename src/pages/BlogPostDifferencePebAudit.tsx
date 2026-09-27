@@ -166,8 +166,9 @@ export default function BlogPostDifferencePebAudit() {
                 </ul>
                 <p className="text-gray-700 text-sm">
                   Pour en savoir plus sur le cadre légal de l'audit, consultez{' '}
-                  <a href="https://environnement.brussels/citoyen/construction-et-renovation/renovation-de-logement/audit-energetique" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">la page officielle de Bruxelles Environnement sur l'audit énergétique</a>.{' '}
-                  <Link to="/audit-energetique-bruxelles" className="text-emerald-700 hover:underline">Voir notre service d'audit énergétique →</Link>
+                  <a href="https://environnement.brussels/pro/reglementation-et-inspection/obligations-et-autorisations/laudit-energetique" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:underline">la page officielle de Bruxelles Environnement sur l'audit énergétique</a>.{' '}
+                  KCertiPEB ne réalise pas d'audit réglementaire, mais propose une alternative légère :{' '}
+                  <Link to="/conseil-renovation-peb-bruxelles" className="text-emerald-700 hover:underline">le Conseil rénovation PEB, qui repère les postes à améliorer en priorité, dès 50 € →</Link>
                 </p>
               </section>
 
@@ -221,7 +222,7 @@ export default function BlogPostDifferencePebAudit() {
                   </div>
                   <div className="rounded-xl border border-blue-200 bg-blue-50 p-5">
                     <h3 className="font-bold text-blue-900 mb-2">Votre bien est classé E, F ou G → Audit recommandé en complément</h3>
-                    <p className="text-gray-700 text-sm">Le certificat PEB vous dit où vous en êtes. L'audit vous dit quoi faire et dans quel ordre pour améliorer la classe. Ils se complètent parfaitement.</p>
+                    <p className="text-gray-700 text-sm">Le certificat PEB vous dit où vous en êtes. L'audit vous dit quoi faire et dans quel ordre pour améliorer la classe. Ils se complètent parfaitement. Pour savoir quels postes traiter en premier sans passer par un audit, le <Link to="/conseil-renovation-peb-bruxelles" className="text-emerald-700 hover:underline">Conseil rénovation PEB</Link> s'ajoute à votre certificat dès 50 €.</p>
                   </div>
                   <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
                     <h3 className="font-bold text-gray-900 mb-2">Vous planifiez une rénovation importante → Audit en premier</h3>
@@ -236,10 +237,10 @@ export default function BlogPostDifferencePebAudit() {
 
               {/* CTA */}
               <div className="bg-emerald-700 text-white rounded-xl p-7 mb-10 text-center">
-                <p className="font-bold text-lg mb-2">Besoin d'un certificat PEB ou d'un audit énergétique à Bruxelles ?</p>
-                <p className="text-emerald-100 text-sm mb-4">KCertiPEB propose les deux services. Certificat PEB dès 120 €, livré en 48h dans les 19 communes bruxelloises.</p>
-                <Link to="/contact" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
-                  Demander un devis →
+                <p className="font-bold text-lg mb-2">Besoin d'un certificat PEB à Bruxelles ?</p>
+                <p className="text-emerald-100 text-sm mb-4">Certificat PEB dès 120 €, livré en 48h dans les 19 communes bruxelloises. En option, le Conseil rénovation PEB vous indique les postes à améliorer en priorité, dès 50 €, pendant la même visite.</p>
+                <Link to="/reserver" className="inline-block bg-white text-emerald-900 font-bold px-6 py-2.5 rounded-lg hover:opacity-90 transition text-sm">
+                  Réserver en ligne →
                 </Link>
               </div>
 
@@ -264,7 +265,7 @@ export default function BlogPostDifferencePebAudit() {
                     },
                     {
                       q: "Quel est le prix d'un audit énergétique à Bruxelles ?",
-                      a: "Le tarif d'un audit énergétique dépend du type de bien et de sa superficie. Comptez généralement entre 500 € et 1 500 € pour une maison. Contactez KCertiPEB pour un devis personnalisé.",
+                      a: "Le tarif d'un audit énergétique dépend du type de bien et de sa superficie. Comptez généralement entre 500 € et 1 500 € pour une maison, auprès d'un auditeur énergétique agréé. Si vous cherchez surtout à savoir quels travaux faire en priorité, le Conseil rénovation PEB de KCertiPEB est proposé dès 50 € avec le certificat.",
                     },
                   ].map((item) => (
                     <div key={item.q} className="border border-gray-100 rounded-xl p-5 bg-gray-50">
@@ -281,10 +282,10 @@ export default function BlogPostDifferencePebAudit() {
                 <ul className="space-y-2 text-sm">
                   <li><Link to="/certificat-peb-appartement-bruxelles" className="text-emerald-700 hover:underline">Certificat PEB appartement Bruxelles — dès 120 €</Link></li>
                   <li><Link to="/certificat-peb-maison-bruxelles" className="text-emerald-700 hover:underline">Certificat PEB maison Bruxelles — dès 210 €</Link></li>
-                  <li><Link to="/audit-energetique-bruxelles" className="text-emerald-700 hover:underline">Audit énergétique à Bruxelles — analyse complète</Link></li>
+                  <li><Link to="/conseil-renovation-peb-bruxelles" className="text-emerald-700 hover:underline">Conseil rénovation PEB — améliorer votre PEB poste par poste, dès 50 €</Link></li>
                   <li><Link to="/blog/comment-obtenir-certificat-peb-bruxelles" className="text-emerald-700 hover:underline">Comment obtenir un certificat PEB ? Guide étape par étape</Link></li>
                   <li><Link to="/blog/amende-sans-certificat-peb-bruxelles" className="text-emerald-700 hover:underline">Amende sans certificat PEB : montants 2026</Link></li>
-                  <li><Link to="/tarifs" className="text-emerald-700 hover:underline">Tarifs certificat PEB et audit 2026</Link></li>
+                  <li><Link to="/tarifs" className="text-emerald-700 hover:underline">Tarifs certificat PEB 2026</Link></li>
                 </ul>
               </div>
 
@@ -295,7 +296,7 @@ export default function BlogPostDifferencePebAudit() {
                   {[
                     ['https://environnement.brussels/citoyen/reglementation-et-inspection/obligations-et-autorisations/le-certificat-peb-dun-logement-en-region-bruxelloise', 'Bruxelles Environnement — Le certificat PEB d\'un logement : définition, obligations, validité'],
                     ['https://peb.environnement.brussels/', 'Bruxelles Environnement — Registre officiel et experts PEB agréés en Région bruxelloise'],
-                    ['https://environnement.brussels/citoyen/construction-et-renovation/renovation-de-logement/audit-energetique', 'Bruxelles Environnement — L\'audit énergétique : définition et utilité'],
+                    ['https://environnement.brussels/pro/reglementation-et-inspection/obligations-et-autorisations/laudit-energetique', 'Bruxelles Environnement — L\'audit énergétique : qui est concerné et qui peut le réaliser'],
                     ['https://environnement.brussels/pro/reglementation-et-inspection/obligations-et-autorisations/les-certificats-peb', 'Bruxelles Environnement — Les certificats PEB : réforme 2026 et nouveaux modèles'],
                     ['https://environnement.brussels/pro/reglementation/textes-de-loi/le-code-bruxellois-de-lair-du-climat-et-de-la-maitrise-de-lenergie-cobrace', 'Bruxelles Environnement — CoBrACE : cadre légal des obligations PEB à Bruxelles'],
                   ].map(([href, label]) => (

@@ -20,8 +20,8 @@ export default function BrusselsCommunes() {
           </h2>
           <p className="mx-auto max-w-3xl text-lg text-gray-600">
             {isDutch
-              ? 'Wij komen tussen in de 19 gemeenten van het Brussels Hoofdstedelijk Gewest voor EPC-certificaten van appartementen en woningen, evenals energie-audits.'
-              : "Nous intervenons dans les 19 communes de la Région de Bruxelles-Capitale pour vos certificats PEB d'appartement, de maison et vos audits énergétiques."}
+              ? 'Wij komen tussen in de 19 gemeenten van het Brussels Hoofdstedelijk Gewest voor EPC-certificaten van appartementen, woningen en gebouwen, met desgewenst een EPC-renovatieadvies.'
+              : "Nous intervenons dans les 19 communes de la Région de Bruxelles-Capitale pour vos certificats PEB d'appartement, de maison et d'immeuble, avec en option un Conseil rénovation PEB."}
           </p>
         </div>
 

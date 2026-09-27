@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
             title: '2. Verwerkingsverantwoordelijke',
             list: [
               'Handelsnaam: KcertiPEB',
-              'Activiteit: EPC-certificering en energie-audit',
+              'Activiteit: EPC-certificering en energetisch renovatieadvies',
               'E-mail: info@kcertipeb.be',
               'Website: https://kcertipeb.be',
             ],
@@ -126,7 +126,7 @@ export default function PrivacyPolicy() {
             title: '2. Responsable du traitement',
             list: [
               'Nom commercial : KcertiPEB',
-              'Activité : Certification PEB et audit énergétique',
+              'Activité : Certification PEB et conseil en rénovation énergétique',
               'E-mail : info@kcertipeb.be',
               'Site web : https://kcertipeb.be',
             ],

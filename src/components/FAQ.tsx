@@ -59,9 +59,9 @@ export default function FAQ() {
             'Alleen een erkende EPC-certificateur (Expert PEB) die door Leefmilieu Brussel is goedgekeurd, mag een wettelijk geldig EPC-certificaat afleveren in het Brussels Hoofdstedelijk Gewest. KCertiPEB is een erkende certificateur die actief is in alle 19 Brusselse gemeenten.',
         },
         {
-          question: 'Wat is het verschil tussen een EPC en een energie-audit?',
+          question: 'Voeren jullie energie-audits uit?',
           answer:
-            'Het EPC is een verplicht document dat uw woning een energieklasse van A tot G geeft — nodig voor verkoop of verhuur. Een energie-audit is een vrijwillige, diepgaande analyse die concrete renovatieaanbevelingen geeft om uw energieprestatie te verbeteren. Het EPC is de wettelijke minimumverplichting; de audit is de volgende stap om te renoveren.',
+            'Nee. Een reglementaire energie-audit moet door een erkende energie-auditor worden uitgevoerd. Wij stellen EPC-certificaten op — het verplichte document dat uw woning een klasse van A tot G geeft — en bieden als optie het EPC-renovatieadvies aan: tijdens hetzelfde bezoek de posten die u eerst verbetert om klassen te winnen, en de beoogde klasse, vanaf 50 €.',
         },
       ]
     : [
@@ -111,9 +111,9 @@ export default function FAQ() {
             "Seul un Expert PEB agréé par Bruxelles Environnement est habilité à délivrer un certificat PEB légalement valable en Région de Bruxelles-Capitale. KCertiPEB est certificateur agréé, actif dans les 19 communes bruxelloises. Tout certificat établi par une personne non agréée est nul et sans effet.",
         },
         {
-          question: "Quelle est la différence entre le certificat PEB et un audit énergétique ?",
+          question: 'Réalisez-vous des audits énergétiques ?',
           answer:
-            "Le certificat PEB est un document obligatoire qui classe votre bien de A à G — indispensable pour vendre ou louer. L'audit énergétique est une analyse approfondie et volontaire qui identifie les travaux prioritaires pour améliorer la performance de votre logement. Le PEB est la condition légale minimale ; l'audit est l'étape suivante pour planifier une rénovation.",
+            "Non. Un audit énergétique réglementaire doit être réalisé par un auditeur énergétique agréé. Nous établissons le certificat PEB — le document obligatoire qui classe votre bien de A à G — et proposons en option le Conseil rénovation PEB : pendant la même visite, les postes à améliorer en priorité pour gagner des classes, et la classe visée, dès 50 €.",
         },
       ];
 

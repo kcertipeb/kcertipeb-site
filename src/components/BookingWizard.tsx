@@ -4,10 +4,9 @@ import { ArrowLeft, ArrowRight, CalendarDays, Check, ChevronDown, Clock, Loader2
 
 import { useLanguage } from '../lib/language';
 import { trackPhoneCallConversion, markPendingLeadConversion } from '../lib/tracking';
-import { getReservationPrice, saveReservationSummary } from '../lib/reservation';
+import { formatReservationPrice, getReservationPriceValue, saveReservationSummary } from '../lib/reservation';
 import {
   AddressSuggestion,
-  AUDIT_PROPERTY_TYPES,
   BookingError,
   createBooking,
   createSessionToken,
@@ -17,10 +16,13 @@ import {
   formatDateChip,
   formatSlotLabel,
   getBrusselsCommune,
-  getAuditPrice,
   getBuildingPrice,
+  getRenovationAdvicePrice,
+  UNIT_SURFACE_RANGES,
   getIsoDate,
   MAX_PRICED_UNITS,
+  RENOVATION_ADVICE_PATH,
+  RENOVATION_ADVICE_PRICES,
   getVisitMinutes,
   isAutoConfirmed,
   isBookableOnline,
@@ -32,7 +34,7 @@ const SURFACE_OPTIONS = {
   maison: ['< 100 m²', '101 - 200 m²', '> 200 m²'],
 } as const;
 
-const PROPERTY_TYPES = ['appartement', 'maison', 'immeuble', 'audit'] as const;
+const PROPERTY_TYPES = ['appartement', 'maison', 'immeuble'] as const;
 
 /** Horizon de réservation, en jours. */
 const DATE_RANGE_DAYS = 21;
@@ -83,11 +85,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         apartment: 'Appartement',
         house: 'Woning',
         building: 'Gebouw',
-        audit: 'Energie-audit',
         units: 'Aantal eenheden',
         unitsHelp: 'Bepaalt de duur van het bezoek en het tarief.',
-        unitSurfaces: 'Oppervlakte van elke eenheid (m²)',
+        unitSurfaces: 'Oppervlakte van elke eenheid',
         unitSurfacesHelp: 'De eerste is verplicht, de andere optioneel. Het tarief volgt de grootste eenheid.',
+        chooseRange: 'Kiezen…',
         unitLabel: 'Eenheid',
         optional: 'optioneel',
         priceEstimate: 'Raming',
@@ -95,6 +97,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         buildingDiscount: 'korting',
         buildingQuote: 'Vanaf 7 eenheden stellen wij een offerte op maat op. Uw tijdslot blijft gereserveerd.',
         surface: 'Oppervlakte',
+        heating: 'Type verwarming',
+        heatingCollective: 'Collectief',
+        heatingIndividual: 'Individueel',
+        heatingCollectiveNotice:
+          'Collectieve verwarming: verwittig uw syndicus op voorhand. De certificateur moet toegang hebben tot de stookruimte, die vaak op slot is. Zonder die toegang worden ongunstige standaardwaarden toegepast.',
         address: 'Adres van het pand',
         street: 'Straat',
         streetPlaceholder: 'Begin de straatnaam te typen…',
@@ -108,9 +115,14 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         quoteOnly: 'Op offerte',
         quoteNotice:
           'Dit type aanvraag vereist een offerte. Kies een tijdslot: wij bevestigen het samen met het tarief binnen 12 uur.',
-        auditPropertyType: 'Te auditeren pand',
-        auditNotice: 'Voor een audit van een gebouw maken wij een offerte op maat:',
-        contactUs: 'Contacteer ons',
+        adviceTitle: 'EPC-renovatieadvies toevoegen',
+        adviceText:
+          'De posten die u eerst verbetert (dak, ramen, verwarming…), in de juiste volgorde, en de beoogde EPC-klasse. Rapport per e-mail binnen 72 u, tijdens hetzelfde bezoek.',
+        adviceMore: 'Meer info',
+        advicePerUnit: 'per eenheid',
+        adviceLabel: 'EPC-renovatieadvies',
+        certificate: 'EPC-certificaat',
+        yes: 'Ja',
         chooseSlot: 'Kies een tijdslot',
         noSlots: 'Geen tijdslot beschikbaar in de komende 3 weken. Bel ons, wij zoeken samen een oplossing.',
         noMoreDates: 'Geen andere datum beschikbaar in de komende 3 weken.',
@@ -145,11 +157,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         apartment: 'Appartement',
         house: 'Maison',
         building: 'Immeuble',
-        audit: 'Audit énergétique',
         units: 'Nombre d’unités',
         unitsHelp: 'Détermine la durée de la visite et le tarif.',
-        unitSurfaces: 'Surface de chaque unité (m²)',
+        unitSurfaces: 'Surface de chaque unité',
         unitSurfacesHelp: 'La première est obligatoire, les autres facultatives. Le tarif se base sur la plus grande.',
+        chooseRange: 'Choisir…',
         unitLabel: 'Unité',
         optional: 'facultatif',
         priceEstimate: 'Estimation',
@@ -157,6 +169,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         buildingDiscount: 'remise',
         buildingQuote: 'Au-delà de 6 unités, le tarif est établi sur devis. Votre créneau reste réservé.',
         surface: 'Surface',
+        heating: 'Type de chauffage',
+        heatingCollective: 'Collectif',
+        heatingIndividual: 'Individuel',
+        heatingCollectiveNotice:
+          'Chauffage collectif : prévenez votre syndic à l’avance. Le certificateur doit pouvoir accéder à la salle de chaufferie, souvent fermée à clé. Sans cet accès, des valeurs par défaut pénalisantes s’appliquent.',
         address: 'Adresse du bien',
         street: 'Rue',
         streetPlaceholder: 'Commencez à taper le nom de la rue…',
@@ -170,9 +187,14 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         quoteOnly: 'Sur devis',
         quoteNotice:
           'Ce type de demande nécessite un devis. Choisissez un créneau : nous le confirmons avec le tarif sous 12 heures.',
-        auditPropertyType: 'Bien à auditer',
-        auditNotice: 'Pour un audit d’immeuble, le tarif est établi sur devis :',
-        contactUs: 'Nous contacter',
+        adviceTitle: 'Ajouter le Conseil rénovation PEB',
+        adviceText:
+          'Les postes à améliorer en priorité (toiture, châssis, chauffage…), dans le bon ordre, et la classe PEB visée. Rapport par email sous 72 h, pendant la même visite.',
+        adviceMore: 'En savoir plus',
+        advicePerUnit: 'par unité',
+        adviceLabel: 'Conseil rénovation PEB',
+        certificate: 'Certificat PEB',
+        yes: 'Oui',
         chooseSlot: 'Choisissez un créneau',
         noSlots: 'Aucun créneau disponible dans les 3 prochaines semaines. Appelez-nous, nous trouverons une solution.',
         noMoreDates: 'Aucune autre date disponible dans les 3 prochaines semaines.',
@@ -206,10 +228,12 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
   const [propertyType, setPropertyType] = useState('appartement');
   const [surfaceRange, setSurfaceRange] = useState('');
   const [units, setUnits] = useState<number | null>(null);
-  /** Surfaces déclarées, une case par unité ; seule la première est obligatoire. */
-  const [unitSurfaces, setUnitSurfaces] = useState<(number | null)[]>([]);
-  /** Pour un audit : bien audité, appartement ou maison. */
-  const [auditPropertyType, setAuditPropertyType] = useState('');
+  /** Tranche de surface de chaque unité d'un immeuble (`''` = non choisie) ; seule la première est obligatoire. */
+  const [unitRanges, setUnitRanges] = useState<string[]>([]);
+  /** Option « Conseil rénovation PEB », réalisée pendant la même visite. */
+  const [renovationAdvice, setRenovationAdvice] = useState(false);
+  /** Chauffage collectif ou individuel : un chauffage collectif impose l'accès à la chaufferie. */
+  const [heatingType, setHeatingType] = useState('');
   const [street, setStreet] = useState('');
   const [houseNumber, setHouseNumber] = useState('');
   const [postalCode, setPostalCode] = useState('');
@@ -238,23 +262,21 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const isAudit = propertyType === 'audit';
   const isBuilding = propertyType === 'immeuble';
-  const showSurface = propertyType === 'appartement' || propertyType === 'maison' || (isAudit && auditPropertyType !== '');
-  const visitMinutes = getVisitMinutes(propertyType, units, auditPropertyType);
-  const buildingPrice = isBuilding ? getBuildingPrice(units, unitSurfaces) : null;
-  const auditPrice = isAudit && auditPropertyType ? getAuditPrice(auditPropertyType, surfaceRange) : null;
-  /** Type de bien dont les tranches de surface sont proposées. */
-  const surfaceType = isAudit ? auditPropertyType : propertyType;
-  const priceLabel = isBuilding
-    ? buildingPrice
-      ? `${buildingPrice.total} € TVAC`
-      : t.quoteOnly
-    : isAudit
-      ? auditPrice
-        ? `${auditPrice} € TVAC`
-        : t.quoteOnly
-      : getReservationPrice(propertyType, surfaceRange, language);
+  const showSurface = propertyType === 'appartement' || propertyType === 'maison';
+  /** Question posée pour les biens en copropriété ; une maison a presque toujours un chauffage individuel. */
+  const askHeating = propertyType === 'appartement' || isBuilding;
+  const visitMinutes = getVisitMinutes(propertyType, units);
+  const buildingPrice = isBuilding ? getBuildingPrice(units, unitRanges) : null;
+  // Prix du certificat seul, puis de l'option : le total n'est affiché que si les deux se chiffrent.
+  const certificatePrice = isBuilding
+    ? (buildingPrice?.total ?? null)
+    : getReservationPriceValue(propertyType, surfaceRange);
+  const advicePrice = renovationAdvice ? getRenovationAdvicePrice(propertyType, units) : 0;
+  const totalPrice = certificatePrice !== null && advicePrice !== null ? certificatePrice + advicePrice : null;
+  const priceLabel = formatReservationPrice(totalPrice, language);
+  /** Prix de l'option affiché sur la case à cocher : par bien, ou par unité pour un immeuble. */
+  const adviceOfferLabel = `+${RENOVATION_ADVICE_PRICES[propertyType] ?? 0} €${isBuilding ? ` ${t.advicePerUnit}` : ''}`;
 
   // Les dates ne sont calculées qu'au montage : au prérendu react-snap, `new Date()`
   // renverrait la date du build et figerait le sélecteur dans le HTML statique.
@@ -273,16 +295,15 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
     if (!isBookableOnline(propertyType) || !street.trim() || !houseNumber.trim() || !commune) {
       return false;
     }
-    // Audit : il faut d'abord savoir s'il porte sur un appartement ou une maison.
-    if (isAudit && !auditPropertyType) {
+    if (showSurface && !surfaceRange) {
       return false;
     }
-    if (showSurface && !surfaceRange) {
+    if (askHeating && !heatingType) {
       return false;
     }
     // Immeuble : la surface de la première unité est indispensable au calcul du tarif,
     // sauf au-delà de 6 unités où le tarif passe de toute façon sur devis.
-    if (isBuilding && (!units || units < 1 || (units <= MAX_PRICED_UNITS && !unitSurfaces[0]))) {
+    if (isBuilding && (!units || units < 1 || (units <= MAX_PRICED_UNITS && !unitRanges[0]))) {
       return false;
     }
     return true;
@@ -293,11 +314,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
     commune,
     showSurface,
     surfaceRange,
+    askHeating,
+    heatingType,
     isBuilding,
-    isAudit,
-    auditPropertyType,
     units,
-    unitSurfaces,
+    unitRanges,
   ]);
 
   const canSubmit = Boolean(date && time && name.trim() && email.trim() && phone.trim());
@@ -359,9 +380,10 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
   // La durée du bloc dépend du bien : toute modification invalide les créneaux connus.
   useEffect(() => {
     resetAvailability();
-  }, [propertyType, units, auditPropertyType, resetAvailability]);
+  }, [propertyType, units, resetAvailability]);
 
-  // Les surfaces ne changent pas la durée de la visite : inutile de recharger les créneaux.
+  // Les surfaces et l'option Conseil rénovation PEB ne changent pas la durée de la visite :
+  // inutile de recharger les créneaux.
 
   // Remplit la page courante avec des jours qui ont au moins un créneau. Les jours sont
   // interrogés par lots ; l'effet se relance après chaque lot tant que la page n'est pas
@@ -372,8 +394,7 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
   // Netlify (plusieurs secondes) a donc lieu pendant que le client choisit son bien, et
   // l'étape Créneau s'affiche sans attente.
   useEffect(() => {
-    // Un audit n'a de durée connue qu'une fois le bien audité choisi.
-    if (!isBookableOnline(propertyType) || (propertyType === 'audit' && !auditPropertyType)) {
+    if (!isBookableOnline(propertyType)) {
       return;
     }
     if (dates.length === 0 || daysState !== 'idle') {
@@ -387,7 +408,7 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
     const batch = dates.slice(scannedDays, scannedDays + SCAN_BATCH_DAYS);
     setDaysState('loading');
 
-    fetchAvailabilityRange(batch[0], batch.length, propertyType, units, auditPropertyType)
+    fetchAvailabilityRange(batch[0], batch.length, propertyType, units)
       .then((results) => {
         if (generation !== generationRef.current) {
           return;
@@ -401,7 +422,7 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
           setDaysState('error');
         }
       });
-  }, [step, dates, days.length, page, scannedDays, daysState, propertyType, units, auditPropertyType]);
+  }, [step, dates, days.length, page, scannedDays, daysState, propertyType, units]);
 
   // Un chargement en arrière-plan qui a échoué est retenté une fois quand le client arrive
   // à l'étape Créneau : il voit une attente plutôt qu'un message d'erreur. Une seule fois,
@@ -438,8 +459,9 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         propertyType,
         surfaceRange,
         units,
-        unitSurfaces,
-        auditPropertyType,
+        unitRanges,
+        renovationAdvice,
+        heatingType: askHeating ? heatingType : '',
         street: street.trim(),
         houseNumber: houseNumber.trim(),
         postalCode,
@@ -452,7 +474,14 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         phoneAgreed: hidePrice,
       });
 
-      saveReservationSummary({ propertyType, surfaceRange, address: fullAddress, slotLabel: result.slotLabel, hidePrice });
+      saveReservationSummary({
+        propertyType,
+        surfaceRange,
+        address: fullAddress,
+        slotLabel: result.slotLabel,
+        hidePrice,
+        renovationAdvice,
+      });
       // Un client qui a déjà appelé est compté par le suivi des appels : pas de deuxième conversion.
       if (!hidePrice) {
         markPendingLeadConversion();
@@ -511,13 +540,12 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
         <div className="space-y-6">
           <div>
             <label className="mb-2 block font-semibold text-gray-700">{t.propertyType}</label>
-            <div className={choiceGrid}>
+            <div className="grid grid-cols-3 gap-2">
               {PROPERTY_TYPES.map((type) => {
                 const labels = {
                   appartement: t.apartment,
                   maison: t.house,
                   immeuble: t.building,
-                  audit: t.audit,
                 };
                 const isActive = propertyType === type;
 
@@ -529,8 +557,9 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
                       setPropertyType(type);
                       setSurfaceRange('');
                       setUnits(type === 'immeuble' ? 2 : null);
-                      setUnitSurfaces(type === 'immeuble' ? [null, null] : []);
-                      setAuditPropertyType('');
+                      setUnitRanges(type === 'immeuble' ? ['', ''] : []);
+                      setRenovationAdvice(false);
+                      setHeatingType('');
                       setTime('');
                     }}
                     aria-pressed={isActive}
@@ -547,42 +576,6 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
             </div>
           </div>
 
-          {isAudit && (
-            <div>
-              <label className="mb-2 block font-semibold text-gray-700">{t.auditPropertyType}</label>
-              <div className={choiceGrid}>
-                {AUDIT_PROPERTY_TYPES.map((type) => {
-                  const isActive = auditPropertyType === type;
-                  return (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => {
-                        setAuditPropertyType(isActive ? '' : type);
-                        setSurfaceRange('');
-                        setTime('');
-                      }}
-                      aria-pressed={isActive}
-                      className={`rounded-xl border px-3 py-3 text-sm font-semibold transition ${
-                        isActive
-                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-100'
-                          : 'border-gray-200 bg-white text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
-                      }`}
-                    >
-                      {type === 'maison' ? t.house : t.apartment}
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-2 text-xs text-gray-500">
-                {t.auditNotice}{' '}
-                <Link to="/contact" className="font-semibold text-emerald-700 underline">
-                  {t.contactUs}
-                </Link>
-              </p>
-            </div>
-          )}
-
           {isBuilding && (
             <div>
               <label htmlFor={fieldId('units')} className="mb-2 block font-semibold text-gray-700">
@@ -597,12 +590,12 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
                 onChange={(changeEvent) => {
                   const count = Number(changeEvent.target.value) || null;
                   setUnits(count);
-                  // Une case de surface par unité, en conservant ce qui est déjà saisi.
+                  // Une tranche de surface par unité, en conservant ce qui est déjà choisi.
                   // Au-delà de 6 unités le tarif est sur devis : les surfaces ne servent plus.
-                  setUnitSurfaces((previous) =>
+                  setUnitRanges((previous) =>
                     !count || count > MAX_PRICED_UNITS
                       ? []
-                      : Array.from({ length: Math.min(count, MAX_SURFACE_INPUTS) }, (_, index) => previous[index] ?? null)
+                      : Array.from({ length: Math.min(count, MAX_SURFACE_INPUTS) }, (_, index) => previous[index] ?? '')
                   );
                 }}
                 className="w-full rounded-lg border-2 border-gray-200 px-4 py-3 transition focus:border-emerald-500 focus:outline-none"
@@ -611,31 +604,35 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
             </div>
           )}
 
-          {isBuilding && unitSurfaces.length > 0 && (
+          {isBuilding && unitRanges.length > 0 && (
             <div>
               <label className="mb-2 block font-semibold text-gray-700">{t.unitSurfaces}</label>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {unitSurfaces.map((surface, index) => (
+                {unitRanges.map((range, index) => (
                   <div key={index}>
                     <label htmlFor={fieldId(`unit-${index}`)} className="mb-1 block text-xs font-medium text-gray-600">
                       {t.unitLabel} {index + 1}
                       {index > 0 && <span className="text-gray-400"> ({t.optional})</span>}
                     </label>
-                    <input
+                    <select
                       id={fieldId(`unit-${index}`)}
-                      type="number"
-                      min={5}
-                      max={2000}
-                      inputMode="numeric"
                       required={index === 0}
-                      value={surface ?? ''}
+                      value={range}
                       onChange={(changeEvent) => {
-                        const value = Number(changeEvent.target.value) || null;
-                        setUnitSurfaces((previous) => previous.map((item, position) => (position === index ? value : item)));
+                        const value = changeEvent.target.value;
+                        setUnitRanges((previous) => previous.map((item, position) => (position === index ? value : item)));
                       }}
-                      placeholder="m²"
-                      className="w-full rounded-lg border-2 border-gray-200 px-3 py-2 transition focus:border-emerald-500 focus:outline-none"
-                    />
+                      className={`w-full rounded-lg border-2 bg-white px-3 py-2 text-sm font-semibold transition focus:border-emerald-500 focus:outline-none ${
+                        range ? 'border-emerald-400 text-gray-900' : 'border-gray-200 text-gray-500'
+                      }`}
+                    >
+                      <option value="">{t.chooseRange}</option>
+                      {UNIT_SURFACE_RANGES.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 ))}
               </div>
@@ -647,7 +644,7 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
             <div>
               <label className="mb-2 block font-semibold text-gray-700">{t.surface}</label>
               <div className={choiceGrid}>
-                {SURFACE_OPTIONS[surfaceType as keyof typeof SURFACE_OPTIONS].map((option) => {
+                {SURFACE_OPTIONS[propertyType as keyof typeof SURFACE_OPTIONS].map((option) => {
                   const isActive = surfaceRange === option;
                   return (
                     <button
@@ -666,6 +663,37 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
                   );
                 })}
               </div>
+            </div>
+          )}
+
+          {askHeating && (
+            <div>
+              <label className="mb-2 block font-semibold text-gray-700">{t.heating}</label>
+              <div className="grid grid-cols-2 gap-2">
+                {(['collectif', 'individuel'] as const).map((type) => {
+                  const isActive = heatingType === type;
+                  return (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => setHeatingType(isActive ? '' : type)}
+                      aria-pressed={isActive}
+                      className={`rounded-xl border px-3 py-3 text-sm font-semibold transition ${
+                        isActive
+                          ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-100'
+                          : 'border-gray-200 bg-white text-gray-700 hover:border-emerald-400 hover:bg-emerald-50'
+                      }`}
+                    >
+                      {type === 'collectif' ? t.heatingCollective : t.heatingIndividual}
+                    </button>
+                  );
+                })}
+              </div>
+              {heatingType === 'collectif' && (
+                <div role="alert" className="mt-3 rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4 text-sm font-medium text-amber-900">
+                  {t.heatingCollectiveNotice}
+                </div>
+              )}
             </div>
           )}
 
@@ -769,6 +797,36 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
             </fieldset>
           )}
 
+          <label
+            className={`flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition ${
+              renovationAdvice ? 'border-emerald-600 bg-emerald-50' : 'border-gray-200 bg-white hover:border-emerald-400'
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={renovationAdvice}
+              onChange={(changeEvent) => setRenovationAdvice(changeEvent.target.checked)}
+              className="mt-1 h-5 w-5 shrink-0 accent-emerald-600"
+            />
+            <span className="min-w-0">
+              <span className="flex flex-wrap items-baseline justify-between gap-x-3 font-semibold text-gray-900">
+                {t.adviceTitle}
+                {!hidePrice && <span className="text-emerald-700">{adviceOfferLabel}</span>}
+              </span>
+              <span className="mt-1 block text-sm text-gray-600">
+                {t.adviceText}{' '}
+                <Link
+                  to={RENOVATION_ADVICE_PATH}
+                  target="_blank"
+                  rel="noopener"
+                  className="font-semibold text-emerald-700 underline"
+                >
+                  {t.adviceMore}
+                </Link>
+              </span>
+            </span>
+          </label>
+
           {(!hidePrice || visitMinutes !== null) && (
             <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-5 py-4">
               <div className="flex items-center justify-between gap-4">
@@ -797,6 +855,11 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
                         buildingPrice.discountRate ? ` − ${Math.round(buildingPrice.discountRate * 100)} % ${t.buildingDiscount}` : ''
                       } · ${t.priceToConfirm}`
                     : t.buildingQuote}
+                </p>
+              )}
+              {renovationAdvice && !hidePrice && certificatePrice !== null && advicePrice !== null && (
+                <p className="mt-2 text-sm text-gray-600">
+                  {t.certificate} {certificatePrice} € + {t.adviceLabel} {advicePrice} €
                 </p>
               )}
             </div>
@@ -968,6 +1031,20 @@ export default function BookingWizard({ compact = false, hidePrice = false }: Bo
                 <div className="flex justify-between gap-4">
                   <dt>{t.surface}</dt>
                   <dd className="font-semibold">{surfaceRange}</dd>
+                </div>
+              )}
+              {askHeating && heatingType && (
+                <div className="flex justify-between gap-4">
+                  <dt>{t.heating}</dt>
+                  <dd className="font-semibold">
+                    {heatingType === 'collectif' ? t.heatingCollective : t.heatingIndividual}
+                  </dd>
+                </div>
+              )}
+              {renovationAdvice && (
+                <div className="flex justify-between gap-4">
+                  <dt>{t.adviceLabel}</dt>
+                  <dd className="font-semibold">{t.yes}</dd>
                 </div>
               )}
               <div className="flex justify-between gap-4">

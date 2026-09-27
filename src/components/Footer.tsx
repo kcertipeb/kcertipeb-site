@@ -18,7 +18,7 @@ export default function Footer() {
         apartment: 'EPC Appartement',
         house: 'EPC Woning',
         building: 'EPC Gebouw',
-        audit: 'Energie-audit',
+        advice: 'EPC-renovatieadvies',
         pricing: 'Tarieven',
         faq: 'FAQ',
         blog: 'Blog',
@@ -42,7 +42,7 @@ export default function Footer() {
         apartment: 'PEB Appartement',
         house: 'PEB Maison',
         building: 'PEB Immeuble',
-        audit: 'Audit énergétique',
+        advice: 'Conseil rénovation PEB',
         pricing: 'Tarifs',
         faq: 'FAQ',
         blog: 'Blog',
@@ -78,7 +78,7 @@ export default function Footer() {
               <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
               <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
               <li><Link to="/certificat-peb-immeuble-bruxelles" className="transition hover:text-emerald-400">{content.building}</Link></li>
-              <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
+              <li><Link to="/conseil-renovation-peb-bruxelles" className="transition hover:text-emerald-400">{content.advice}</Link></li>
               <li><Link to="/tarifs" className="transition hover:text-emerald-400">{content.pricing}</Link></li>
               <li><Link to="/faq" className="transition hover:text-emerald-400">{content.faq}</Link></li>
               <li><Link to="/blog" className="transition hover:text-emerald-400">{content.blog}</Link></li>
@@ -93,7 +93,7 @@ export default function Footer() {
               <li><Link to="/certificat-peb-appartement-bruxelles" className="transition hover:text-emerald-400">{content.apartment}</Link></li>
               <li><Link to="/certificat-peb-maison-bruxelles" className="transition hover:text-emerald-400">{content.house}</Link></li>
               <li><Link to="/certificat-peb-immeuble-bruxelles" className="transition hover:text-emerald-400">{content.building}</Link></li>
-              <li><Link to="/audit-energetique-bruxelles" className="transition hover:text-emerald-400">{content.audit}</Link></li>
+              <li><Link to="/conseil-renovation-peb-bruxelles" className="transition hover:text-emerald-400">{content.advice}</Link></li>
               <li><Link to="/reserver" className="transition hover:text-emerald-400">{content.cta}</Link></li>
             </ul>
           </div>

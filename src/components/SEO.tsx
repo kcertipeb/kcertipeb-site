@@ -131,7 +131,9 @@ export default function SEO({
         { '@type': 'City', name: 'Woluwe-Saint-Lambert' },
         { '@type': 'City', name: 'Woluwe-Saint-Pierre' },
       ],
-      serviceType: isDutch ? ['EPC-certificering', 'Energie-audit'] : ['Certification PEB', 'Audit énergétique'],
+      serviceType: isDutch
+        ? ['EPC-certificering', 'EPC-renovatieadvies']
+        : ['Certification PEB', 'Conseil rénovation PEB'],
       image: ogImage,
     };
 
