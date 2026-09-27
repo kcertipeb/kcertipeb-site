@@ -1,1 +1,5 @@
+# Netlify lit ce fichier avant netlify.toml : toute redirection doit précéder la règle /*.
+# L'audit énergétique n'est plus proposé : son ancienne page renvoie vers l'option qui le remplace.
+/audit-energetique-bruxelles /conseil-renovation-peb-bruxelles 301!
+
 /* /index.html 200
